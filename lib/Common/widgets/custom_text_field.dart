@@ -41,7 +41,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           obscureText: widget.isSuffix ? !passwordVisible : passwordVisible,
           cursorColor: Colors.white,
           decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(20),
+              contentPadding: EdgeInsets.all(18),
               prefixIcon: widget.prefixIcon != null
                   ? Icon(
                       widget.prefixIcon,
@@ -57,18 +57,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
                         });
                       },
                       icon: !passwordVisible
-                          ? const Icon(Icons.visibility_off,
-                              color: Colors.white, size: 22)
-                          : const Icon(Icons.visibility,
-                              color: Colors.white, size: 22),
+                          ?  Icon(Icons.visibility_off,
+                              color: AppColors.hintGrey, size: 22)
+                          :  Icon(Icons.visibility,
+                              color: AppColors.hintGrey, size: 22),
                     )
                   : null,
               border: InputBorder.none,
               hintText: widget.hintText,
               hintStyle: styleForText.copyWith(
-                  color: PrefsHelper.myRole=="trainee"?ColorController.instance.getTextColor():AppColors.white,
+                  fontWeight: FontWeight.w500,
+                  color: PrefsHelper.myRole=="trainee"?ColorController.instance.getTextColor():AppColors.hintGrey,
                   fontSize: 16,
-                  fontWeight: FontWeight.normal)),
+                  )),
         ));
   }
 }

@@ -20,11 +20,8 @@ action() async {
   WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection dI = DependencyInjection();
   dI.dependencies();
-
   await PrefsHelper.getAllPrefData();
-  // if (PrefsHelper.token.isNotEmpty) {
-  //   SocketServices.connectToSocket();+
-  // }
+
 }
 
 class MyApp extends StatelessWidget {
@@ -52,10 +49,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
           useMaterial3: true,
         ),
-        // themeMode: themeController.themeMode.value,  // Set the theme mode
-        // theme: ThemeData.light(),  // Light Theme
-        // darkTheme: ThemeData.dark(), // Dark Theme
-        initialRoute: RoutesName.getSignInScreen(),
+       initialRoute: RoutesName.getSignInScreen(),
         getPages: AppRoutes.appRoutes(),
       ),
     );

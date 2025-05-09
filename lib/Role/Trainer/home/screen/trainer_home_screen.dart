@@ -14,99 +14,92 @@ class TrainerHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<TrainerHomeController>(
-      builder: (controller) {
-        return Scaffold(
+    final controller = Get.find<TrainerHomeController>(); // get controller
 
-          body: SingleChildScrollView(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 40),
+            Row(
               children: [
-                const SizedBox(height: 40),
-                Row(
-                  children: [
-                    CustomCommonImage(
-                      imageSrc: controller.profileImage,
-                      imageType: ImageType.network,
-                      borderRadius: 55,
-                      height: 55,
-                      width: 55,
+                Obx(() => CustomCommonImage(
+                  imageSrc: controller.profileImage.value,
+                  imageType: ImageType.network,
+                  borderRadius: 55,
+                  height: 55,
+                  width: 55,
+                )),
+                const SizedBox(width: 5),
+                SizedBox(
+                  width: 220,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Obx(() => Text(
+                        controller.profileName.value,
+                        style: styleForText.copyWith(fontSize: 18),
+                      )),
+                      Text(
+                        AppString.letsPush,
+                        style: styleForText.copyWith(fontSize: 25),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                CircleAvatar(
+                  radius: 27,
+                  backgroundColor: AppColors.primary,
+                  child: IconButton(
+                    onPressed: () => Get.to(NotificationScreen()),
+                    icon: const Icon(
+                      Icons.notifications,
+                      size: 35,
                     ),
-                    const SizedBox(width: 5),
-                    SizedBox(
-                      width: 220,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            controller.profileName,
-                            style: styleForText.copyWith(
-                              fontSize: 18,
-                            ),
-                          ),
-                          Text(
-                            AppString.letsPush,
-                            style: styleForText.copyWith(
-                              fontSize: 25,
-                            ),overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    CircleAvatar(
-                      radius: 27,
-                      backgroundColor: AppColors.primary,
-                      child: IconButton(
-                        onPressed: () {Get.to(NotificationScreen());},
-                        icon: const Icon(
-                          Icons.notifications,
-                          size: 35,
-                        ),
-                        color: AppColors.secondary,
-                      ),
-                    )
-                  ],
-                ),
-            
-                const SizedBox(height: 20),
-            
-                /// Assign Trainees Title
-                Text(
-                  AppString.assignTrainees.tr,
-                  style: styleForText.copyWith(fontSize: 24),
-                ),
-            
-                ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: 7,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: InkWell(
-                        onTap: () => controller.showListDetails(),
-                        child: CustomListTile(
-                          leadingImage: controller.leadingImage,
-                          leadingImageHeight: double.infinity,
-                          leadingImageWeight: 55,
-                          title: controller.listTileTitle,
-                          titleFontSize: 18,
-                          leadingImageBorderRadius: 10,
-                          trailingIcon: controller.trailingIcon,
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                    color: AppColors.secondary,
+                  ),
+                )
               ],
             ),
-          ),
 
-        );
-      },
+            const SizedBox(height: 20),
+
+            /// Assign Trainees Title
+            Text(
+              AppString.assignTrainees.tr,
+              style: styleForText.copyWith(fontSize: 24),
+            ),
+
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: 7,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: InkWell(
+                    onTap: () => controller.showListDetails(),
+                    child: Obx(() => CustomListTile(
+                      leadingImage: controller.leadingImage.value,
+                      leadingImageHeight: double.infinity,
+                      leadingImageWeight: 55,
+                      title: controller.listTileTitle.value,
+                      titleFontSize: 18,
+                      leadingImageBorderRadius: 10,
+                      trailingIcon: Icons.arrow_forward_ios_outlined
+                    )),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

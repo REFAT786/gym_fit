@@ -4,10 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../Utils/app_colors.dart';
-
-
+import 'package:shimmer/shimmer.dart';
 
 enum ImageType { png, svg, network, file }
 
@@ -69,6 +66,8 @@ class CustomCommonImage extends StatelessWidget {
       );
     }
 
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
     if (imageType == ImageType.network) {
       imageWidget = CachedNetworkImage(
         height: size ?? height,
@@ -84,23 +83,41 @@ class CustomCommonImage extends StatelessWidget {
             ),
           ),
         ),
-        progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-          child: SizedBox(
-              height: 50,
-              width: 50,
-              child: CircularProgressIndicator(value: downloadProgress.progress,color: AppColors.white,)),
-        ),
+        progressIndicatorBuilder: (context, url, downloadProgress) {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              height: size ?? height,
+              width: size ?? width,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(borderRadius),
+              ),
+            ),
+          );
+        },
         errorWidget: (context, url, error) {
           if (kDebugMode) {
             print("============>>>error: $error");
             print("============>>>error: $defaultImage");
           }
-          return Image.asset(
-            defaultImage,
+          return Container(
+            height: size ?? height,
+            width: size?? width,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(borderRadius),
+                image: DecorationImage(image: AssetImage(defaultImage))
+            ),
+            // child: Image.asset(
+            //   defaultImage,
+            // ),
           );
         },
       );
     }
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     if (imageType == ImageType.file) {
       imageWidget = ClipRRect(

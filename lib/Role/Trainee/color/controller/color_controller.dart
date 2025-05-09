@@ -134,4 +134,13 @@ class ColorController extends GetxController {
     }
     return textColorMap[selectedTextColor.value] ?? AppColors.white;
   }
+
+  Color getHintTextColor() {
+    log("Selected Text Color: ${selectedTextColor.value}");
+    if (selectedTextColor.value == "custom") {
+      return customTextColor.value;
+    }
+    return textColorMap[selectedTextColor.value] ?? AppColors.hintGrey;
+  }
+
 }

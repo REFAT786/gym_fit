@@ -51,6 +51,10 @@ dependencies:
   qr_code_scanner_plus: ^2.0.10+1
   flutter_colorpicker: ^1.1.0
   flutter_keyboard_visibility: ^6.0.0
+  google_fonts: ^6.2.1
+  http: ^1.4.0
+  shimmer: ^3.0.0
+  flutter_html: ^3.0.0
 
 dev_dependencies:
   flutter_test:

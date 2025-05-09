@@ -1,50 +1,121 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Core/routes/routes_name.dart';
+import 'package:gym_fit/Helpers/prefs_helper.dart';
+import 'package:gym_fit/Repository/auth_repository.dart';
+import '../../../../../Helpers/snackbar_helper.dart';
 
-
-import '../../../../../Core/routes/routes_name.dart';
-import '../../../../../Helpers/prefs_helper.dart';
 class SignInController extends GetxController {
-  // static SignInController get instance => Get.put(SignInController());
-
-  //trainee, trainer
-
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
 
-  bool isLoading = false;
+  var isLoading = false.obs; // Reactive variable
   String role = "";
 
-  Future<void> logIn() async {
-    try {
-      isLoading = true;
-      update();
+  final AuthRepository signInRepository = AuthRepository();
 
-      // Check if email and password are correct for trainee or trainer
-      if (emailTextEditingController.text == "trainee" && passwordTextEditingController.text == "123456") {
-        role = "trainee";  // Corrected assignment
-        PrefsHelper.myRole = role;  // Assign role to PrefsHelper
-        PrefsHelper.setString("myRole", PrefsHelper.myRole);  // Save it to shared preferences
-        // Get.offAll(() => OnBoardingScreen());
-        Get.offAllNamed(RoutesName.onBoarding);
-      } else if (emailTextEditingController.text == "trainer" && passwordTextEditingController.text == "123456") {
-        role = "trainer";  // Corrected assignment
-        PrefsHelper.myRole = role;  // Assign role to PrefsHelper
-        PrefsHelper.setString("myRole", PrefsHelper.myRole);  // Save it to shared preferences
-        // Get.offAll(() => NavBarScreen());
-        Get.offAllNamed(RoutesName.navBar);
+  bool _isEmail(String input) {
+    // Simple regex for email check
+    return RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$").hasMatch(input);
+  }
+
+  Future<void> logIn() async {
+    final email = emailTextEditingController.text.trim();
+    final password = passwordTextEditingController.text.trim();
+    final fullName = emailTextEditingController.text.trim(); // reuse email field for fullName if no '@'
+    final pin = passwordTextEditingController.text.trim(); // reuse password field for pin
+
+    if (email.isEmpty && fullName.isEmpty) {
+      SnackbarHelper.show(
+        title: "Validation Error",
+        message: "Please enter email or username",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return;
+    }
+
+    // check if input is email or fullName
+    bool isEmail = email.contains('@');
+
+    if (isEmail && password.isEmpty) {
+      SnackbarHelper.show(
+        title: "Validation Error",
+        message: "Please enter password",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return;
+    } else if (!isEmail && pin.isEmpty) {
+      SnackbarHelper.show(
+        title: "Validation Error",
+        message: "Please enter pin",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return;
+    }
+
+    try {
+      isLoading.value = true;
+
+      final response = await signInRepository.logIn(
+        email: isEmail ? email : "",
+        password: isEmail ? password : "",
+        fullName: !isEmail ? fullName : "",
+        pin: !isEmail ? pin : "",
+      );
+
+      if (response.success) {
+
+        PrefsHelper.token = response.data['accessToken'];
+        PrefsHelper.myRole = response.data['attributes']['role'];
+        PrefsHelper.userId = response.data['attributes']['_id'];
+        PrefsHelper.myImage = response.data['attributes']['image'];
+        PrefsHelper.myName = response.data['attributes']['fullName'];
+
+        PrefsHelper.setString("token", PrefsHelper.token);
+        PrefsHelper.setString("myRole", PrefsHelper.myRole);
+        PrefsHelper.setString("userId", PrefsHelper.userId);
+        PrefsHelper.setString("myImage", PrefsHelper.myImage);
+        PrefsHelper.setString("myName", PrefsHelper.myName);
+
+
+        if (PrefsHelper.myRole == "trainee") {
+          Get.offAllNamed(RoutesName.onBoarding);
+        } else if (PrefsHelper.myRole == "trainer") {
+          Get.offAllNamed(RoutesName.navBar);
+        } else {
+          SnackbarHelper.show(
+            title: "Required",
+            message: response.message,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+          isLoading.value = false;
+        }
       } else {
-        Get.snackbar("Required", "Please fill the form correctly");
-        isLoading = false;
-        update();
+        SnackbarHelper.show(
+          title: "Error",
+          message: response.message,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
       }
-    } catch (e) {
-      Get.snackbar("Error", "Login failed: $e");
+    } catch (e,s) {
+      SnackbarHelper.show(
+        title: "Error",
+        message: "Login failed: $e",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      log("Login failed (Controller) e: $e");
+      log("Login failed (Controller) s: $s");
     } finally {
-      isLoading = false;
+      isLoading(false);
       update();
     }
   }
-
 
 }

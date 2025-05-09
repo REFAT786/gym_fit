@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Helpers/prefs_helper.dart';
+import 'package:gym_fit/Utils/app_url.dart';
 
 import '../../../../Utils/app_images.dart';
 import '../../profile/profile/screen/trainer_profile_details_screen.dart';
 
-class TrainerHomeController extends GetxController{
+class TrainerHomeController extends GetxController {
   static TrainerHomeController get instance => Get.put(TrainerHomeController());
 
-  String profileImage = AppImages.serviceShortPhoto;
-  String profileName = "Profile Name";
-  String leadingImage = AppImages.serviceShortPhoto;
-  String listTileTitle = "Mr Gym";
-  String subTitle = "SubTitle";
-  String subTitleNext = "SubTitleNext";
-  IconData trailingIcon = Icons.arrow_forward_ios_outlined;
+  RxString profileImage = "${AppUrl.baseUrl}${PrefsHelper.myImage}".obs;
+  RxString profileName = PrefsHelper.myName.obs;
+  RxString leadingImage = AppImages.serviceShortPhoto.obs;
+  RxString listTileTitle = "Mr Gym".obs;
+  RxString subTitle = "SubTitle".obs;
+  RxString subTitleNext = "SubTitleNext".obs;
 
-  Future<void> showListDetails() async{
+  Future<void> showListDetails() async {
     Get.to(TrainerProfileDetailsScreen());
   }
-
 }

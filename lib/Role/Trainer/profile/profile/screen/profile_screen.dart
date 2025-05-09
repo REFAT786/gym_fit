@@ -18,215 +18,161 @@ import '../../terms_of_service/screen/terms_of_service_screen.dart';
 import '../controller/profile_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
+  final controller = Get.find<ProfileController>();
+
   ProfileScreen({super.key});
-
-  // final String profileImage = AppImages.serviceShortPhoto;
-  final ProfileController profileController = Get.find(); // Ensure controller is initialized
-
-
-  final List<Map<String, dynamic>> profileDetails = [
-    {'label': AppString.age, 'value': '24'},
-    {'label': AppString.gender, 'value': 'Female'},
-    {'label': AppString.weight, 'value': '75kg'},
-    {'label': AppString.height, 'value': "5'11''"},
-    {'label': AppString.bmi, 'value': '24.2'},
-  ];
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-       () {
-         // bool isDefault = ColorController.instance.selectedButtonColor.value=="default";
-        log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Role : ${PrefsHelper.myRole}");
-        return CustomTrainerGradientBackgroundColor(
-          child: Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 50),
+    log(">>>>>>>>>>>>> Role: ${PrefsHelper.myRole}");
 
-                  /// **Profile Image with Dynamic Border Color**
-                GestureDetector(
-                  onTap: () {
-                    // Open the full-screen profile picture (e.g., using a dialog or a new screen)
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Dialog(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(20)
-                            ),
-                            child: Center(
-                              child: CustomCommonImage(imageSrc: profileController.profileImage.value, imageType: ImageType.network,height: double.infinity, width: double.infinity,)//Image.network(profileController.profileImage.value),
-                            ),
+    return CustomTrainerGradientBackgroundColor(
+      child: Scaffold(
+        body: Obx(() => controller.isLoading.value
+            ? const Center(child: CircularProgressIndicator(color: Colors.white,))
+            : SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 50),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => Dialog(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                          child: CustomCommonImage(
+                            imageSrc: controller.profileImage.value.isNotEmpty
+                                ? controller.profileImage.value
+                                : '/uploads/users/user.png', // Fallback image
+                            imageType: ImageType.network,
+                            height: double.infinity,
+                            width: double.infinity,
                           ),
-                        );
-                      },
-                    );
-                  },
-                  child: Container(
-                    height: 130,
-                    width: 130,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: PrefsHelper.myRole == "trainee"
-                            ? ColorController.instance.getButtonColor()
-                            : AppColors.secondary,
-                        width: 2,
+                        ),
                       ),
                     ),
-                    child: ClipOval(
-                      child: CustomCommonImage(
-                        imageSrc: profileController.profileImage.value,
-                        imageType: ImageType.network,
-                      ),
+                  );
+                },
+                child: Container(
+                  height: 130,
+                  width: 130,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: PrefsHelper.myRole == "trainee"
+                          ? ColorController.instance.getButtonColor()
+                          : AppColors.secondary,
+                      width: 2,
+                    ),
+                  ),
+                  child: ClipOval(
+                    child: CustomCommonImage(
+                      imageSrc: controller.profileImage.value.isNotEmpty
+                          ? controller.profileImage.value
+                          : '/uploads/users/user.png', // Fallback image
+                      imageType: ImageType.network,
                     ),
                   ),
                 ),
-
-
-                const SizedBox(height: 10),
-
-                  /// **Title**
-                  Text(
-                    "Mr Gym",
-                    style: styleForText.copyWith(fontSize: 25),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  /// **Profile Details**
-                  Container(
-                    decoration: BoxDecoration(
-                      color: PrefsHelper.myRole == "trainee"
-                          ? AppColors.traineeNavBArColor
-                          : AppColors.primary,
-                    ),
-                    child: SizedBox(
-                      height: 100,
-                      width: double.infinity,
-                      child: ListView.builder(
-                        padding: EdgeInsets.all(10),
-                        itemCount: profileDetails.length,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          var detail = profileDetails[index];
-                          return Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(detail['label'],
-                                    style: TextStyle(
-                                        color: ColorController.instance.getTextColor(),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18)),
-                                const SizedBox(height: 10),
-                                Text(detail['value'],
-                                    style: TextStyle(
-                                        color: ColorController.instance.getTextColor(), fontSize: 18)),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  /// **Profile Menu with Dynamic Icon Colors**
-                  _buildMenuItem(
-                    AppString.editProfile,
-                    Icons.person_outline,
-                    "",
-                    EditProfileScreen(),
-                    PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
-                    //ColorController.instance.getButtonColor()
-                  ),
-
-                  _buildMenuItem(
-                    AppString.changePassword,
-                    Icons.lock,
-                    "",
-                    ChangePasswordScreen(),
-                    PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
-                  ),
-
-                  _buildMenuItem(
-                    AppString.language,
-                    Icons.language,
-                    "",
-                    LanguageScreen(),
-                    PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
-                  ),
-
-                  _buildMenuItem(
-                      AppString.helpCenter,
-                      Icons.help,
-                      "",
-                      HelpCenterScreen(),
-                    PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
-                  ),
-                  if (PrefsHelper.myRole == 'trainee')
-                    _buildMenuItem(
-                        AppString.color,
-                        Icons.color_lens,
-                        "",
-                        ColorScreen(),
-                      PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
-                    ),
-                  _buildMenuItem(
-                      AppString.termsOfService,
-                      Icons.miscellaneous_services_outlined,
-                      "",
-                      TermsOfServiceScreen(),
-                    PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
-                  ),
-                  _buildMenuItem(
-                      AppString.privacyPolicy,
-                      Icons.policy,
-                      "",
-                      PrivacyPolicyScreen(),
-                    PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
-                  ),
-
-                  /// **Logout Button**
-                  InkWell(
-                    onTap: () {
-                      profileController.logout();
-                    },
-                    child: ListTile(
-                      leading: Icon(Icons.logout, color: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,),
-                      title: Text(AppString.logOutText,
-                          style: styleForText.copyWith(
-                              color: Colors.red, fontSize: 20)),
-                    ),
-                  ),
-                ],
               ),
-            ),
+              const SizedBox(height: 10),
+              Text(
+                controller.myName.value.isNotEmpty
+                    ? controller.myName.value
+                    : 'User Name', // Fallback name
+                style: styleForText.copyWith(fontSize: 25),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                color: PrefsHelper.myRole == "trainee"
+                    ? AppColors.traineeNavBArColor
+                    : AppColors.primary,
+                child: SizedBox(
+                  height: 100,
+                  width: double.infinity,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(10),
+                    itemCount: controller.profileDetails.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      var detail = controller.profileDetails[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              detail['label'],
+                              style: TextStyle(
+                                color: ColorController.instance.getTextColor(),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              detail['value'],
+                              style: TextStyle(
+                                color: ColorController.instance.getTextColor(),
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              _buildMenuItem(AppString.editProfile, Icons.person_outline, EditProfileScreen()),
+              _buildMenuItem(AppString.changePassword, Icons.lock, ChangePasswordScreen()),
+              _buildMenuItem(AppString.language, Icons.language, LanguageScreen()),
+              _buildMenuItem(AppString.helpCenter, Icons.help, HelpCenterScreen()),
+              if (PrefsHelper.myRole == 'trainee')
+                _buildMenuItem(AppString.color, Icons.color_lens, ColorScreen()),
+              _buildMenuItem(AppString.termsOfService, Icons.miscellaneous_services_outlined, TermsOfServiceScreen()),
+              _buildMenuItem(AppString.privacyPolicy, Icons.policy, PrivacyPolicyScreen()),
+              InkWell(
+                onTap: controller.logout,
+                child: ListTile(
+                  leading: Icon(
+                    Icons.logout,
+                    color: PrefsHelper.myRole == "trainee"
+                        ? ColorController.instance.getButtonColor()
+                        : AppColors.secondary,
+                  ),
+                  title: Text(
+                    AppString.logOutText,
+                    style: styleForText.copyWith(
+                      color: Colors.red,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        )),
+      ),
     );
   }
 
-  /// **Reusable Profile Menu Item**
-  Widget _buildMenuItem(
-      String title, IconData icon, String rightTitle, Widget screen, Color iconColor) {
+  Widget _buildMenuItem(String title, IconData icon, Widget screen) {
+    Color iconColor = PrefsHelper.myRole == "trainee"
+        ? ColorController.instance.getButtonColor()
+        : AppColors.secondary;
     return InkWell(
       onTap: () => Get.to(screen),
       child: ListTile(
-        leading: Icon(icon, color: iconColor), // 🔥 Dynamic Icon Color
-        title: Text(title, style: styleForText.copyWith(fontSize: 18,)),
-        trailing: rightTitle.isNotEmpty ? Text(rightTitle) : null,
+        leading: Icon(icon, color: iconColor),
+        title: Text(title, style: styleForText.copyWith(fontSize: 18)),
       ),
     );
   }
