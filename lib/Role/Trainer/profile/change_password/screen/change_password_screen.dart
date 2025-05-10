@@ -65,6 +65,7 @@ class ChangePasswordScreen extends StatelessWidget {
               InkWell(
                   onTap: () => controller.changePassword(),
                   child: CustomButton(
+                    isLoading: controller.isLoading.value,
                     buttonText: AppString.changePassword,
                     backgroundColor: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
                     textColor: PrefsHelper.myRole=="trainee"?ColorController.instance.getTextColor():AppColors.primary,

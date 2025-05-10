@@ -10,6 +10,7 @@ class CustomTextField extends StatefulWidget {
       required this.hintText,
       required this.isSuffix,
       this.prefixIcon,
+      this.validator,
       required this.backgroundColor,
       required this.controller});
 
@@ -18,6 +19,7 @@ class CustomTextField extends StatefulWidget {
   final IconData? prefixIcon;
   final TextEditingController controller;
   final Color backgroundColor;
+  final FormFieldValidator? validator;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -35,7 +37,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
           borderRadius: BorderRadius.circular(100),
           // border: Border.all(color: AppColors.secondary,width: 0.3)
         ),
-        child: TextField(
+        child: TextFormField(
+          validator: widget.validator,
           style: styleForText.copyWith(color: AppColors.textColor, fontSize: 16),
           controller: widget.controller,
           obscureText: widget.isSuffix ? !passwordVisible : passwordVisible,
@@ -67,7 +70,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               hintText: widget.hintText,
               hintStyle: styleForText.copyWith(
                   fontWeight: FontWeight.w500,
-                  color: PrefsHelper.myRole=="trainee"?ColorController.instance.getTextColor():AppColors.hintGrey,
+                  color: PrefsHelper.myRole=="trainee"?ColorController.instance.getHintTextColor():AppColors.hintGrey,
                   fontSize: 16,
                   )),
         ));

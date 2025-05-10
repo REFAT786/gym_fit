@@ -12,6 +12,7 @@ class AppUrl {
   static const String profile = "$baseUrl/api/v1/users/";
   static const String changePassword = "$baseUrl/api/v1/auth/change-password";
   static const String faq = "$baseUrl/api/v1/fandq/";
-  static const String policy = "$baseUrl/api/v1/static-contents";
+  static const String policyTerms = "$baseUrl/api/v1/static-contents?type=";
+  static const String editProfile = "$baseUrl/api/v1/users/";
 
 }

@@ -3,6 +3,7 @@ import '../Utils/app_url.dart';
 class ProfileModel {
   final String id;
   final String fullName;
+  final String userName;
   final String email;
   final String image;
   final String role;
@@ -16,6 +17,7 @@ class ProfileModel {
   ProfileModel({
     this.id = '',
     this.fullName = '',
+    this.userName = '',
     this.email = '',
     String image = '',
     this.role = '',
@@ -31,15 +33,26 @@ class ProfileModel {
     return ProfileModel(
       id: json['_id'] ?? '',
       fullName: json['fullName'] ?? '',
-      email: json['email'] ?? '',
-      image: json['image'] ?? '',
-      role: json['role'] ?? '',
+      userName: json['userName'] ?? '',
+      email: json['email'] is String
+          ? json['email']
+          : (json['email']?['address'] ?? ''),
+      image: json['image'] is String
+          ? json['image']
+          : (json['image']?['url'] ?? ''),
+      role: json['role'] is String
+          ? json['role']
+          : (json['role']?['type'] ?? ''),
       isActive: json['isActive'] ?? false,
       isCompleted: json['isCompleted'] ?? false,
       isBanned: json['isBanned'] ?? false,
-      branch: json['branch'] ?? '',
+      branch: json['branch'] is String
+          ? json['branch']
+          : (json['branch']?['name'] ?? ''),
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
     );
   }
+
+
 }

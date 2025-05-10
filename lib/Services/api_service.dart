@@ -21,6 +21,8 @@ class ApiResponse {
 class ApiService extends GetxService {
   static ApiService get to => Get.find<ApiService>();
 
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
   Future<ApiResponse> getApi(String endpoint, {Map<String, String>? extraHeaders, bool showMessage = false}) async {
     final url = Uri.parse(endpoint);
     try {
@@ -31,6 +33,8 @@ class ApiService extends GetxService {
       return _errorResponse(e, showMessage);
     }
   }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Post >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   Future<ApiResponse> postApi(String endpoint, Map<String, dynamic> body, {Map<String, String>? extraHeaders, bool showMessage = false}) async {
     final url = Uri.parse(endpoint);
@@ -43,6 +47,8 @@ class ApiService extends GetxService {
     }
   }
 
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Patch >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
   Future<ApiResponse> patchApi(String endpoint, Map<String, dynamic> body, {Map<String, String>? extraHeaders, bool showMessage = false}) async {
     final url = Uri.parse(endpoint);
     try {
@@ -53,6 +59,21 @@ class ApiService extends GetxService {
       return _errorResponse(e, showMessage);
     }
   }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Put >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse> putApi(String endpoint, Map<String, dynamic> body, {Map<String, String>? extraHeaders, bool showMessage = false}) async {
+    final url = Uri.parse(endpoint);
+    try {
+      final response = await http.put(url, headers: _buildHeaders(extraHeaders), body: json.encode(body));
+      return _processResponse(response, showMessage);
+    } catch (e, s) {
+      log("PUT failed: $e\n$s");
+      return _errorResponse(e, showMessage);
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Multi patch >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   Future<ApiResponse> multiPatchApi(String endpoint, List<Map<String, dynamic>> bodies, {Map<String, String>? extraHeaders, bool showMessage = false}) async {
     final url = Uri.parse(endpoint);
@@ -65,6 +86,8 @@ class ApiService extends GetxService {
     }
   }
 
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
   Future<ApiResponse> deleteApi(String endpoint, {Map<String, dynamic>? body, Map<String, String>? extraHeaders, bool showMessage = false}) async {
     final url = Uri.parse(endpoint);
     try {
@@ -76,6 +99,8 @@ class ApiService extends GetxService {
     }
   }
 
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Header >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
   Map<String, String> _buildHeaders([Map<String, String>? extraHeaders]) {
     return {
       "Content-Type": "application/json",
@@ -84,6 +109,9 @@ class ApiService extends GetxService {
       if (extraHeaders != null) ...extraHeaders,
     };
   }
+
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>process Response >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   ApiResponse _processResponse(http.Response response, bool showMessage) {
     log("StatusCode: ${response.statusCode}");
@@ -104,6 +132,8 @@ class ApiService extends GetxService {
         }
       }
 
+      ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Api Response >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
       return ApiResponse(
         success: success,
         message: message,
@@ -122,6 +152,8 @@ class ApiService extends GetxService {
       );
     }
   }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error Response >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   ApiResponse _errorResponse(dynamic error, bool showMessage) {
     if (showMessage) {

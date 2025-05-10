@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../Common/widgets/custom_common_image.dart';
+import '../../../../../Common/widgets/custom_show_view_image.dart';
 import '../../../../../Common/widgets/custom_trainer_gradient_background_color.dart';
 import '../../../../../Helpers/prefs_helper.dart';
 import '../../../../../Utils/app_colors.dart';
@@ -39,43 +40,26 @@ class ProfileScreen extends StatelessWidget {
                 onTap: () {
                   showDialog(
                     context: context,
-                    builder: (_) => Dialog(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Center(
-                          child: CustomCommonImage(
-                            imageSrc: controller.profileImage.value.isNotEmpty
-                                ? controller.profileImage.value
-                                : '/uploads/users/user.png', // Fallback image
-                            imageType: ImageType.network,
-                            height: double.infinity,
-                            width: double.infinity,
-                          ),
-                        ),
-                      ),
-                    ),
+                    builder: (_) => CustomShowViewImage(imageUrl: controller.profileImage.value,),
                   );
                 },
                 child: Container(
-                  height: 130,
-                  width: 130,
+                  height: 140,
+                  width: 140,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: PrefsHelper.myRole == "trainee"
                           ? ColorController.instance.getButtonColor()
                           : AppColors.secondary,
-                      width: 2,
+                      width: 4,
                     ),
                   ),
                   child: ClipOval(
                     child: CustomCommonImage(
                       imageSrc: controller.profileImage.value.isNotEmpty
                           ? controller.profileImage.value
-                          : '/uploads/users/user.png', // Fallback image
+                          : '/assets/images/noImage.png', // Fallback image
                       imageType: ImageType.network,
                     ),
                   ),
@@ -89,10 +73,9 @@ class ProfileScreen extends StatelessWidget {
                 style: styleForText.copyWith(fontSize: 25),
               ),
               const SizedBox(height: 20),
-              Container(
-                color: PrefsHelper.myRole == "trainee"
-                    ? AppColors.traineeNavBArColor
-                    : AppColors.primary,
+              if(PrefsHelper.myRole == 'trainee')
+                Container(
+                color: AppColors.traineeNavBArColor,
                 child: SizedBox(
                   height: 100,
                   width: double.infinity,
@@ -132,13 +115,21 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               _buildMenuItem(AppString.editProfile, Icons.person_outline, EditProfileScreen()),
+              Divider(indent: 10,endIndent: 10,),
               _buildMenuItem(AppString.changePassword, Icons.lock, ChangePasswordScreen()),
+              Divider(indent: 10,endIndent: 10,),
               _buildMenuItem(AppString.language, Icons.language, LanguageScreen()),
+              Divider(indent: 10,endIndent: 10,),
               _buildMenuItem(AppString.helpCenter, Icons.help, HelpCenterScreen()),
+              Divider(indent: 10,endIndent: 10,),
               if (PrefsHelper.myRole == 'trainee')
                 _buildMenuItem(AppString.color, Icons.color_lens, ColorScreen()),
+              if (PrefsHelper.myRole == 'trainee')
+                Divider(indent: 10,endIndent: 10,),
               _buildMenuItem(AppString.termsOfService, Icons.miscellaneous_services_outlined, TermsOfServiceScreen()),
+              Divider(indent: 10,endIndent: 10,),
               _buildMenuItem(AppString.privacyPolicy, Icons.policy, PrivacyPolicyScreen()),
+              Divider(indent: 10,endIndent: 10,),
               InkWell(
                 onTap: controller.logout,
                 child: ListTile(
@@ -173,6 +164,7 @@ class ProfileScreen extends StatelessWidget {
       child: ListTile(
         leading: Icon(icon, color: iconColor),
         title: Text(title, style: styleForText.copyWith(fontSize: 18)),
+        trailing: Icon(Icons.arrow_forward_ios_rounded, color: PrefsHelper.myRole=="trainee"?colorController.getTextColor():AppColors.white,),
       ),
     );
   }

@@ -126,7 +126,7 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                 },
                 child: Obx(() {
                   return Container(
-                    width: 200,
+                    width: 210,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: ColorController.instance.getButtonColor(),

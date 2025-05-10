@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Model/faq_model.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../../../../../Helpers/other_helper.dart';
 import '../../../../../Helpers/prefs_helper.dart';
 import '../../../../../Helpers/snackbar_helper.dart';
 import '../../../../../Model/profile_model.dart';
@@ -20,6 +22,11 @@ class ProfileController extends GetxController {
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
+  final ProfileController profileController = Get.find<ProfileController>();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final RxString imagePath = ''.obs;
+
   ProfileModel? profileModel;
   FAQModel? faqModel;
 
@@ -35,7 +42,20 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     profile();
+    if (profileModel != null) {
+      nameController.text = profileModel!.fullName;
+      // phoneController.text = profileModel!.phoneNumber ?? '';
+      imagePath.value = profileModel!.image;
+    }
   }
+
+  Future<void> pickImage() async {
+    final pickedImage = await OtherHelper.pickImage(ImageSource.gallery);
+    if (pickedImage.isNotEmpty) {
+      imagePath.value = pickedImage;
+    }
+  }
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
@@ -46,10 +66,12 @@ class ProfileController extends GetxController {
     try {
       isLoading.value = true;
       profileModel = await AuthRepository().getProfile();
+      log("Success userName >>>>>>>>>>>>>>>>> : ${profileModel?.userName}");
       if (profileModel != null) {
         profileImage.value = profileModel!.image;
         myName.value = profileModel!.fullName;
         log("Profile Image: ${profileModel!.image}");
+        log("Profile Name: ${profileModel!.userName}");
         log("Profile Name: ${profileModel!.fullName}");
         log("All Data: $profileModel");
       } else {
@@ -73,6 +95,28 @@ class ProfileController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Change Password   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<void> updateProfile() async {
+    if (nameController.text.isEmpty || phoneController.text.isEmpty) {
+      SnackbarHelper.showError('All fields are required');
+      return;
+    }
+
+    isLoading.value = true;
+    try {
+      var response = await AuthRepository().editProfile(fullName: nameController.text.trim(), phoneNumber: phoneController.text.trim(), imagePath: imagePath.value.isNotEmpty ? imagePath.value : null);
+
+
+
+    } catch (e) {
+      SnackbarHelper.showError('Failed to update profile: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Change Password   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -114,5 +158,12 @@ class ProfileController extends GetxController {
   Future<void> logout() async {
     PrefsHelper.clear();
     Get.offAll(() => SignInScreen());
+  }
+
+  @override
+  void onClose() {
+    nameController.dispose();
+    phoneController.dispose();
+    super.onClose();
   }
 }

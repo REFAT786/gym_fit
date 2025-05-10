@@ -10,23 +10,18 @@ class SignInController extends GetxController {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
 
-  var isLoading = false.obs; // Reactive variable
+  var isLoading = false.obs;
   String role = "";
 
   final AuthRepository signInRepository = AuthRepository();
 
-  bool _isEmail(String input) {
-    // Simple regex for email check
-    return RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$").hasMatch(input);
-  }
-
   Future<void> logIn() async {
     final email = emailTextEditingController.text.trim();
     final password = passwordTextEditingController.text.trim();
-    final fullName = emailTextEditingController.text.trim(); // reuse email field for fullName if no '@'
+    final userName = emailTextEditingController.text.trim(); // reuse email field for fullName if no '@'
     final pin = passwordTextEditingController.text.trim(); // reuse password field for pin
 
-    if (email.isEmpty && fullName.isEmpty) {
+    if (email.isEmpty && userName.isEmpty) {
       SnackbarHelper.show(
         title: "Validation Error",
         message: "Please enter email or username",
@@ -63,7 +58,7 @@ class SignInController extends GetxController {
       final response = await signInRepository.logIn(
         email: isEmail ? email : "",
         password: isEmail ? password : "",
-        fullName: !isEmail ? fullName : "",
+        userName: !isEmail ? userName : "",
         pin: !isEmail ? pin : "",
       );
 
