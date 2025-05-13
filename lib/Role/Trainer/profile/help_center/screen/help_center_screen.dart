@@ -132,11 +132,12 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> with SingleTickerPr
                       controller.errorMessage.value.isNotEmpty
                           ? controller.errorMessage.value
                           : "No FAQs available",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
+                      style: styleForText.copyWith(fontSize: 16, )
+                      // const TextStyle(
+                      //   fontSize: 16,
+                      //   fontWeight: FontWeight.bold,
+                      //   color: Colors.grey,
+                      // ),
                     ),
                     if (controller.errorMessage.value.isNotEmpty)
                       TextButton(

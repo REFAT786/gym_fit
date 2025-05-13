@@ -5,6 +5,7 @@ import '../../../../Common/widgets/custom_common_image.dart';
 import '../../../../Common/widgets/custom_list_tile.dart';
 import '../../../../Utils/app_colors.dart';
 import '../../../../Utils/app_string.dart';
+import '../../../../Utils/app_url.dart';
 import '../../../../Utils/styles.dart';
 import '../../notification/screen/notification_screen.dart';
 import '../controller/trainer_home_controller.dart';
@@ -74,29 +75,35 @@ class TrainerHomeScreen extends StatelessWidget {
               style: styleForText.copyWith(fontSize: 24),
             ),
 
-            ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: 7,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: InkWell(
-                    onTap: () => controller.showListDetails(),
-                    child: Obx(() => CustomListTile(
-                      leadingImage: controller.leadingImage.value,
-                      leadingImageHeight: double.infinity,
-                      leadingImageWeight: 55,
-                      title: controller.listTileTitle.value,
-                      titleFontSize: 18,
-                      leadingImageBorderRadius: 10,
-                      trailingIcon: Icons.arrow_forward_ios_outlined
-                    )),
-                  ),
-                );
-              },
-            ),
+            Obx(() {
+              return controller.isLoading.value?Center(child: CircularProgressIndicator()):ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: controller.trainees.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  var trainee = controller.trainees[index];
+                  
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: InkWell(
+                      onTap: () => controller.showListDetails(),
+                      child: CustomListTile(
+                        leadingImage: "${AppUrl.baseUrl}${trainee['image']}",
+                        leadingImageHeight: double.infinity,
+                        leadingImageWeight: 55,
+                        title: trainee['fullName'],
+                        titleFontSize: 18,
+                        leadingImageBorderRadius: 10,
+                        trailingIcon: Icons.arrow_forward_ios_outlined,
+                      ),
+                    ),
+                  );
+                },
+              );
+            },)
+
+
           ],
         ),
       ),

@@ -11,7 +11,7 @@ class CustomTextField extends StatefulWidget {
       required this.isSuffix,
       this.prefixIcon,
       this.validator,
-      required this.backgroundColor,
+       this.backgroundColor = AppColors.primary,
       required this.controller});
 
   final String hintText;

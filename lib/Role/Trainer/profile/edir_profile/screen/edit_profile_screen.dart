@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Helpers/other_helper.dart';
+import 'package:gym_fit/Utils/app_url.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import '../../../../../Common/widgets/custom_button.dart';
 import '../../../../../Common/widgets/custom_text_field.dart';
@@ -17,7 +20,7 @@ import '../../profile/controller/profile_controller.dart';
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
 
-  final ProfileController controller = Get.put(ProfileController());
+  final ProfileController controller = Get.find<ProfileController>();
   final ColorController colorController = Get.find<ColorController>();
 
   @override
@@ -45,9 +48,9 @@ class EditProfileScreen extends StatelessWidget {
                           CircleAvatar(
                             radius: 60,
                             backgroundColor: Colors.white,
-                            backgroundImage: controller.imagePath.value.isNotEmpty
-                                ? NetworkImage(controller.imagePath.value)
-                                :  NetworkImage(AppImages.serviceShortPhoto),
+                            backgroundImage: controller.imagePath.value.isEmpty
+                                ? NetworkImage(controller.profileImage.value)
+                                : FileImage(File(controller.imagePath.value)),
                           ),
                           Positioned(
                             bottom: 3,
@@ -90,6 +93,14 @@ class EditProfileScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: IntlPhoneField(
                           controller: controller.phoneController,
+                          initialValue: controller.phoneController.text.isNotEmpty
+                              ? controller.phoneController.text
+                              : null,
+                          style: styleForText.copyWith(color: AppColors.textColor, fontSize: 16),
+                          //styleForText.copyWith(
+                          //       color: PrefsHelper.myRole == 'trainee'
+                          //           ? colorController.getTextColor()
+                          //           : AppColors.white,
                           decoration: InputDecoration(
                             counterText: "",
                             hintText: AppString.phoneNumber,

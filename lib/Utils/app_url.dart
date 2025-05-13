@@ -9,10 +9,12 @@ class AppUrl {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   static const String login = "$baseUrl/api/v1/auth/login";
-  static const String profile = "$baseUrl/api/v1/users/";
+  static const String profile = "$baseUrl/api/v1/users/own-profile";
+  static const String profileWithId = "$baseUrl/api/v1/users/";
   static const String changePassword = "$baseUrl/api/v1/auth/change-password";
   static const String faq = "$baseUrl/api/v1/fandq/";
   static const String policyTerms = "$baseUrl/api/v1/static-contents?type=";
   static const String editProfile = "$baseUrl/api/v1/users/";
+  static const String assignTrainee = "$baseUrl/api/v1/trainer/your-trainees";
 
 }

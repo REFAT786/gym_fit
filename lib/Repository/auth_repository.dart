@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:gym_fit/Model/faq_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 import '../Helpers/prefs_helper.dart';
 import '../Model/profile_model.dart';
@@ -9,7 +10,6 @@ import '../Services/api_service.dart';
 import '../Utils/app_url.dart';
 
 class AuthRepository {
-
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Login >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<ApiResponse> logIn({
     String? email,
@@ -32,18 +32,17 @@ class AuthRepository {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Profile >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
   Future<ProfileModel?> getProfile() async {
-    final profileUrl = AppUrl.profile + PrefsHelper.userId;
-    log("Profile URL: $profileUrl");
+    final url = AppUrl.profile;
+    log("Profile URL: $url");
     log("Token: ${PrefsHelper.token}");
 
-    final response = await ApiService.to.getApi(profileUrl);
+    final response = await ApiService.to.getApi(url);
     log("Response >>>>>>>>>>>>>>>>>>>> ${response.toString()}");
 
-    if (response.success) {
+    if (response.statusCode == 200) {
       try {
-        final userDetailsJson = response.data['attributes']['userDetails'];
+        final userDetailsJson = response.data['attributes'];
         log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Success >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         return ProfileModel.fromJson(userDetailsJson);
       } catch (e) {
@@ -57,7 +56,6 @@ class AuthRepository {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Edit Profile >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
   Future<ProfileModel?> editProfile({
     required String fullName,
     required String phoneNumber,
@@ -67,46 +65,61 @@ class AuthRepository {
     log("Edit Profile URL: $url");
     log("Token: ${PrefsHelper.token}");
 
-    var request = http.MultipartRequest('PUT', Uri.parse(url));
-    request.headers['Authorization'] = 'Bearer ${PrefsHelper.token}';
-    request.fields['fullName'] = fullName;
-    request.fields['phoneNumber'] = phoneNumber;
+    // Define fields as direct key-value pairs
+    final fields = {
+      'fullName': fullName,
+      'phoneNumber': phoneNumber,
+    };
 
-    if (imagePath != null && imagePath.isNotEmpty) {
-      request.files.add(await http.MultipartFile.fromPath('image', imagePath));
-    }
+    log("fields >>>>>>>>>>>>>>>>>>>>>>>>>>: $fields");
 
-    try {
-      final response = await request.send();
-      final responseBody = await http.Response.fromStream(response);
-      final decoded = json.decode(responseBody.body);
+    // // Validate image format if provided
+    // if (imagePath != null && imagePath.isNotEmpty) {
+    //   final extension = path.extension(imagePath).toLowerCase();
+    //   log("Image file extension: $extension");
+    //   const allowedExtensions = ['.jpg', '.jpeg', '.png', '.heic', '.heif'];
+    //   if (!allowedExtensions.contains(extension)) {
+    //     log("Invalid image format: $extension. Allowed formats: $allowedExtensions");
+    //     return null; // Or handle the error as needed
+    //   }
+    // }
 
-      if (response.statusCode == 200 && decoded['status'] == 'success') {
-        try {
-          final userDetailsJson = decoded['data']['attributes']['userDetails'];
-          log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Success >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-          return ProfileModel.fromJson(userDetailsJson);
-        } catch (e) {
-          log("Error parsing UserDetails: $e");
-          return null;
-        }
-      } else {
-        log("Failed to edit profile: ${decoded['message']}");
+    final response = await ApiService.to.multipartPutApi(
+      url,
+      fields: fields,
+      fileFieldName: 'image',
+      filePath: imagePath,
+      extraHeaders: {"Content-Type" : "multipart/form-data"}
+    );
+
+    log("response >>>>>>>>>>>>>>>>>>>>>>>>>>: ${response.toString()}");
+    log("Edit Profile Response: ${response.toString()}");
+    log("Edit Profile Status Code: ${response.statusCode}");
+    log("Edit Profile Success: ${response.success}");
+    log("Edit Profile Message: ${response.message}");
+    log("Edit Profile Data: ${response.data}");
+
+    if (response.statusCode == 200 && response.success) {
+      try {
+        final userDetailsJson = response.data;
+        log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Success >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        return ProfileModel.fromJson(userDetailsJson);
+      } catch (e, s) {
+        log("Error parsing UserDetails e: $e");
+        log("Error parsing UserDetails s: $s");
         return null;
       }
-    } catch (e) {
-      log("Error updating profile: $e");
+    } else {
+      log("Failed to edit profile: ${response.message}");
       return null;
     }
   }
 
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Change  Password >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Change Password >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<ApiResponse> changePassword({
     String? oldPassword,
     String? newPassword,
   }) async {
-
     final body = {
       "oldPassword": oldPassword,
       "newPassword": newPassword,
@@ -117,7 +130,6 @@ class AuthRepository {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get FAQ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
   Future<List<FAQModel>?> getFaq() async {
     const url = AppUrl.faq; // Replace with actual FAQ endpoint URL
     log("FAQ URL: $url");
@@ -127,7 +139,7 @@ class AuthRepository {
     log("Response >>>>>>>>>>>>>>>>>>>> ${response.statusCode}");
     log("Response >>>>>>>>>>>>>>>>>>>> ${response.success}");
 
-    if (response.statusCode==200) {
+    if (response.statusCode == 200) {
       try {
         final List<dynamic> faqData = response.data['attributes'];
         List<FAQModel> faqList = faqData.map((faq) => FAQModel.fromJson(faq)).toList();
@@ -144,9 +156,7 @@ class AuthRepository {
     }
   }
 
-
-///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Policy && Terms & Condition >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Policy && Terms & Condition >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<ApiResponse> getHtmlData({required String type}) async {
     var url = "${AppUrl.policyTerms}$type";
     log("Policy URL: $url");
@@ -158,5 +168,4 @@ class AuthRepository {
 
     return response;
   }
-
 }

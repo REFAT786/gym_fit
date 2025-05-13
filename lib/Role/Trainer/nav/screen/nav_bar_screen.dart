@@ -17,7 +17,7 @@ import '../../profile/profile/screen/profile_screen.dart';
 class NavBarScreen extends StatelessWidget {
   NavBarScreen({super.key});
 
-  final NavController navController = Get.put(NavController());
+  final NavController navController = Get.find<NavController>();
 
   // Function to get the active screen
   Widget _getActiveScreen() {

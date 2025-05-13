@@ -7,18 +7,22 @@ class ProfileModel {
   final String email;
   final String image;
   final String role;
+  final String phoneNumber;
   final bool isActive;
   final bool isCompleted;
   final bool isBanned;
   final String branch;
   final String createdAt;
   final String updatedAt;
+  final String address;
+  final String aboutme;
 
   ProfileModel({
     this.id = '',
     this.fullName = '',
     this.userName = '',
     this.email = '',
+    this.phoneNumber = '',
     String image = '',
     this.role = '',
     this.isActive = false,
@@ -27,6 +31,8 @@ class ProfileModel {
     this.branch = '',
     this.createdAt = '',
     this.updatedAt = '',
+    this.address = '',
+    this.aboutme = '',
   }) : image = image.startsWith('http') ? image : '${AppUrl.baseUrl}$image';
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -43,6 +49,7 @@ class ProfileModel {
       role: json['role'] is String
           ? json['role']
           : (json['role']?['type'] ?? ''),
+      phoneNumber: json['phoneNumber'] ?? '',
       isActive: json['isActive'] ?? false,
       isCompleted: json['isCompleted'] ?? false,
       isBanned: json['isBanned'] ?? false,
@@ -51,8 +58,8 @@ class ProfileModel {
           : (json['branch']?['name'] ?? ''),
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
+      address: json['address'] ?? '',
+      aboutme: json['aboutme'] ?? '',
     );
   }
-
-
 }
