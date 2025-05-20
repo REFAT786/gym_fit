@@ -36,6 +36,68 @@ class UserRepository {
   }
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Trainee single Profile >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+  Future<ApiResponse?> getTraineeProfileById(String id, {bool showMessage = false}) async {
+    final url = "${AppUrl.profileWithId}$id";
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log("Fetch Trainee by ID Response: $response");
+
+    if (response.statusCode == 200) {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Success Trainee single Profile");
+      return response;
+    } else {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error Trainee single Profile");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Trainee management  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse?> getTraineeManagement({bool showMessage = false}) async {
+    final url = "${AppUrl.traineeManagement}${PrefsHelper.myRole}";
+    log("Fetch Trainee Management URL: $url");
+
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log("Trainee Management Response: $response");
+
+    if (response.statusCode == 200) {
+      log("Success Trainee Management");
+      return response;
+    } else {
+      log("Error Trainee Management: ${response.message}");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get individual Workout Profile >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse?> getIndividualWorkoutById(String id, {bool showMessage = false}) async {
+    final url = "${AppUrl.individualWorkout}$id";
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log("Fetch individual Workout by ID Response: $response");
+
+    if (response.statusCode == 200) {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Success individual Workout");
+      return response;
+    } else {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error individual Workout");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
 
 
 }

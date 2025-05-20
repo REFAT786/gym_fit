@@ -215,14 +215,14 @@ class ApiService extends GetxService {
       final data = decoded['data'] ?? decoded;
 
       if (showMessage) {
-        if (success) {
+        if (response.statusCode == 200) {
           // Get.snackbar('Success', message, snackPosition: SnackPosition.Top);
         } else {
           Get.snackbar(
             'Error',
             message,
             backgroundColor: Get.theme.colorScheme.errorContainer,
-            snackPosition: SnackPosition.BOTTOM,
+            snackPosition: SnackPosition.TOP,
           );
         }
       }
@@ -240,7 +240,7 @@ class ApiService extends GetxService {
           'Error',
           'Failed to parse response',
           backgroundColor: Get.theme.colorScheme.errorContainer,
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
       }
       return ApiResponse(
@@ -259,7 +259,7 @@ class ApiService extends GetxService {
         'Error',
         error.toString(),
         backgroundColor: Get.theme.colorScheme.errorContainer,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     }
     return ApiResponse(

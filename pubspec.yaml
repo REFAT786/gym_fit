@@ -57,6 +57,7 @@ dependencies:
   flutter_html: ^3.0.0
   path: ^1.9.1
   mime: ^1.0.5
+  video_player: ^2.9.5
 
 
 dev_dependencies:

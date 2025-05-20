@@ -83,11 +83,12 @@ class TrainerHomeScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   var trainee = controller.trainees[index];
+                  var traineeId = trainee['user'];
                   
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: InkWell(
-                      onTap: () => controller.showListDetails(),
+                      onTap: () => controller.showListDetails(id: traineeId),
                       child: CustomListTile(
                         leadingImage: "${AppUrl.baseUrl}${trainee['image']}",
                         leadingImageHeight: double.infinity,

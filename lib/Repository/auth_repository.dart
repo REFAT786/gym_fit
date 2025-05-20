@@ -61,7 +61,7 @@ class AuthRepository {
     required String phoneNumber,
     String? imagePath,
   }) async {
-    final url = AppUrl.editProfile + PrefsHelper.userId;
+    final url = AppUrl.editProfile;
     log("Edit Profile URL: $url");
     log("Token: ${PrefsHelper.token}");
 

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Role/Trainer/workout/controller/workout_details_controller.dart';
 
 import '../../../../Common/widgets/custom_back_button.dart';
 import '../../../../Common/widgets/custom_button.dart';
@@ -25,10 +26,14 @@ class WorkoutDetailsScreen extends StatelessWidget {
   TextEditingController wightController = TextEditingController();
   TextEditingController repController = TextEditingController();
 
+  WorkoutDetailsController controller = Get.find<WorkoutDetailsController>();
+
 
   @override
   Widget build(BuildContext context) {
     log(">>>>>>>>>>>>>>>>>>>>>>>>> my role ${PrefsHelper.myRole}");
+    log(">>>>>>>>>>>>>>>>>>>>>>>>> Exercise name  ${controller.workoutDetail.value.exerciseName}");
+    log(">>>>>>>>>>>>>>>>>>>>>>>>> Exercise name  ${controller.workoutDetail.value.id}");
     return CustomTrainerGradientBackgroundColor(
       child: Scaffold(
         appBar: AppBar(
@@ -44,6 +49,8 @@ class WorkoutDetailsScreen extends StatelessWidget {
               // SizedBox(height: 40),
               Column(
                 children: [
+
+                  Text("???????????????????${controller.workoutDetail.value.exerciseName}"),
         
                   SizedBox(
                     height: 10,

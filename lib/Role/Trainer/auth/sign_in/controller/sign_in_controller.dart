@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
@@ -7,9 +8,8 @@ import 'package:gym_fit/Repository/auth_repository.dart';
 import '../../../../../Helpers/snackbar_helper.dart';
 
 class SignInController extends GetxController {
-  TextEditingController emailTextEditingController = TextEditingController();
-  TextEditingController passwordTextEditingController = TextEditingController();
-
+  TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'kabit' : '');
+  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? '123' : "");
   var isLoading = false.obs;
   String role = "";
 

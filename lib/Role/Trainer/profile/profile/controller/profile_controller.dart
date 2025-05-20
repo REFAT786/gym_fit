@@ -141,7 +141,7 @@ class ProfileController extends GetxController {
 
     try {
       var response = await ApiClient.MultipartData(
-        AppUrl.editProfile + PrefsHelper.userId,
+        AppUrl.editProfile,
         body,
         multipartBody: multipartBody,
 

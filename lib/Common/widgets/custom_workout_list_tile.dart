@@ -10,7 +10,7 @@ import 'custom_common_image.dart';
 
 class CustomWorkoutListTile extends StatelessWidget {
   final String? leadingImage;
-  final int? indexCount;
+  final String? station;
   final String? gymCategory;
   final String? gymSet;
   final bool isEditButton;
@@ -22,7 +22,7 @@ class CustomWorkoutListTile extends StatelessWidget {
   CustomWorkoutListTile({
     super.key,
     this.leadingImage,
-    this.indexCount = 1,
+    this.station = '',
     this.gymCategory = '',
     this.gymSet = '',
     required this.isEditButton,
@@ -61,7 +61,7 @@ class CustomWorkoutListTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Station $indexCount',
+                  "$station",
                   style: styleForText.copyWith(fontSize: 14),
                 ),
                 SizedBox(height: 5),
