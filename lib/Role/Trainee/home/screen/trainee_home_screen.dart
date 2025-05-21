@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Helpers/other_helper.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import '../../../../Common/widgets/custom_common_image.dart';
 import '../../../../Common/widgets/custom_search_field.dart';
 import '../../../../Common/widgets/custom_trainer_gradient_background_color.dart';
+import '../../../../Helpers/date_time_formator.dart';
 import '../../../../Helpers/prefs_helper.dart';
 import '../../../Trainer/workout/screen/add_workout_screen.dart';
 import '../../../Trainer/workout/screen/workout_details_screen.dart';
@@ -43,6 +45,36 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
   void dispose() {
     qrController?.dispose();
     super.dispose();
+  }
+
+  Future<void> _showDatePickerAndNavigate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Colors.red,
+              onPrimary: Colors.white,
+              surface: AppColors.traineeNavBArColor,
+              onSurface: Colors.white,
+
+            ), dialogTheme: DialogThemeData(backgroundColor: Colors.black),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null) {
+      String selectedDateStr = DateHelper.getDate(serverDate: pickedDate.toIso8601String());
+
+      // Navigate to history page with selected date as argument
+      // Get.to(() => HistoryScreen(), arguments: {'selectedDate': selectedDateStr});
+    }
   }
 
   @override
@@ -121,20 +153,20 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
               ),
               const SizedBox(height: 10),
               InkWell(
-                onTap: () {
-                  Get.to(() => AddWorkoutScreen());
-                },
+                  onTap: () async {
+                    await _showDatePickerAndNavigate();
+                  },
                 child: Obx(() {
                   return Container(
-                    width: 210,
+                    width: 217,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: ColorController.instance.getButtonColor(),
                     ),
                     child: ListTile(
-                      leading: Icon(Icons.add, color: AppColors.white),
+                      leading: Icon(Icons.calendar_month_outlined, color: AppColors.white),
                       title: Text(
-                        AppString.addWorkout,
+                        "View Calender",
                         style: styleForText.copyWith(fontSize: 20),
                       ),
                     ),
@@ -142,14 +174,10 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                 },)
               ),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(AppString.workOutPlan,
-                      style: styleForText.copyWith(fontSize: 24)),
-                  Text(AppString.clearAll,
-                      style: styleForText.copyWith(fontSize: 14)),
-                ],
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(AppString.workOutPlan,
+                    style: styleForText.copyWith(fontSize: 24)),
               ),
               const SizedBox(height: 10),
               ListView.builder(

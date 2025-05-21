@@ -5,6 +5,8 @@ import '../../../../../Model/trainee_detail_model.dart';
 import '../../../../../Repository/user_repository.dart';
 
 class TrainerProfileDetailsController extends GetxController {
+  static TrainerProfileDetailsController get instance => Get.find<TrainerProfileDetailsController>();
+
   final UserRepository userRepository = UserRepository();
 
   late String traineeId;

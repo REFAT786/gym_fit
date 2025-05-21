@@ -92,7 +92,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       curve: Curves.ease,
                     );
                   } else {
-                    Get.off(() =>  TraineeNavBarScreen());
+                    controller.bmiResult();
                   }
                 },
                 child: Row(

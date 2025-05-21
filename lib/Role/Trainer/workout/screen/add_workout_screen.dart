@@ -1,144 +1,116 @@
-
 import 'package:flutter/material.dart';
-import '../../../../Common/widgets/custom_add_workout_popup.dart';
+import 'package:get/get.dart';
+import 'package:gym_fit/Role/Trainer/workout/controller/workout_details_controller.dart';
 import '../../../../Common/widgets/custom_button.dart';
 import '../../../../Common/widgets/custom_text_field.dart';
 import '../../../../Common/widgets/custom_title_bar.dart';
 import '../../../../Common/widgets/custom_trainer_gradient_background_color.dart';
-import '../../../../Common/widgets/custom_workout_list_tile.dart';
 import '../../../../Helpers/prefs_helper.dart';
+import '../../../../Helpers/snackbar_helper.dart';
 import '../../../../Utils/app_colors.dart';
-import '../../../../Utils/app_images.dart';
 import '../../../../Utils/app_string.dart';
+import '../../../../Utils/app_url.dart';
 import '../../../../Utils/styles.dart';
 import '../../../Trainee/color/controller/color_controller.dart';
-import '../widget/show_filter_dialog_box.dart';
+import '../../profile/profile/controller/trainer_profile_details_controller.dart';
 
 class AddWorkoutScreen extends StatelessWidget {
-  AddWorkoutScreen({super.key});
+  AddWorkoutScreen({Key? key}) : super(key: key);
 
-  final TextEditingController searchController = TextEditingController();
+  final WorkoutDetailsController controller = Get.find<WorkoutDetailsController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomTrainerGradientBackgroundColor(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 40, bottom: 10, left: 10, right: 10),
-              child: CustomTitleBar(title: AppString.addWorkout),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: CustomTextField(
-                backgroundColor: PrefsHelper.myRole=='trainee'?AppColors.traineeNavBArColor:Color(0xff033a5b),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 40, bottom: 10, left: 10, right: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomTitleBar(title: AppString.addWorkout),
+              const SizedBox(height: 10),
+              Text("Select Exercise", style: styleForText.copyWith(fontSize: 24)),
+              const SizedBox(height: 5),
+
+              // Search field: NO Obx needed because TextField doesn't reactively change UI
+              CustomTextField(
+                backgroundColor: PrefsHelper.myRole == 'trainee' ? AppColors.traineeNavBArColor : Color(0xff033a5b),
                 prefixIcon: Icons.search,
                 hintText: AppString.searchWorkout,
                 isSuffix: false,
-                controller: searchController,
+                controller: controller.searchController,
+                onChanged: controller.searchWorkout,
               ),
-            ),
-            const SizedBox(height: 10),
-            // Wrap the filters and ListView in an Expanded widget
-            Expanded(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: (){
-                            showFilterDialogBox(context);  // Open the filter dialog box
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(Icons.filter_list, color: PrefsHelper.myRole=="trainee"?AppColors.white:Colors.black,),
-                                SizedBox(width: 4),
-                                Text(AppString.allTypes, style: styleForText.copyWith(fontSize: 16, color:PrefsHelper.myRole=="trainee"?ColorController.instance.getTextColor():Colors.black),),
-                              ],
-                            ),
-                          )
-                        ),
 
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  // Wrap ListView.builder in Expanded to give it bounded height
-                  Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(0),
-                      itemCount: 9,
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        bool isChecked = false; // Default checkbox state
+              const SizedBox(height: 10),
 
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                          child: InkWell(
-                            onTap: () {
-                              PrefsHelper.myRole=="trainee"?null:showDialog(
-                                context: context,
-                                builder: (context) => CustomAddWorkoutPopup(),
-                              );
-                            },
-                            child: StatefulBuilder(
-                              builder: (context, setState) {
-                                return CustomWorkoutListTile(
-                                  isEditButton: false,
-                                  isArrowButton: false,
-                                  leadingImage: AppImages.serviceShortPhoto,
-                                  gymCategory: "Title",
-                                  showCheckbox: PrefsHelper.myRole=="trainee"?true:false, // Enable checkbox
-                                  checkboxValue: isChecked,
-                                  onCheckboxChanged: (value) {
-                                    setState(() {
-                                      isChecked = value ?? false; // Toggle checkbox value
-                                    });
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  if(PrefsHelper.myRole=="trainee")
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: InkWell(
-                        onTap: (){
-                          showDialog(
-                            context: context,
-                            builder: (context) => CustomAddWorkoutPopup(),
-                          );
+              // Expanded widget to constrain list height and make it scrollable
+              Expanded(
+                child: Obx(() {
+                  if (controller.isLoading.value) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (controller.errorMessage.isNotEmpty) {
+                    return Center(child: Text(controller.errorMessage.value));
+                  }
+                  if (controller.searchResults.isEmpty) {
+                    return Center(child: Text("No results found", style: styleForText.copyWith(color: AppColors.white),));
+                  }
+                  return ListView.builder(
+                    itemCount: controller.searchResults.length,
+                    itemBuilder: (context, index) {
+                      final exercise = controller.searchResults[index];
+                      return ListTile(
+                        leading: exercise.exerciseImage.isNotEmpty
+                            ? Image.network(
+                          "${controller.searchResults[index].exerciseImage.startsWith('http') ? '' : AppUrl.baseUrl}${exercise.exerciseImage}",
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        )
+                            : SizedBox(width: 50, height: 50),
+                        title: Text(exercise.name),
+                        subtitle: Text(exercise.description),
+                        onTap: () {
+                          controller.searchController.text = exercise.name;
+                          controller.searchResults.clear();
+                          controller.exerciseId.value = exercise.id;
+                          controller.traineeId.value = TrainerProfileDetailsController.instance.traineeId;
                         },
-                        child: CustomButton(backgroundColor: ColorController.instance.getButtonColor(),
-                            textColor: ColorController.instance.getTextColor(),
-                            buttonText: AppString.addExercise
-                        ),
-                      ),
-                    )
-
-                ],
+                      );
+                    },
+                  );
+                }),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 10),
+
+              CustomButton(
+                backgroundColor: AppColors.secondary,
+                textColor: AppColors.primary,
+                buttonText: AppString.addWorkout,
+                onTap: (){
+                  controller.searchController.text.isNotEmpty?
+                  controller.addWorkout():SnackbarHelper.show(
+                    title: "Warning",
+                    message: "Please search",
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                  );;
+                },
+              ),
+              const SizedBox(height: 5),
+              CustomButton(
+                backgroundColor: Colors.transparent,
+                textColor: AppColors.white,
+                buttonText: AppString.cancel,
+                onTap: () => Get.back(),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-
-
 }

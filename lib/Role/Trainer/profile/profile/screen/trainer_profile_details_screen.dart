@@ -18,9 +18,7 @@ import '../controller/trainer_profile_details_controller.dart';
 class TrainerProfileDetailsScreen extends StatelessWidget {
   TrainerProfileDetailsScreen({super.key});
 
-  final TrainerProfileDetailsController controller = Get.put(
-    TrainerProfileDetailsController(),
-  );
+  final TrainerProfileDetailsController controller = Get.find<TrainerProfileDetailsController>();
 
   @override
   Widget build(BuildContext context) {

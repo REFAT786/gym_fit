@@ -8,6 +8,13 @@ class ProfileModel {
   final String image;
   final String role;
   final String phoneNumber;
+
+  final String gender;
+  final String height;
+  final String weight;
+  final num age ;
+  final num bmi ;
+
   final bool isActive;
   final bool isCompleted;
   final bool isBanned;
@@ -23,6 +30,11 @@ class ProfileModel {
     this.userName = '',
     this.email = '',
     this.phoneNumber = '',
+    this.gender = '',
+    this.height = '',
+    this.weight = '',
+    this.age = 1,
+    this.bmi = 1,
     String image = '',
     this.role = '',
     this.isActive = false,
@@ -50,6 +62,11 @@ class ProfileModel {
           ? json['role']
           : (json['role']?['type'] ?? ''),
       phoneNumber: json['phoneNumber'] ?? '',
+      gender: json['gender'] ?? '',
+      height: json['height'] ?? '',
+      weight: json['weight'] ?? '',
+      age: json['age'] ?? 1,
+      bmi: json['bmi'] ?? 1,
       isActive: json['isActive'] ?? false,
       isCompleted: json['isCompleted'] ?? false,
       isBanned: json['isBanned'] ?? false,

@@ -12,6 +12,7 @@ class CustomTextField extends StatefulWidget {
       this.prefixIcon,
       this.validator,
        this.backgroundColor = AppColors.primary,
+       this.onChanged,
       required this.controller});
 
   final String hintText;
@@ -20,6 +21,7 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final Color backgroundColor;
   final FormFieldValidator? validator;
+  final Function(String)? onChanged;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -38,6 +40,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           // border: Border.all(color: AppColors.secondary,width: 0.3)
         ),
         child: TextFormField(
+          onChanged: widget.onChanged,
           validator: widget.validator,
           style: styleForText.copyWith(color: AppColors.textColor, fontSize: 16),
           controller: widget.controller,
