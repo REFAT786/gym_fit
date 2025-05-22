@@ -167,4 +167,28 @@ class UserRepository {
     final response = await ApiService.to.putApi(AppUrl.bmiResult, body);
     return response;
   }
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Workout plan >>>>>>>>>>>>>>
+
+  Future<ApiResponse?> getWorkoutPlan({bool showMessage = false}) async {
+    final url = AppUrl.workOutPlan;
+    log("Fetch Workout plan URL: $url");
+
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log(" Workout plan Response: $response");
+
+    if (response.statusCode == 200) {
+      log("Success  Workout plan");
+      return response;
+    } else {
+      log("Error  Workout plan: ${response.message}");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
+
 }

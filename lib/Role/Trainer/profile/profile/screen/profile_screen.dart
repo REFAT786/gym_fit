@@ -20,7 +20,7 @@ import '../../terms_of_service/screen/terms_of_service_screen.dart';
 import '../controller/profile_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+  ProfileScreen({super.key});
 
   final ProfileController profileController = Get.find<ProfileController>();
 

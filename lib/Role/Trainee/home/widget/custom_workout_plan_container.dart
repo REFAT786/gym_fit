@@ -1,36 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../Common/widgets/custom_button.dart';
 import '../../../../Common/widgets/custom_common_image.dart';
 import '../../../../Helpers/prefs_helper.dart';
+import '../../../../Model/wrok_out_model.dart';
 import '../../../../Utils/app_colors.dart';
-import '../../../../Utils/app_icons.dart';
-import '../../../../Utils/app_images.dart';
 import '../../../../Utils/app_string.dart';
 import '../../../../Utils/styles.dart';
 import '../../color/controller/color_controller.dart';
+import '../../../../Utils/app_url.dart';
 
 class CustomWorkoutPlanContainer extends StatelessWidget {
-  CustomWorkoutPlanContainer({super.key, this.startWorkoutTap});
+  final WorkOutModel workout;
+  final VoidCallback? startWorkoutTap;
 
-  final String stationText = "Station 1";
-  final String mainTitle = "Lat Pull Down";
-  Function()? startWorkoutTap;
-
-  final List<Map<String, dynamic>> training = [
-    {'name': "Back", "image": AppImages.serviceShortPhoto},
-    {'name': "Bicep", "image": AppImages.serviceShortPhoto},
-    {'name': "R.Delt", "image": AppImages.serviceShortPhoto},
-    {'name': "Traps", "image": AppImages.serviceShortPhoto},
-    {'name': "Core", "image": AppImages.serviceShortPhoto},
-  ];
+  const CustomWorkoutPlanContainer({
+    super.key,
+    required this.workout,
+    this.startWorkoutTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: AppColors.traineeNavBArColor,
@@ -42,85 +38,105 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(mainTitle, style: styleForText.copyWith(fontSize: 20)),
-              Text(stationText, style: styleForText.copyWith(fontSize: 20)),
+              Text(workout.exerciseName, style: styleForText.copyWith(fontSize: 20.sp)),
+              Text(
+                workout.stations.isNotEmpty
+                    ? "Station ${workout.stations[0]['number']}"
+                    : 'No Station',
+                style: styleForText.copyWith(fontSize: 20.sp),
+              ),
             ],
           ),
-
           Divider(color: AppColors.white),
 
           // Main Row (Image + Training Goals)
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image
+              // Exercise Image
               CustomCommonImage(
-                imageSrc: AppImages.serviceShortPhoto,
+                imageSrc: "${AppUrl.baseUrl}${workout.exerciseImage}",
                 imageType: ImageType.network,
-                height: 190,
-                width: 130,
+                height: 170,
+                width: 125,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
 
               // Training Goals & Types
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(AppString.trainingGoals, style: styleForText.copyWith(fontSize: 20)),
+                    Text(
+                      AppString.trainingGoals,
+                      style: styleForText.copyWith(fontSize: 20.sp),
+                    ),
 
-                    // Horizontally Scrollable List
+                    // Muscle Groups List (Horizontally scrollable)
                     SizedBox(
-                      height: 83, // Fixed height to prevent layout errors
-                      child: SingleChildScrollView(
-                        padding: EdgeInsets.all(0),
+                      height: 75,
+                      child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: List.generate(training.length, (index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    training[index]['name'],
-                                    style: styleForText.copyWith(fontSize: 12),
-                                  ),
-                                  SizedBox(height: 3),
-                                  CustomCommonImage(
-                                    imageSrc: training[index]['image'],
-                                    imageType: ImageType.network,
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                        ),
+                        itemCount: workout.muscleGroups.length,
+                        itemBuilder: (context, index) {
+                          final mg = workout.muscleGroups[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Column(
+                              children: [
+                                Text(
+                                  mg.name,
+                                  style: styleForText.copyWith(fontSize: 12),
+                                ),
+                                const SizedBox(height: 3),
+                                CustomCommonImage(
+                                  imageSrc: "${AppUrl.baseUrl}${mg.image}",
+                                  imageType: ImageType.network,
+                                  height: 50,
+                                  width: 50,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     ),
 
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
 
                     // Training Type Title
-                    Text(AppString.trainingType, style: styleForText.copyWith(fontSize: 20)),
+                    Text(
+                      AppString.trainingType,
+                      style: styleForText.copyWith(fontSize: 20.sp),
+                    ),
 
-                    // Horizontally Scrollable Training Type Icons
+                    // Workout Types Icons horizontally scrollable
                     SizedBox(
                       height: 40,
-                      child: SingleChildScrollView(
+                      child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            _buildTrainingTypeItem(AppIcons.strengthIcon, "Strength"),
-                            _buildTrainingTypeItem(AppIcons.stretchingIcon, "Stretching"),
-                            _buildTrainingTypeItem(AppIcons.cardioIcon, "Cardio"),
-                          ],
-                        ),
+                        itemCount: workout.workoutTypes.length,
+                        itemBuilder: (context, index) {
+                          final wt = workout.workoutTypes[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Row(
+                              children: [
+                                CustomCommonImage(imageSrc: "${AppUrl.baseUrl}${wt.image}", imageType: ImageType.network,height: 44.h, width: 44.w, ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  wt.name,
+                                  style: styleForText.copyWith(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          );
+
+                        },
                       ),
                     ),
 
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),
@@ -131,31 +147,18 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
             onTap: startWorkoutTap,
             child: Obx(() {
               return CustomButton(
+                borderRadius: 12,
                 buttonText: AppString.startWorkout,
                 textColor: ColorController.instance.getTextColor(),
-                backgroundColor: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
+                backgroundColor: PrefsHelper.myRole == "trainee"
+                    ? ColorController.instance.getButtonColor()
+                    : AppColors.secondary,
               );
-            },),
+            }),
           ),
         ],
       ),
     );
-  }
 
-  /// Helper function to create training type items
-  Widget _buildTrainingTypeItem(String iconPath, String title) {
-    return Padding(
-      padding: EdgeInsets.only(right: 10),
-      child: Row(
-        children: [
-          SvgPicture.asset(iconPath, height: 24, width: 24),
-          SizedBox(width: 5),
-          Text(
-            title,
-            style: styleForText.copyWith(fontSize: 12),
-          ),
-        ],
-      ),
-    );
   }
 }

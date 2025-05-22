@@ -18,6 +18,7 @@ class RoutesName {
   static const notification = '/notification';
   static const onBoarding = '/onboarding';
   static const traineeNavBar = '/trainee-nav-bar';
+  static const trainingPageOne = '/training-page-one';
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // static const gender = '/gender';
   // static const age = '/age';
@@ -50,6 +51,7 @@ class RoutesName {
   static String getNotificationScreen() => notification;
   static String getOnBoardingScreen() => onBoarding;
   static String getTraineeNavBarScreen() => traineeNavBar;
+  static String getTrainingPageOneScreen() => trainingPageOne;
 
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

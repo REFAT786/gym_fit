@@ -180,22 +180,44 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                     style: styleForText.copyWith(fontSize: 24)),
               ),
               const SizedBox(height: 10),
-              ListView.builder(
-                padding: const EdgeInsets.all(0),
-                itemCount: 7,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: CustomWorkoutPlanContainer(
-                      startWorkoutTap: () {
-                        Get.to(() => WorkoutDetailsScreen());
-                      },
-                    ),
+
+              ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+              Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (controller.errorMessage.isNotEmpty) {
+                  return Text(
+                    controller.errorMessage.value,
+                    style: const TextStyle(color: Colors.red),
                   );
-                },
-              ),
+                }
+
+                if (controller.workoutList.isEmpty) {
+                  return const Text("No workouts available");
+                }
+
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: controller.workoutList.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final workout = controller.workoutList[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: CustomWorkoutPlanContainer(
+                        workout: workout,
+                        startWorkoutTap: () {
+                          Get.to(() => WorkoutDetailsScreen(), arguments: {'id': workout.id});
+                        },
+                      ),
+                    );
+                  },
+                );
+              }),
+              ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             ],
           ),
         ),

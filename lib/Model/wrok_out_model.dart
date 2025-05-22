@@ -1,4 +1,3 @@
-
 class WorkOutModel {
   final String id;
   final bool completed;
@@ -42,8 +41,7 @@ class WorkOutModel {
   factory WorkOutModel.fromJson(Map<String, dynamic> json) => WorkOutModel(
     id: json["_id"] ?? '',
     completed: json["completed"] ?? false,
-    createdAt:
-    DateTime.tryParse(json["createdAt"] ?? '') ?? DateTime(1970),
+    createdAt: DateTime.tryParse(json["createdAt"] ?? '') ?? DateTime(1970),
     equipment: json["equipment"] == null
         ? Equipment()
         : Equipment.fromJson(json["equipment"]),
@@ -65,6 +63,9 @@ class WorkOutModel {
         json["muscleGroups"].map((x) => MuscleGroup.fromJson(x))),
     measurements: json["measurements"] ?? [],
   );
+
+  static List<WorkOutModel> fromJsonList(List<dynamic> list) =>
+      list.map((e) => WorkOutModel.fromJson(e)).toList();
 
   Map<String, dynamic> toJson() => {
     "_id": id,

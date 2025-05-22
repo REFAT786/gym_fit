@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import '../../Role/Trainee/color/controller/color_controller.dart';
+import '../../Role/Trainee/home/controller/trainee_home_controller.dart';
 import '../../Role/Trainee/nav/controller/trainee_nav_bar_controller.dart';
 import '../../Role/Trainee/onboarding/on_boarding_controller.dart';
 import '../../Role/Trainer/Nav/controller/nav_controller.dart';
@@ -39,6 +40,8 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => HelpCenterController(), fenix: true);
     Get.lazyPut(() => TrainerProfileDetailsController(), fenix: true);
     Get.lazyPut(() => ManagementProfileDetailsController(), fenix: true);
+    //>>>>>>>>>>>>>>>>>
+    Get.lazyPut(() => TraineeHomeController(), fenix: true);
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     Get.lazyPut(()=> ColorController(), fenix: true);
 

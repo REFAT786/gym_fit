@@ -6,6 +6,7 @@ import '../../Role/Trainee/nav/screen/trainee_nav_bar_screen.dart';
 import '../../Role/Trainee/onboarding/screen/on_boarding_screen.dart';
 import '../../Role/Trainee/trainee_complete_successfully/screen/trainee_complete_successfully_screen.dart';
 import '../../Role/Trainee/workout_plan/screen/specific_workout_plan_screen.dart';
+import '../../Role/Trainee/workout_plan/screen/training_page_one.dart';
 import '../../Role/Trainee/workout_plan/screen/workout_plan_detail_screen.dart';
 import '../../Role/Trainee/workout_plan/screen/workout_plan_screen.dart';
 import '../../Role/Trainee/workout_progress/screen/workout_progress_screen.dart';
@@ -84,6 +85,9 @@ class AppRoutes {
         ),GetPage(
           name: RoutesName.getTraineeNavBarScreen(),
           page: () => TraineeNavBarScreen()
+        ),GetPage(
+          name: RoutesName.getTrainingPageOneScreen(),
+          page: () => TrainingPageOne()
         ),
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         GetPage(
