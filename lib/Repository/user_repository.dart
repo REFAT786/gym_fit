@@ -190,5 +190,19 @@ class UserRepository {
     }
   }
 
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Complete Workout >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Future<ApiResponse> completeWorkout({
+    String? userId,
+    String? exerciseId,
+  }) async {
+    final Map<String, dynamic> body = {
+      'userId': userId,
+      'exerciseId': exerciseId,
+    };
+
+    final response = await ApiService.to.postApi(AppUrl.completeWorkout, body);
+    return response;
+  }
+
 
 }

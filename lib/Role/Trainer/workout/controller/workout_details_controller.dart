@@ -1,28 +1,61 @@
+import 'dart:async';
 import 'dart:developer';
+import 'dart:ffi';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Model/wrok_out_model.dart';
-import '../../../../Core/routes/routes_name.dart';
 import '../../../../Helpers/snackbar_helper.dart';
 import '../../../../Model/search_workout_response.dart';
 import '../../../../Repository/user_repository.dart';
 
 class WorkoutDetailsController extends GetxController {
+
+  //===========================================================
+  RxList magermentList = [].obs;
   final UserRepository userRepository = UserRepository();
   final TextEditingController searchController = TextEditingController();
   RxList<Exercise> searchResults = <Exercise>[].obs;
 
   late String workoutId;
+  RxInt index = 1.obs;
 
   late RxString  exerciseId;
   late RxString  traineeId;
+  late RxDouble totalSets = 1.0.obs;
+  late RxDouble timer = 1.0.obs;
 
   // Reactive variables for loading state, workout data, and error message
   var isLoading = false.obs;
   Rx<WorkOutModel> workoutDetail = WorkOutModel().obs ;
   var errorMessage = ''.obs;
+
+  RxInt remainingSeconds = 0.obs;
+  Timer? _timer;
+
+  // Call this method to start timer countdown
+  void startTimer() {
+    stopTimer(); // Stop any previous timer
+    remainingSeconds.value = (timer.value*60).toInt();
+
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (remainingSeconds.value > 0) {
+        remainingSeconds.value--;
+      } else {
+        stopTimer();
+      }
+    });
+  }
+  void stopTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  @override
+  void onClose() {
+    stopTimer();
+    super.onClose();
+  }
 
   @override
   void onInit() {
@@ -86,6 +119,30 @@ class WorkoutDetailsController extends GetxController {
         log("Workout data loaded successfully");
         log("myData=====>${workoutDetail.value.id}");
         log("myData=====>${workoutDetail.value.exerciseName}");
+
+        for (var measurement in workoutDetail.value.measurements) {
+          final name = (measurement['name'] ?? '').toString().toLowerCase();
+          if (name == 'sets' || name == 'set') {
+            final unitValue = measurement['unit'];
+            if (unitValue != null) {
+              totalSets.value = (unitValue is num)
+                  ? unitValue.toDouble()
+                  : double.tryParse(unitValue.toString()) ?? 1.0;
+            }
+          }
+        }
+        for (var measurement in workoutDetail.value.measurements) {
+          final name = (measurement['name'] ?? '').toString().toLowerCase();
+          if (name == 'rest' || name == 'rests') {
+            final unitValue = measurement['unit'];
+            if (unitValue != null) {
+              timer.value = (unitValue is num)
+                  ? unitValue.toDouble()
+                  : double.tryParse(unitValue.toString()) ?? 1.0;
+            }
+          }
+        }
+
       } else {
         errorMessage.value = response?.message ?? 'Failed to load workout data';
         log("API returned error: ${errorMessage.value}");

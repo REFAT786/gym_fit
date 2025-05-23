@@ -44,7 +44,7 @@ class TraineeCompleteSuccessfullyScreen extends StatelessWidget {
                   child: CustomButton(
                     backgroundColor: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
                     textColor: PrefsHelper.myRole=="trainee"?ColorController.instance.getTextColor():AppColors.primary,
-                    buttonText: AppString.returnToHome,
+                    buttonText: AppString.done,
                   ),
                 ),
               ],

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Core/routes/routes_name.dart';
 import 'package:gym_fit/Helpers/other_helper.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import '../../../../Common/widgets/custom_common_image.dart';
@@ -74,6 +75,7 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
 
       // Navigate to history page with selected date as argument
       // Get.to(() => HistoryScreen(), arguments: {'selectedDate': selectedDateStr});
+      Get.toNamed(RoutesName.historyScreen);
     }
   }
 

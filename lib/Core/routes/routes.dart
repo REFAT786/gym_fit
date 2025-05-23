@@ -1,10 +1,12 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
 import '../../Role/Trainee/color/screen/color_screen.dart';
+import '../../Role/Trainee/history/screen/history_screen.dart';
 import '../../Role/Trainee/home/screen/trainee_home_screen.dart';
 import '../../Role/Trainee/nav/screen/trainee_nav_bar_screen.dart';
 import '../../Role/Trainee/onboarding/screen/on_boarding_screen.dart';
 import '../../Role/Trainee/trainee_complete_successfully/screen/trainee_complete_successfully_screen.dart';
+import '../../Role/Trainee/workout_plan/screen/rest_screen.dart';
 import '../../Role/Trainee/workout_plan/screen/specific_workout_plan_screen.dart';
 import '../../Role/Trainee/workout_plan/screen/training_page_one.dart';
 import '../../Role/Trainee/workout_plan/screen/workout_plan_detail_screen.dart';
@@ -88,7 +90,14 @@ class AppRoutes {
         ),GetPage(
           name: RoutesName.getTrainingPageOneScreen(),
           page: () => TrainingPageOne()
+        ),GetPage(
+          name: RoutesName.getRestScreen(),
+          page: () => RestScreen()
+        ),GetPage(
+          name: RoutesName.getHistoryScreen(),
+          page: () => HistoryScreen()
         ),
+
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         GetPage(
             name: RoutesName.getTraineeHomeScreen(),

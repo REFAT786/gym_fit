@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Common/widgets/custom_button.dart';
+import 'package:gym_fit/Core/routes/routes_name.dart';
 
 import '../../../../Common/widgets/custom_back_button.dart';
 import '../../../../Common/widgets/custom_trainer_gradient_background_color.dart';
@@ -34,13 +37,17 @@ class TrainingPageOne extends StatelessWidget {
         centerTitle: true,
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: InkWell(
+        padding: const EdgeInsets.only(left: 30),
+        child: Obx(() => InkWell(
           onTap: () {
-            // Your start workout logic here
+
+
+
+            Get.toNamed(RoutesName.restScreen, arguments: {'date': DateTime.now()});
+
           },
           child: CustomButton(
-            buttonText: "Complete Set 1",
+            buttonText: "Complete Set ${controller.index.value}",
             backgroundColor: PrefsHelper.myRole == "trainee"
                 ? ColorController.instance.getButtonColor()
                 : AppColors.secondary,
@@ -48,7 +55,7 @@ class TrainingPageOne extends StatelessWidget {
                 ? ColorController.instance.getTextColor()
                 : AppColors.primary,
           ),
-        ),
+        ),),
       ),
       body: CustomTrainerGradientBackgroundColor(
         child: SingleChildScrollView(
@@ -73,10 +80,10 @@ class TrainingPageOne extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Set 1 of 3",
+                    Obx(() => Text(
+                      "Set ${controller.index.value} of ${controller.totalSets.value}",
                       style: styleForText.copyWith(fontSize: 25),
-                    ),
+                    ),),
                     const SizedBox(height: 10),
                     Text(
                       "Current Set",

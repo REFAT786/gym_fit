@@ -15,12 +15,14 @@ import '../../../../Utils/app_url.dart';
 
 class CustomWorkoutPlanContainer extends StatelessWidget {
   final WorkOutModel workout;
+  final bool isButton;
   final VoidCallback? startWorkoutTap;
 
   const CustomWorkoutPlanContainer({
     super.key,
     required this.workout,
     this.startWorkoutTap,
+    this.isButton = true,
   });
 
   @override
@@ -143,19 +145,20 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
             ],
           ),
 
-          InkWell(
-            onTap: startWorkoutTap,
-            child: Obx(() {
-              return CustomButton(
-                borderRadius: 12,
-                buttonText: AppString.startWorkout,
-                textColor: ColorController.instance.getTextColor(),
-                backgroundColor: PrefsHelper.myRole == "trainee"
-                    ? ColorController.instance.getButtonColor()
-                    : AppColors.secondary,
-              );
-            }),
-          ),
+          if(isButton == true)
+            InkWell(
+              onTap: startWorkoutTap,
+              child: Obx(() {
+                return CustomButton(
+                  borderRadius: 12,
+                  buttonText: AppString.startWorkout,
+                  textColor: ColorController.instance.getTextColor(),
+                  backgroundColor: PrefsHelper.myRole == "trainee"
+                      ? ColorController.instance.getButtonColor()
+                      : AppColors.secondary,
+                );
+              }),
+            ),
         ],
       ),
     );

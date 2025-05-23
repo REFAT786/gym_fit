@@ -19,6 +19,8 @@ class RoutesName {
   static const onBoarding = '/onboarding';
   static const traineeNavBar = '/trainee-nav-bar';
   static const trainingPageOne = '/training-page-one';
+  static const restScreen = '/rest-screen';
+  static const historyScreen = '/history-screen';
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // static const gender = '/gender';
   // static const age = '/age';
@@ -52,6 +54,8 @@ class RoutesName {
   static String getOnBoardingScreen() => onBoarding;
   static String getTraineeNavBarScreen() => traineeNavBar;
   static String getTrainingPageOneScreen() => trainingPageOne;
+  static String getRestScreen() => restScreen;
+  static String getHistoryScreen() => historyScreen;
 
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
