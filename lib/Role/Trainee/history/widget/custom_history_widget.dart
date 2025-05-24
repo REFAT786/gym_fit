@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
 import '../../../../Common/widgets/custom_button.dart';
 import '../../../../Common/widgets/custom_common_image.dart';
 import '../../../../Helpers/prefs_helper.dart';
-import '../../../../Model/wrok_out_model.dart';
+import '../../../../Model/history_model.dart';
 import '../../../../Utils/app_colors.dart';
 import '../../../../Utils/app_string.dart';
+import '../../../../Utils/app_url.dart';
 import '../../../../Utils/styles.dart';
 import '../../color/controller/color_controller.dart';
-import '../../../../Utils/app_url.dart';
 
-class CustomWorkoutPlanContainer extends StatelessWidget {
-  final WorkOutModel workout;
+
+class CustomHistoryWidget extends StatelessWidget {
+  final HistoryAttribute history;
   final bool isButton;
   final VoidCallback? startWorkoutTap;
 
-  const CustomWorkoutPlanContainer({
+  const CustomHistoryWidget({
     super.key,
-    required this.workout,
+    required this.history,
     this.startWorkoutTap,
     this.isButton = true,
   });
@@ -29,6 +27,7 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: AppColors.traineeNavBArColor,
@@ -36,116 +35,125 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title Row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(workout.exerciseName, style: styleForText.copyWith(fontSize: 20.sp)),
+              Flexible(
+                child: Text(
+                  history.exercise.name.isNotEmpty
+                      ? history.exercise.name
+                      : 'Unnamed Exercise',
+                  style: styleForText.copyWith(fontSize: 20),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
               Text(
-                workout.stations.isNotEmpty
-                    ? "Station ${workout.stations[0]['number']}"
+                history.exercise.stations.isNotEmpty
+                    ? "Station ${history.exercise.stations[0].stationNumber}"
                     : 'No Station',
-                style: styleForText.copyWith(fontSize: 20.sp),
+                style: styleForText.copyWith(fontSize: 20),
               ),
             ],
           ),
           Divider(color: AppColors.white),
-
-          // Main Row (Image + Training Goals)
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Exercise Image
               CustomCommonImage(
-                imageSrc: "${AppUrl.baseUrl}${workout.exerciseImage}",
+                imageSrc: "${AppUrl.baseUrl}${history.exercise.exerciseImage}",
                 imageType: ImageType.network,
                 height: 170,
                 width: 125,
-              ),
+             ),
               const SizedBox(width: 10),
-
-              // Training Goals & Types
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       AppString.trainingGoals,
-                      style: styleForText.copyWith(fontSize: 20.sp),
+                      style: styleForText.copyWith(fontSize: 20),
                     ),
-
-                    // Muscle Groups List (Horizontally scrollable)
                     SizedBox(
                       height: 75,
-                      child: ListView.builder(
+                      child: history.exercise.muscleGroup.isEmpty
+                          ? const Text('No Muscle Groups')
+                          : ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: workout.muscleGroups.length,
+                        itemCount: history.exercise.muscleGroup.length,
                         itemBuilder: (context, index) {
-                          final mg = workout.muscleGroups[index];
+                          final mg = history.exercise.muscleGroup[index];
                           return Padding(
                             padding: const EdgeInsets.only(right: 10),
                             child: Column(
                               children: [
                                 Text(
-                                  mg.name,
-                                  style: styleForText.copyWith(fontSize: 12),
+                                  mg.mgName.isNotEmpty
+                                      ? mg.mgName
+                                      : 'Unknown',
+                                  style:
+                                  styleForText.copyWith(fontSize: 12),
                                 ),
                                 const SizedBox(height: 3),
                                 CustomCommonImage(
-                                  imageSrc: "${AppUrl.baseUrl}${mg.image}",
+                                  imageSrc: mg.mgImage.isNotEmpty
+                                      ? "${AppUrl.baseUrl}${mg.mgImage}"
+                                      : 'https://via.placeholder.com/50',
                                   imageType: ImageType.network,
                                   height: 50,
                                   width: 50,
-                                ),
+                              ),
                               ],
                             ),
                           );
                         },
                       ),
                     ),
-
                     const SizedBox(height: 5),
-
-                    // Training Type Title
                     Text(
                       AppString.trainingType,
-                      style: styleForText.copyWith(fontSize: 20.sp),
+                      style: styleForText.copyWith(fontSize: 20),
                     ),
-
-                    // Workout Types Icons horizontally scrollable
                     SizedBox(
                       height: 40,
-                      child: ListView.builder(
+                      child: history.exercise.workoutType.isEmpty
+                          ? const Text('No Workout Types')
+                          : ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: workout.workoutTypes.length,
+                        itemCount: history.exercise.workoutType.length,
                         itemBuilder: (context, index) {
-                          final wt = workout.workoutTypes[index];
+                          final wt = history.exercise.workoutType[index];
                           return Padding(
                             padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
-                                CustomCommonImage(imageSrc: "${AppUrl.baseUrl}${wt.image}", imageType: ImageType.network,height: 44.h, width: 44.w, ),
+                                CustomCommonImage(
+                                  imageSrc: wt.image.isNotEmpty
+                                      ? "${AppUrl.baseUrl}${wt.image}"
+                                      : 'https://via.placeholder.com/44',
+                                  imageType: ImageType.network,
+                                  height: 44,
+                                  width: 44,
+                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  wt.name,
-                                  style: styleForText.copyWith(fontSize: 12),
+                                  wt.name.isNotEmpty ? wt.name : 'Unknown',
+                                  style:
+                                  styleForText.copyWith(fontSize: 12),
                                 ),
                               ],
                             ),
                           );
-
                         },
                       ),
                     ),
-
                     const SizedBox(height: 10),
                   ],
                 ),
               ),
             ],
           ),
-
-          if(isButton == true)
+          if (isButton)
             InkWell(
               onTap: startWorkoutTap,
               child: Obx(() {
@@ -162,6 +170,5 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
         ],
       ),
     );
-
   }
 }

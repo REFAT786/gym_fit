@@ -8,11 +8,13 @@ import '../../../../Utils/app_images.dart';
 import '../../../../Utils/app_string.dart';
 import '../../../../Utils/styles.dart';
 import '../../../Trainer/nav/screen/nav_bar_screen.dart';
+import '../../../Trainer/workout/controller/workout_details_controller.dart';
 import '../../color/controller/color_controller.dart';
 import '../../nav/screen/trainee_nav_bar_screen.dart';
 
 class TraineeCompleteSuccessfullyScreen extends StatelessWidget {
-  const TraineeCompleteSuccessfullyScreen({super.key});
+   TraineeCompleteSuccessfullyScreen({super.key});
+  final WorkoutDetailsController controller = Get.find<WorkoutDetailsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +36,14 @@ class TraineeCompleteSuccessfullyScreen extends StatelessWidget {
                 SizedBox(height: 20), // Space between the text and the button
                 InkWell(
                   onTap: () {
-                    if(PrefsHelper.myRole=="trainee"){
-                      Get.off(TraineeNavBarScreen());
-                    }else{
-                      Get.off(NavBarScreen());
-                    }
+
+                    controller.completeWorkout();
+                    //
+                    // if(PrefsHelper.myRole=="trainee"){
+                    //   Get.off(TraineeNavBarScreen());
+                    // }else{
+                    //   Get.off(NavBarScreen());
+                    // }
 
                   },
                   child: CustomButton(

@@ -1,8 +1,12 @@
 import 'package:get/get.dart';
 import '../../Role/Trainee/color/controller/color_controller.dart';
+import '../../Role/Trainee/history/controller/history_controller.dart';
 import '../../Role/Trainee/home/controller/trainee_home_controller.dart';
 import '../../Role/Trainee/nav/controller/trainee_nav_bar_controller.dart';
 import '../../Role/Trainee/onboarding/on_boarding_controller.dart';
+import '../../Role/Trainee/workout_plan/controller/specific_workout_plan_controller.dart';
+import '../../Role/Trainee/workout_plan/controller/workout_plan_controller.dart';
+import '../../Role/Trainee/workout_plan/controller/workout_plan_detail_controller.dart';
 import '../../Role/Trainer/Nav/controller/nav_controller.dart';
 import '../../Role/Trainer/auth/sign_in/controller/sign_in_controller.dart';
 import '../../Role/Trainer/home/controller/trainer_home_controller.dart';
@@ -40,6 +44,10 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => HelpCenterController(), fenix: true);
     Get.lazyPut(() => TrainerProfileDetailsController(), fenix: true);
     Get.lazyPut(() => ManagementProfileDetailsController(), fenix: true);
+    Get.lazyPut(() => HistoryController(), fenix: true);
+    Get.lazyPut(() => WorkoutPlanController(), fenix: true);
+    Get.lazyPut(() => SpecificWorkoutPlanController(), fenix: true);
+    Get.lazyPut(() => WorkoutPlanDetailController(), fenix: true);
     //>>>>>>>>>>>>>>>>>
     Get.lazyPut(() => TraineeHomeController(), fenix: true);
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

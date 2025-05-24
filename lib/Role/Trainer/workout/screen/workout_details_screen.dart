@@ -6,7 +6,6 @@ import 'package:gym_fit/Common/widgets/custom_button.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
 import 'package:gym_fit/Role/Trainer/workout/controller/workout_details_controller.dart';
 import 'package:gym_fit/Utils/app_url.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../../../Common/widgets/custom_back_button.dart';
 import '../../../../Common/widgets/custom_common_image.dart';
@@ -16,7 +15,6 @@ import '../../../../Utils/app_colors.dart';
 import '../../../../Utils/app_string.dart';
 import '../../../../Utils/styles.dart';
 import '../../../Trainee/color/controller/color_controller.dart';
-import '../../../Trainee/trainee_complete_successfully/screen/trainee_complete_successfully_screen.dart';
 
 class WorkoutDetailsScreen extends StatelessWidget {
   WorkoutDetailsScreen({super.key});

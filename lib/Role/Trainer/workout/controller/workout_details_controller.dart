@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Core/routes/routes_name.dart';
 import 'package:gym_fit/Model/wrok_out_model.dart';
 import '../../../../Helpers/snackbar_helper.dart';
 import '../../../../Model/search_workout_response.dart';
@@ -155,7 +156,7 @@ class WorkoutDetailsController extends GetxController {
     }
   }
 
-
+///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Add workout >>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<void> addWorkout() async {
 
     try {
@@ -191,6 +192,45 @@ class WorkoutDetailsController extends GetxController {
       );
       log("Login failed (Controller) e: $e");
       log("Login failed (Controller) s: $s");
+    } finally {
+      isLoading(false);
+      update();
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Complete workout >>>>>>>>>>>>>>>>>>>>
+  Future<void> completeWorkout() async {
+
+    try {
+      isLoading.value = true;
+
+      final response = await userRepository.completeWorkout(workoutId, showMessage: true);
+
+      if (response?.statusCode == 200) {
+        Get.offNamed(RoutesName.traineeHomeScreen);
+        SnackbarHelper.show(
+          title: "Success",
+          message: response!.message,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+      } else {
+        SnackbarHelper.show(
+          title: "Error",
+          message: response!.message,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+    } catch (e,s) {
+      SnackbarHelper.show(
+        title: "Error",
+        message: "Login failed: $e",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      log("workout done failed (Controller) e: $e");
+      log("workout done  (Controller) s: $s");
     } finally {
       isLoading(false);
       update();

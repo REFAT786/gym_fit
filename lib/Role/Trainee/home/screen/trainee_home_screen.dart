@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
 import 'package:gym_fit/Helpers/other_helper.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import '../../../../Common/widgets/custom_common_image.dart';
 import '../../../../Common/widgets/custom_search_field.dart';
@@ -71,11 +72,9 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
     );
 
     if (pickedDate != null) {
-      String selectedDateStr = DateHelper.getDate(serverDate: pickedDate.toIso8601String());
-
-      // Navigate to history page with selected date as argument
-      // Get.to(() => HistoryScreen(), arguments: {'selectedDate': selectedDateStr});
-      Get.toNamed(RoutesName.historyScreen);
+      // Format pickedDate as yyyy-MM-dd
+      final selectedDateStr = DateFormat('yyyy-MM-dd').format(pickedDate);
+      Get.toNamed(RoutesName.historyScreen, arguments: {'date': selectedDateStr});
     }
   }
 

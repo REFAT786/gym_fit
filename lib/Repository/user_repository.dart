@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:intl/intl.dart';
+
 import '../Helpers/prefs_helper.dart';
 import '../Model/profile_model.dart';
 import '../Services/api_service.dart';
@@ -191,18 +193,127 @@ class UserRepository {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Complete Workout >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  Future<ApiResponse> completeWorkout({
-    String? userId,
-    String? exerciseId,
-  }) async {
-    final Map<String, dynamic> body = {
-      'userId': userId,
-      'exerciseId': exerciseId,
-    };
+  Future<ApiResponse?> completeWorkout(
+      String id, {
+        bool showMessage = false,
+      }) async {
+    final url = "${AppUrl.completeWorkout}$id";
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log("Fetch individual Workout by ID Response: $response");
 
-    final response = await ApiService.to.postApi(AppUrl.completeWorkout, body);
-    return response;
+    if (response.statusCode == 200) {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Success individual Workout");
+      return response;
+    } else {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error individual Workout");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
   }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> View History  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse?> getHistory(
+      DateTime date, {
+        bool showMessage = false,
+      }) async {
+    final dateFormatted = DateFormat('yyyy-MM-dd').format(date);
+    final url = "${AppUrl.historyView}$dateFormatted";
+
+    log("Fetching workout history for date: $dateFormatted");
+    log("URL: $url");
+
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log("Response from getHistory: $response");
+
+    if (response.statusCode == 200) {
+      log("Success fetching history");
+      return response;
+    } else {
+      log("Failed fetching history: ${response.message}");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get All Workout plan  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse?> getAllWorkoutPlan({bool showMessage = false}) async {
+    final url = AppUrl.allWorkoutPlan;
+    log("Fetch All Workout plan URL: $url");
+
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log(" Workout All plan Response: $response");
+
+    if (response.statusCode == 200) {
+      log("Success All Workout plan");
+      return response;
+    } else {
+      log("Error All Workout plan: ${response.message}");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get All Specific Workout plan  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse?> getAllSpecificWorkoutPlan(String name,{bool showMessage = false}) async {
+    final url = "${AppUrl.allSpecificWorkoutPlan}$name";
+    log("Fetch All Specific Workout plan URL: $url");
+
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log(" Workout All Specific workout plan Response: $response");
+
+    if (response.statusCode == 200) {
+      log("Success All Specific Workout plan");
+      return response;
+    } else {
+      log("Error AllSpecific  Workout plan: ${response.message}");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get  Specific Workout plan  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse?> getSpecificWorkoutPlan(String id,{bool showMessage = false}) async {
+    final url = "${AppUrl.specificWorkoutPlan}$id";
+    log("Fetch  Specific Workout plan URL: $url");
+
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log(" Workout  Specific workout plan Response: $response");
+
+    if (response.statusCode == 200) {
+      log("Success  Specific Workout plan");
+      return response;
+    } else {
+      log("Error Specific  Workout plan: ${response.message}");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
+
 
 
 }

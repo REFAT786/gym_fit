@@ -34,7 +34,7 @@ class TraineeNavBarScreen extends StatelessWidget {
                 if (traineeNavBarController.isHomeActive.value) {
                   return const TraineeHomeScreen();
                 } else if (traineeNavBarController.isWorkoutPlanActive.value) {
-                  return const WorkoutPlanScreen();
+                  return  WorkoutPlanScreen();
                 }else if (traineeNavBarController.isProgressActive.value) {
                   return const WorkoutProgressScreen();
                 } else if (traineeNavBarController.isProfileActive.value) {

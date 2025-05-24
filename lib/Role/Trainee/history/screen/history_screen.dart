@@ -1,15 +1,16 @@
+// history_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../Common/widgets/custom_back_button.dart';
-import '../../../../Common/widgets/custom_trainer_gradient_background_color.dart';
 import '../../../../Utils/app_string.dart';
 import '../../../../Utils/styles.dart';
-import '../../../Trainer/workout/screen/workout_details_screen.dart';
-import '../../home/widget/custom_workout_plan_container.dart';
+import '../controller/history_controller.dart';
+import '../widget/custom_history_widget.dart';
 
 class HistoryScreen extends StatelessWidget {
-  const HistoryScreen({super.key});
+  HistoryScreen({super.key});
+
+  final HistoryController controller = Get.put(HistoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class HistoryScreen extends StatelessWidget {
           onPressed: () {
             Get.back();
           },
-          icon: CustomBackButton(),
+          icon: const CustomBackButton(),
         ),
         title: Text(
           AppString.history,
@@ -28,26 +29,30 @@ class HistoryScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-
-      body: CustomTrainerGradientBackgroundColor(
-        child: ListView.builder(
-          padding: EdgeInsets.all(14),
-          // itemCount: controller.workoutList.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-          // final workout = controller.workoutList[index];
-          return Container(child: Text("data", style: styleForText,),);
-          //   CustomWorkoutPlanContainer(
-          //   workout: workout,
-          //   isButton: false,
-          //   startWorkoutTap: () {
-          //     Get.to(() => WorkoutDetailsScreen());
-          //     // Get.to(() => WorkoutDetailsScreen(), arguments: {'id': workout.id});
-          //   },
-          // );
-        },),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await controller.fetchHistory();
+        },
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (controller.errorMessage.isNotEmpty) {
+            return Center(child: Text(controller.errorMessage.value));
+          }
+          if (controller.historyList.isEmpty) {
+            return const Center(child: Text("No history found"));
+          }
+          return ListView.builder(
+            padding: const EdgeInsets.all(14),
+            itemCount: controller.historyList.length,
+            itemBuilder: (context, index) {
+              final history = controller.historyList[index];
+              return CustomHistoryWidget(history: history, isButton: false);
+            },
+          );
+        }),
       ),
-
     );
   }
 }
