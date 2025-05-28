@@ -1,4 +1,3 @@
-// history_controller.dart
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +24,7 @@ class HistoryController extends GetxController {
         Get.arguments['date'] != null)
         ? Get.arguments['date']
         : DateFormat('yyyy-MM-dd').format(DateTime.now());
-    log(">>>>>>>>>>>>>>>>>>>>>>>>>>>> date : $date");
+    log("Date for history fetch: $date");
     fetchHistory();
   }
 
@@ -36,33 +35,30 @@ class HistoryController extends GetxController {
       log("Starting fetchHistory for date: $date");
 
       final DateTime parsedDate = DateTime.parse(date);
-      final response = await userRepository.getHistory(parsedDate, showMessage: true);
-      log("Response received: success=${response?.success}, statusCode=${response?.statusCode}, data=${response?.data}");
+      final response =
+      await userRepository.getHistory(parsedDate, showMessage: true);
+      log(
+          "Response received: success=${response?.success}, statusCode=${response?.statusCode}");
 
-      if (response?.statusCode == 200 ) {
+      if (response?.statusCode == 200) {
         final jsonData = response!.data;
         log("jsonData type: ${jsonData.runtimeType}");
         if (jsonData is Map<String, dynamic>) {
           final historyModel = HistoryData.fromJson(jsonData);
-          log("Parsed HistoryModel: type=${historyModel.type}, attributes count=${historyModel.attributes.length}");
+          log(
+              "Parsed HistoryModel: type=${historyModel.type}, attributes count=${historyModel.attributes.length}");
           historyList.value = historyModel.attributes;
           log("Loaded workouts count: ${historyList.length}");
-          if (historyList.isEmpty) {
-            log("Warning: historyList is empty despite successful parsing");
-          } else {
-            log("History items: ${historyList.map((h) => h.exercise.name).toList()}");
-          }
         } else {
           errorMessage.value =
-          "Invalid data structure from API: expected Map<String, dynamic>, got ${jsonData.runtimeType}";
+          "Invalid data structure: expected Map<String, dynamic>, got ${jsonData.runtimeType}";
           historyList.clear();
-          log("Error: $errorMessage.value");
+          log(errorMessage.value);
         }
       } else {
-        errorMessage.value =
-            response?.message ?? "Error fetching workout history.";
+        errorMessage.value = response?.message ?? "Error fetching workout history.";
         historyList.clear();
-        log("Error: $errorMessage.value, statusCode=${response?.statusCode}");
+        log("Error: ${errorMessage.value}");
       }
     } catch (e, st) {
       errorMessage.value = "Unexpected error: $e";

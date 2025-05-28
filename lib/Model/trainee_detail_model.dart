@@ -15,6 +15,7 @@ class TraineeDetailModel {
         workout = workout ?? [];
 
   factory TraineeDetailModel.fromJson(Map<String, dynamic> json) {
+    // json here is already json['attributes'] part from response
     return TraineeDetailModel(
       userDetails: json['userDetails'] != null
           ? UserDetails.fromJson(json['userDetails'])
@@ -22,7 +23,7 @@ class TraineeDetailModel {
       traineeDetails: json['traineeDetails'] != null
           ? TraineeDetails.fromJson(json['traineeDetails'])
           : TraineeDetails(),
-      totalWorkout: (json['totalWorkout'] is int) ? json['totalWorkout'] : 0,
+      totalWorkout: json['totalWorkout'] ?? 0,
       workout: (json['workout'] is List)
           ? (json['workout'] as List).map((e) => Workout.fromJson(e)).toList()
           : [],
@@ -146,7 +147,7 @@ class Workout {
   String exerciseImage;
   String exerciseVideo;
   String stationName;
-  int stationNumber;
+  String stationNumber;
 
   Workout({
     this.id = '',
@@ -156,7 +157,7 @@ class Workout {
     this.exerciseImage = '',
     this.exerciseVideo = '',
     this.stationName = '',
-    this.stationNumber = 0,
+    this.stationNumber = '',
   }) : measurement = measurement ?? [];
 
   factory Workout.fromJson(Map<String, dynamic> json) {
@@ -170,42 +171,24 @@ class Workout {
       exerciseImage: json['exerciseImage'] ?? '',
       exerciseVideo: json['exerciseVideo'] ?? '',
       stationName: json['stationName'] ?? '',
-      stationNumber: json['stationNumber'] ?? 0,
+      stationNumber: json['stationNumber']?.toString() ?? '',
     );
   }
 }
 
 class Measurement {
-  String id;
   String name;
-  String type;
-  int unit;
-  int defaultValue;
-  bool isRequired;
-  String createdAt;
-  String updatedAt;
+  String value;
 
   Measurement({
-    this.id = '',
     this.name = '',
-    this.type = '',
-    this.unit = 0,
-    this.defaultValue = 0,
-    this.isRequired = false,
-    this.createdAt = '',
-    this.updatedAt = '',
+    this.value = '',
   });
 
   factory Measurement.fromJson(Map<String, dynamic> json) {
     return Measurement(
-      id: json['_id'] ?? '',
       name: json['name'] ?? '',
-      type: json['type'] ?? '',
-      unit: json['unit'] ?? 0,
-      defaultValue: json['defaultValue'] ?? 0,
-      isRequired: json['isRequired'] ?? false,
-      createdAt: json['createdAt'] ?? '',
-      updatedAt: json['updatedAt'] ?? '',
+      value: json['value'] ?? '',
     );
   }
 }

@@ -120,23 +120,23 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                       ],
                     ),
                   ),
-                  const Spacer(),
-                  CircleAvatar(
-                    radius: 27,
-                    backgroundColor: AppColors.traineeNavBArColor,
-                    child: Obx(() {
-                      return IconButton(
-                        onPressed: () {
-                          Get.to(() => NotificationScreen());
-                        },
-                        icon: const Icon(
-                          Icons.notifications,
-                          size: 35,
-                        ),
-                        color: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
-                      );
-                    },),
-                  )
+                  // const Spacer(),
+                  // CircleAvatar(
+                  //   radius: 27,
+                  //   backgroundColor: AppColors.traineeNavBArColor,
+                  //   child: Obx(() {
+                  //     return IconButton(
+                  //       onPressed: () {
+                  //         Get.to(() => NotificationScreen());
+                  //       },
+                  //       icon: const Icon(
+                  //         Icons.notifications,
+                  //         size: 35,
+                  //       ),
+                  //       color: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
+                  //     );
+                  //   },),
+                  // )
                 ],
               ),
               const SizedBox(height: 20),

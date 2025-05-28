@@ -17,7 +17,8 @@ import '../../color/controller/color_controller.dart';
 
 class TrainingPageOne extends StatelessWidget {
   TrainingPageOne({super.key});
-  final WorkoutDetailsController controller = Get.find<WorkoutDetailsController>();
+  final WorkoutDetailsController controller =
+      Get.find<WorkoutDetailsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,24 +39,27 @@ class TrainingPageOne extends StatelessWidget {
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(left: 30),
-        child: Obx(() => InkWell(
-          onTap: () {
-
-
-
-            Get.toNamed(RoutesName.restScreen, arguments: {'date': DateTime.now()});
-
-          },
-          child: CustomButton(
-            buttonText: "Complete Set ${controller.index.value}",
-            backgroundColor: PrefsHelper.myRole == "trainee"
-                ? ColorController.instance.getButtonColor()
-                : AppColors.secondary,
-            textColor: PrefsHelper.myRole == 'trainee'
-                ? ColorController.instance.getTextColor()
-                : AppColors.primary,
+        child: Obx(
+          () => InkWell(
+            onTap: () {
+              Get.toNamed(
+                RoutesName.restScreen,
+                arguments: {'date': DateTime.now()},
+              );
+            },
+            child: CustomButton(
+              buttonText: "Complete Set ${controller.index.value}",
+              backgroundColor:
+                  PrefsHelper.myRole == "trainee"
+                      ? ColorController.instance.getButtonColor()
+                      : AppColors.secondary,
+              textColor:
+                  PrefsHelper.myRole == 'trainee'
+                      ? ColorController.instance.getTextColor()
+                      : AppColors.primary,
+            ),
           ),
-        ),),
+        ),
       ),
       body: CustomTrainerGradientBackgroundColor(
         child: SingleChildScrollView(
@@ -80,10 +84,12 @@ class TrainingPageOne extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Obx(() => Text(
-                      "Set ${controller.index.value} of ${controller.totalSets.value}",
-                      style: styleForText.copyWith(fontSize: 25),
-                    ),),
+                    Obx(
+                      () => Text(
+                        "Set ${controller.index.value} of ${controller.totalSets.value}",
+                        style: styleForText.copyWith(fontSize: 25),
+                      ),
+                    ),
                     const SizedBox(height: 10),
                     Text(
                       "Current Set",
@@ -91,23 +97,29 @@ class TrainingPageOne extends StatelessWidget {
                     ),
                     const SizedBox(height: 15),
                     GridView.builder(
-                      itemCount: controller.workoutDetail.value.measurements.length,
+                      itemCount:
+                          controller.workoutDetail.value.measurements.length,
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 1,
-                        crossAxisSpacing: 10,
-                        mainAxisExtent: 100,
-                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 1,
+                            crossAxisSpacing: 10,
+                            mainAxisExtent: 100,
+                          ),
                       itemBuilder: (context, index) {
-                        final measurements = controller.workoutDetail.value.measurements[index];
+                        final measurements =
+                            controller.workoutDetail.value.measurements[index];
                         return Obx(() {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                measurements['name'] == "rest" || measurements['name'] == "rests" ? "Rest Time" : measurements['name'],
+                                measurements['name'] == "rest" ||
+                                        measurements['name'] == "rests"
+                                    ? "Rest Time"
+                                    : measurements['name'],
                                 style: styleForText.copyWith(fontSize: 18),
                               ),
                               Container(
@@ -115,33 +127,32 @@ class TrainingPageOne extends StatelessWidget {
                                 padding: const EdgeInsets.all(18),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: PrefsHelper.myRole == 'trainee'
-                                      ? AppColors.traineeNavBArColor
-                                      : const Color(0xff033a5b),
+                                  color:
+                                      PrefsHelper.myRole == 'trainee'
+                                          ? AppColors.traineeNavBArColor
+                                          : const Color(0xff033a5b),
                                 ),
                                 child: Text(
-                                  measurements['name'] == "rest" || measurements['name'] == "rests"
-                                      ? measurements['defaultValue'].toString()
-                                      : measurements['unit'].toString(),
+                                  measurements['value'].toString(),
                                   style: styleForText.copyWith(
                                     fontWeight: FontWeight.w500,
-                                    color: PrefsHelper.myRole == "trainee"
-                                        ? ColorController.instance.getHintTextColor()
-                                        : AppColors.hintGrey,
+                                    color:
+                                        PrefsHelper.myRole == "trainee"
+                                            ? ColorController.instance
+                                                .getHintTextColor()
+                                            : AppColors.hintGrey,
                                     fontSize: 16,
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           );
                         });
                       },
                     ),
-
                   ],
                 ),
               ),
-
             ],
           ),
         ),

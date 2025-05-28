@@ -12,7 +12,7 @@ import '../../../../Utils/styles.dart';
 import '../controller/management_profile_details_controller.dart';
 
 class ManagementProfileDetailsScreen extends StatelessWidget {
-  ManagementProfileDetailsScreen({Key? key}) : super(key: key);
+  ManagementProfileDetailsScreen({super.key});
 
   final ManagementProfileDetailsController controller = Get.find<ManagementProfileDetailsController>();
 

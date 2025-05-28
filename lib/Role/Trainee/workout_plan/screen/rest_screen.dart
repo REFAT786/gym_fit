@@ -17,7 +17,7 @@ import '../../../Trainer/workout/controller/workout_details_controller.dart';
 import '../../color/controller/color_controller.dart';
 
 class RestScreen extends StatefulWidget {
-  RestScreen({super.key});
+  const RestScreen({super.key});
 
   @override
   State<RestScreen> createState() => _RestScreenState();
@@ -160,10 +160,13 @@ class _RestScreenState extends State<RestScreen> {
                       "Complete Sets",
                       style: styleForText.copyWith(fontSize: 24),
                     ),
-                    ...List.generate(controller.index.value , (index) {
+                    ...List.generate(controller.index.value, (index) {
                       return Container(
                         width: double.infinity,
-                        margin: EdgeInsets.symmetric(horizontal: 10,vertical: 8),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 8,
+                        ),
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -181,7 +184,7 @@ class _RestScreenState extends State<RestScreen> {
                             ),
                             SizedBox(height: 5),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 ...List.generate(
                                   controller
@@ -207,7 +210,7 @@ class _RestScreenState extends State<RestScreen> {
                                             ),
                                           ),
                                           Text(
-                                            data["unit"].toString(),
+                                            data["value"].toString(),
                                             style: styleForText.copyWith(
                                               fontSize: 18,
                                             ),
@@ -291,10 +294,7 @@ class _RestScreenState extends State<RestScreen> {
                                           : const Color(0xff033a5b),
                                 ),
                                 child: Text(
-                                  measurements['name'] == "rest" ||
-                                          measurements['name'] == "rests"
-                                      ? measurements['defaultValue'].toString()
-                                      : measurements['unit'].toString(),
+                                  measurements['value'].toString(),
                                   style: styleForText.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color:

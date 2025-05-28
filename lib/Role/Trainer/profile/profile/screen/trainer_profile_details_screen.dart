@@ -18,7 +18,16 @@ import '../controller/trainer_profile_details_controller.dart';
 class TrainerProfileDetailsScreen extends StatelessWidget {
   TrainerProfileDetailsScreen({super.key});
 
-  final TrainerProfileDetailsController controller = Get.find<TrainerProfileDetailsController>();
+  final TrainerProfileDetailsController controller =
+  Get.find<TrainerProfileDetailsController>();
+
+  String buildFullUrl(String? urlPath) {
+    if (urlPath == null || urlPath.isEmpty) {
+      return 'assets/images/noImage.png'; // fallback image asset path
+    }
+    final path = urlPath.startsWith('/') ? urlPath : '/$urlPath';
+    return '${AppUrl.baseUrl}$path';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,22 +38,17 @@ class TrainerProfileDetailsScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (controller.errorMessage.isNotEmpty) {
-            return Center(child: Text(controller.errorMessage.value));
+            return Center(child: Text(controller.errorMessage.value, style: styleForText));
           }
           final detail = controller.traineeDetail.value;
           if (detail == null) {
-            return const Center(child: Text('No trainee details available.'));
+            return Center(child: Text('No trainee details available.', style: styleForText));
           }
 
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  right: 10,
-                  top: 40,
-                  bottom: 10,
-                ),
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 40, bottom: 10),
                 child: Column(
                   children: [
                     CustomTitleBar(title: AppString.trainerProfile),
@@ -53,15 +57,11 @@ class TrainerProfileDetailsScreen extends StatelessWidget {
                       width: 100,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.secondary,
-                          width: 2,
-                        ),
+                        border: Border.all(color: AppColors.secondary, width: 2),
                       ),
                       child: ClipOval(
                         child: CustomCommonImage(
-                          imageSrc:
-                              '${AppUrl.baseUrl}${detail.userDetails.image}',
+                          imageSrc: buildFullUrl(detail.userDetails.image),
                           imageType: ImageType.network,
                         ),
                       ),
@@ -74,7 +74,6 @@ class TrainerProfileDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
               Container(
                 color: AppColors.primary,
                 height: 90,
@@ -82,77 +81,54 @@ class TrainerProfileDetailsScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildProfileDetailItem(
-                      'Age',
-                      detail.traineeDetails.age.toString(),
-                    ),
-                    _buildProfileDetailItem(
-                      'Gender',
-                      detail.traineeDetails.gender,
-                    ),
-                    _buildProfileDetailItem(
-                      'Weight',
-                      detail.traineeDetails.weight,
-                    ),
-                    _buildProfileDetailItem(
-                      'Height',
-                      detail.traineeDetails.height,
-                    ),
-                    _buildProfileDetailItem(
-                      'BMI',
-                      detail.traineeDetails.bmi.toString(),
-                    ),
+                    _buildProfileDetailItem('Age', detail.traineeDetails.age.toString()),
+                    _buildProfileDetailItem('Gender', detail.traineeDetails.gender),
+                    _buildProfileDetailItem('Weight', detail.traineeDetails.weight),
+                    _buildProfileDetailItem('Height', detail.traineeDetails.height),
+                    _buildProfileDetailItem('BMI', detail.traineeDetails.bmi.toString()),
                   ],
                 ),
               ),
-
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
-                  itemCount:
-                      detail
-                          .workout
-                          .length, // You can implement workout list if available
+                  itemCount: detail.workout.length,
                   itemBuilder: (context, index) {
                     var workDetails = detail.workout[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
                       child: InkWell(
                         onTap: () {
-                          log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>workDetails.id ${workDetails.id}");
-                          Get.to(() => WorkoutDetailsScreen(), arguments: {'id' : workDetails.id});
+                          log("Workout ID: ${workDetails.id}");
+                          Get.to(() => WorkoutDetailsScreen(), arguments: {'id': workDetails.id});
                         },
                         child: CustomWorkoutListTile(
                           isEditButton: true,
                           isArrowButton: false,
-                          leadingImage:
-                              '${AppUrl.baseUrl}${workDetails.exerciseImage}',
-                          station: 'Station ${workDetails.stationNumber}',
+                          leadingImage: buildFullUrl(workDetails.exerciseImage),
+                          station: workDetails.stationNumber.isNotEmpty
+                              ? 'Station ${workDetails.stationNumber}'
+                              : '',
                           gymCategory: workDetails.exerciseName,
-                          gymSet:
-                              workDetails.measurement.isNotEmpty
-                                  ? '${workDetails.measurement[0].unit} ${workDetails.measurement[0].name} × ${workDetails.measurement[1].unit} ${workDetails.measurement[1].name}'
-                                  : "",
+                          gymSet: workDetails.measurement.isNotEmpty
+                              ? workDetails.measurement
+                              .map((m) => '${m.value} ${m.name}')
+                              .join(' × ')
+                              : '',
                         ),
                       ),
                     );
                   },
                 ),
               ),
-
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: SizedBox(
                   height: 50,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.secondary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                     onPressed: () {
                       Get.to(() => AddWorkoutScreen());
@@ -160,10 +136,7 @@ class TrainerProfileDetailsScreen extends StatelessWidget {
                     icon: const Icon(Icons.add),
                     label: Text(
                       AppString.addWorkout,
-                      style: styleForText.copyWith(
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
+                      style: styleForText.copyWith(fontSize: 18, color: Colors.black),
                     ),
                   ),
                 ),
@@ -181,16 +154,14 @@ class TrainerProfileDetailsScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: AppColors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
+          Text(label,
+              style:  TextStyle(
+                color: AppColors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              )),
           const SizedBox(height: 10),
-          Text(value, style: TextStyle(color: AppColors.white, fontSize: 18)),
+          Text(value, style:  TextStyle(color: AppColors.white, fontSize: 18)),
         ],
       ),
     );

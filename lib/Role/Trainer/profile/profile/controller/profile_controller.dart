@@ -15,20 +15,21 @@ import '../../../../../Helpers/prefs_helper.dart';
 import '../../../../../Helpers/snackbar_helper.dart';
 import '../../../../../Model/profile_model.dart';
 import '../../../../../Repository/auth_repository.dart';
-import '../../../../../Utils/app_string.dart';
 import '../../../auth/sign_in/screen/sign_in_screen.dart';
 
 class ProfileController extends GetxController {
   RxString profileImage = "".obs;
   RxString myName = "".obs;
   RxBool isLoading = false.obs;
+  RxBool isPhoneNumberLoading = false.obs;
 
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  Rx<TextEditingController> phoneController = TextEditingController().obs;
+  RxString countryCode = "".obs;
 
   final RxString imagePath = ''.obs;
   final RxString gender = ''.obs;
@@ -45,8 +46,6 @@ class ProfileController extends GetxController {
     super.onInit();
     profile();
   }
-
-
 
   Future<void> pickImage() async {
     final pickedImage = await OtherHelper.pickImage(ImageSource.gallery);
@@ -65,7 +64,8 @@ class ProfileController extends GetxController {
         myName.value = profileModel!.fullName;
 
         nameController.text = profileModel!.fullName;
-        phoneController.text = profileModel!.phoneNumber;
+        phoneController.value.text = profileModel!.phoneNumber; // Set full phone number
+        countryCode.value = profileModel!.countryCode;
 
         gender.value = profileModel!.gender;
         height.value = profileModel!.height;
@@ -119,7 +119,8 @@ class ProfileController extends GetxController {
     final body = {
       "data": jsonEncode({
         "fullName": nameController.text.trim(),
-        "phoneNumber": phoneController.text.trim(),
+        "phoneNumber": phoneController.value.text.trim(),
+        "countryCode":countryCode.value,// Use the full phone number
         "gender": gender.value,
         "height": height.value,
         "weight": weight.value,
@@ -201,7 +202,7 @@ class ProfileController extends GetxController {
     newPasswordController.dispose();
     confirmPasswordController.dispose();
     nameController.dispose();
-    phoneController.dispose();
+    phoneController.value.dispose();
     super.onClose();
   }
 }

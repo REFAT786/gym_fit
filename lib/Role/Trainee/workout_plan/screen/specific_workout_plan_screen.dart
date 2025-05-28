@@ -28,12 +28,18 @@ class SpecificWorkoutPlanScreen extends StatelessWidget {
         ),
         body: Obx(
               () {
+                if (controller.isLoading.value) {
+                  // Show loading spinner while data is loading
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
             // Check if the workout list is empty or null
             if (controller.specificWorkoutList.isEmpty) {
-              return const Center(
+              return  Center(
                 child: Text(
                   'No workouts available',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: styleForText.copyWith(color: Colors.white, fontSize: 18),
                 ),
               );
             }

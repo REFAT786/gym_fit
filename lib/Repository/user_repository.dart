@@ -65,7 +65,7 @@ class UserRepository {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Trainee management  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   Future<ApiResponse?> getTraineeManagement({bool showMessage = false}) async {
-    final url = "${AppUrl.traineeManagement}${PrefsHelper.myRole}";
+    final url = AppUrl.traineeManagement;
     log("Fetch Trainee Management URL: $url");
 
     final response = await ApiService.to.getApi(url, showMessage: showMessage);
@@ -133,14 +133,38 @@ class UserRepository {
     }
   }
 
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get all Workout  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse?> searchAllWorkOut(
+      {
+        bool showMessage = false,
+      }) async {
+    final url = AppUrl.searchAllWorkout;
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log("Fetch all Workout by ID Response: $response");
+
+    if (response.statusCode == 200) {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Success search all Workout");
+      return response;
+    } else {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error search all Workout");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Add Workout >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<ApiResponse> addWorkOut({
-    String? traineeId,
-    String? exerciseId,
+    String traineeId = "",
+    String exerciseId = "",
   }) async {
-    final Map<String, dynamic> body = {
-      'traineeId': traineeId,
-      'exerciseId': exerciseId,
+    final Map<String, String> body = {
+      'user': traineeId,
+      'exercise': exerciseId,
     };
 
     final response = await ApiService.to.postApi(AppUrl.addWorkout, body);
@@ -304,6 +328,29 @@ class UserRepository {
       return response;
     } else {
       log("Error Specific  Workout plan: ${response.message}");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Workout progress  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse?> getWorkoutProgress({bool showMessage = false}) async {
+    final url = AppUrl.workoutProgress;
+    log("Fetch Workout Progress URL: $url");
+
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log("Workout Progress Response: $response");
+
+    if (response.statusCode == 200) {
+      log("Success Workout Progress");
+      return response;
+    } else {
+      log("Error Workout Progress: ${response.message}");
       return ApiResponse(
         success: false,
         message: response.message,

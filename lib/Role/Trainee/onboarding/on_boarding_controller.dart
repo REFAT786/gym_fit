@@ -50,12 +50,6 @@ class OnBoardingController extends GetxController {
       if (response.statusCode == 200) {
         log(">>>>>>>>>>>>>>>>>>>>>>>>> Response >>> ${response.data}");
         Get.offAllNamed(RoutesName.traineeNavBar);
-        SnackbarHelper.show(
-          title: "Success",
-          message: response.message,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-        );
       } else {
         SnackbarHelper.show(
           title: "Error",

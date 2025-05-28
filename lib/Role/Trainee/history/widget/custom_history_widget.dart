@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import '../../../../Common/widgets/custom_button.dart';
-import '../../../../Common/widgets/custom_common_image.dart';
-import '../../../../Helpers/prefs_helper.dart';
 import '../../../../Model/history_model.dart';
 import '../../../../Utils/app_colors.dart';
-import '../../../../Utils/app_string.dart';
 import '../../../../Utils/app_url.dart';
 import '../../../../Utils/styles.dart';
-import '../../color/controller/color_controller.dart';
-
+import '../../../../Common/widgets/custom_common_image.dart';
 
 class CustomHistoryWidget extends StatelessWidget {
   final HistoryAttribute history;
@@ -17,11 +11,11 @@ class CustomHistoryWidget extends StatelessWidget {
   final VoidCallback? startWorkoutTap;
 
   const CustomHistoryWidget({
-    super.key,
+    Key? key,
     required this.history,
     this.startWorkoutTap,
     this.isButton = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +58,14 @@ class CustomHistoryWidget extends StatelessWidget {
                 imageType: ImageType.network,
                 height: 170,
                 width: 125,
-             ),
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppString.trainingGoals,
+                      'Training Goals',
                       style: styleForText.copyWith(fontSize: 20),
                     ),
                     SizedBox(
@@ -88,11 +82,8 @@ class CustomHistoryWidget extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  mg.mgName.isNotEmpty
-                                      ? mg.mgName
-                                      : 'Unknown',
-                                  style:
-                                  styleForText.copyWith(fontSize: 12),
+                                  mg.mgName.isNotEmpty ? mg.mgName : 'Unknown',
+                                  style: styleForText.copyWith(fontSize: 12),
                                 ),
                                 const SizedBox(height: 3),
                                 CustomCommonImage(
@@ -102,7 +93,7 @@ class CustomHistoryWidget extends StatelessWidget {
                                   imageType: ImageType.network,
                                   height: 50,
                                   width: 50,
-                              ),
+                                ),
                               ],
                             ),
                           );
@@ -111,7 +102,7 @@ class CustomHistoryWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      AppString.trainingType,
+                      'Training Type',
                       style: styleForText.copyWith(fontSize: 20),
                     ),
                     SizedBox(
@@ -134,12 +125,11 @@ class CustomHistoryWidget extends StatelessWidget {
                                   imageType: ImageType.network,
                                   height: 44,
                                   width: 44,
-                                 ),
+                                ),
                                 const SizedBox(width: 5),
                                 Text(
                                   wt.name.isNotEmpty ? wt.name : 'Unknown',
-                                  style:
-                                  styleForText.copyWith(fontSize: 12),
+                                  style: styleForText.copyWith(fontSize: 12),
                                 ),
                               ],
                             ),
@@ -156,16 +146,18 @@ class CustomHistoryWidget extends StatelessWidget {
           if (isButton)
             InkWell(
               onTap: startWorkoutTap,
-              child: Obx(() {
-                return CustomButton(
-                  borderRadius: 12,
-                  buttonText: AppString.startWorkout,
-                  textColor: ColorController.instance.getTextColor(),
-                  backgroundColor: PrefsHelper.myRole == "trainee"
-                      ? ColorController.instance.getButtonColor()
-                      : AppColors.secondary,
-                );
-              }),
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'Start Workout',
+                  style: styleForText.copyWith(color: Colors.white, fontSize: 16),
+                ),
+              ),
             ),
         ],
       ),

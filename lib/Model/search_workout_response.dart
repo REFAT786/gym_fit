@@ -2,7 +2,7 @@ class SearchWorkoutResponse {
   final String status;
   final int statusCode;
   final String message;
-  final List<Exercise> exercises;
+  final List<ExerciseModel> exercises;
 
   SearchWorkoutResponse({
     required this.status,
@@ -17,21 +17,21 @@ class SearchWorkoutResponse {
       statusCode: json['statusCode'] ?? 0,
       message: json['message'] ?? '',
       exercises: json['data'] != null && json['data']['exercises'] != null
-          ? List<Exercise>.from(
-          json['data']['exercises'].map((x) => Exercise.fromJson(x)))
+          ? List<ExerciseModel>.from(
+          json['data']['exercises'].map((x) => ExerciseModel.fromJson(x)))
           : [],
     );
   }
 }
 
-class Exercise {
+class ExerciseModel {
   final String id;
   final String name;
   final String exerciseImage;
   final String exerciseVideo;
   final String description;
 
-  Exercise({
+  ExerciseModel({
     required this.id,
     required this.name,
     required this.exerciseImage,
@@ -39,7 +39,7 @@ class Exercise {
     required this.description,
   });
 
-  factory Exercise.fromJson(Map<String, dynamic> json) => Exercise(
+  factory ExerciseModel.fromJson(Map<String, dynamic> json) => ExerciseModel(
     id: json["_id"] ?? '',
     name: json["name"] ?? '',
     exerciseImage: json["exerciseImage"] ?? '',

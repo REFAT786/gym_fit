@@ -130,10 +130,19 @@ class Measurement {
   });
 
   factory Measurement.fromJson(Map<String, dynamic> json) {
+    int parsedUnit = 0;
+
+    if (json['unit'] != null) {
+      // Try parsing numeric part from string like "5 unit"
+      final unitValue = json['unit'].toString();
+      final numberString = RegExp(r'\d+').stringMatch(unitValue);
+      parsedUnit = numberString != null ? int.tryParse(numberString) ?? 0 : 0;
+    }
+
     return Measurement(
       id: json['_id'] ?? '',
       name: json['name'] ?? '',
-      unit: json['unit'] ?? 0,
+      unit: parsedUnit,
     );
   }
 
@@ -182,10 +191,18 @@ class Station {
   });
 
   factory Station.fromJson(Map<String, dynamic> json) {
+    int parsedNumber = 0;
+
+    if (json['stationNumber'] != null) {
+      final stationNumberValue = json['stationNumber'].toString();
+      final numberString = RegExp(r'\d+').stringMatch(stationNumberValue);
+      parsedNumber = numberString != null ? int.tryParse(numberString) ?? 0 : 0;
+    }
+
     return Station(
       id: json['_id'] ?? '',
       stationName: json['stationName'] ?? '',
-      stationNumber: json['stationNumber'] ?? 0,
+      stationNumber: parsedNumber,
     );
   }
 

@@ -8,6 +8,7 @@ class ProfileModel {
   final String image;
   final String role;
   final String phoneNumber;
+  final String countryCode;
 
   final String gender;
   final String height;
@@ -30,6 +31,7 @@ class ProfileModel {
     this.userName = '',
     this.email = '',
     this.phoneNumber = '',
+    this.countryCode = '',
     this.gender = '',
     this.height = '',
     this.weight = '',
@@ -62,6 +64,7 @@ class ProfileModel {
           ? json['role']
           : (json['role']?['type'] ?? ''),
       phoneNumber: json['phoneNumber'] ?? '',
+      countryCode: json['countryCode'] ?? '',
       gender: json['gender'] ?? '',
       height: json['height'] ?? '',
       weight: json['weight'] ?? '',

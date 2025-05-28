@@ -11,24 +11,23 @@ import '../../../../Model/search_workout_response.dart';
 import '../../../../Repository/user_repository.dart';
 
 class WorkoutDetailsController extends GetxController {
-
   //===========================================================
   RxList magermentList = [].obs;
   final UserRepository userRepository = UserRepository();
   final TextEditingController searchController = TextEditingController();
-  RxList<Exercise> searchResults = <Exercise>[].obs;
+  RxList<ExerciseModel> searchResults = <ExerciseModel>[].obs;
 
   late String workoutId;
   RxInt index = 1.obs;
 
-  late RxString  exerciseId;
-  late RxString  traineeId;
+  RxString exerciseId = "".obs;
+  RxString traineeId = "".obs;
   late RxDouble totalSets = 1.0.obs;
   late RxDouble timer = 1.0.obs;
 
   // Reactive variables for loading state, workout data, and error message
   var isLoading = false.obs;
-  Rx<WorkOutModel> workoutDetail = WorkOutModel().obs ;
+  Rx<WorkOutModel> workoutDetail = WorkOutModel().obs;
   var errorMessage = ''.obs;
 
   RxInt remainingSeconds = 0.obs;
@@ -37,7 +36,7 @@ class WorkoutDetailsController extends GetxController {
   // Call this method to start timer countdown
   void startTimer() {
     stopTimer(); // Stop any previous timer
-    remainingSeconds.value = (timer.value*60).toInt();
+    remainingSeconds.value = (timer.value * 60).toInt();
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (remainingSeconds.value > 0) {
@@ -47,6 +46,7 @@ class WorkoutDetailsController extends GetxController {
       }
     });
   }
+
   void stopTimer() {
     _timer?.cancel();
     _timer = null;
@@ -61,28 +61,45 @@ class WorkoutDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    workoutId = (Get.arguments != null && Get.arguments is Map && Get.arguments['id'] != null)
-        ? Get.arguments['id']
-        : '';
+    workoutId =
+        (Get.arguments != null &&
+                Get.arguments is Map &&
+                Get.arguments['id'] != null)
+            ? Get.arguments['id']
+            : '';
     log("WorkoutDetailsController initialized with workoutId: $workoutId");
     fetchWorkoutDetail();
   }
 
 
-  void searchWorkout(String query) async {
-    if (query.isEmpty) {
-      searchResults.clear();
-      return;
-    }
 
+  Timer? _debounce;
+  void onSearchChanged({String value = ""}) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 600), () {
+      searchWorkout(query: value);
+    });
+  }
+
+
+
+  void searchWorkout({String query = ''}) async {
     isLoading.value = true;
     errorMessage.value = '';
 
     try {
-      final response = await userRepository.searchWorkOut(query, showMessage: true);
+      final response = await userRepository.searchWorkOut(
+        query,
+        showMessage: true,
+      );
       if (response?.statusCode == 200) {
-        final data = SearchWorkoutResponse.fromJson(response!.data);
-        searchResults.assignAll(data.exercises);
+        List data = response!.data["exercises"];
+        // log("excersice=====${data["exercises"]}");
+        searchResults.value =
+            data.map((value) => ExerciseModel.fromJson(value)).toList();
+
+        log("searchResults=====$searchResults");
       } else {
         errorMessage.value = response?.message ?? "Failed to search";
         searchResults.clear();
@@ -106,7 +123,10 @@ class WorkoutDetailsController extends GetxController {
     errorMessage.value = '';
 
     try {
-      final response = await userRepository.getIndividualWorkoutById(workoutId, showMessage: true);
+      final response = await userRepository.getIndividualWorkoutById(
+        workoutId,
+        showMessage: true,
+      );
 
       log("responseData -====>${response?.statusCode}");
 
@@ -114,8 +134,9 @@ class WorkoutDetailsController extends GetxController {
         // Parse the full JSON response into WorkOutModel
         log("workoutData=====>${response?.data}");
         List data = response!.data["attributes"];
-        if(data.isNotEmpty){
-          workoutDetail.value = WorkOutModel.fromJson(data[0]);}
+        if (data.isNotEmpty) {
+          workoutDetail.value = WorkOutModel.fromJson(data[0]);
+        }
         errorMessage.value = '';
         log("Workout data loaded successfully");
         log("myData=====>${workoutDetail.value.id}");
@@ -124,26 +145,27 @@ class WorkoutDetailsController extends GetxController {
         for (var measurement in workoutDetail.value.measurements) {
           final name = (measurement['name'] ?? '').toString().toLowerCase();
           if (name == 'sets' || name == 'set') {
-            final unitValue = measurement['unit'];
-            if (unitValue != null) {
-              totalSets.value = (unitValue is num)
-                  ? unitValue.toDouble()
-                  : double.tryParse(unitValue.toString()) ?? 1.0;
-            }
-          }
-        }
-        for (var measurement in workoutDetail.value.measurements) {
-          final name = (measurement['name'] ?? '').toString().toLowerCase();
-          if (name == 'rest' || name == 'rests') {
-            final unitValue = measurement['unit'];
-            if (unitValue != null) {
-              timer.value = (unitValue is num)
-                  ? unitValue.toDouble()
-                  : double.tryParse(unitValue.toString()) ?? 1.0;
+            final value = measurement['value'];
+            if (value != null) {
+              // The value is like "5 unit", so extract the number
+              final numberStr = value.toString().split(' ').first;
+              totalSets.value = double.tryParse(numberStr) ?? 1.0;
             }
           }
         }
 
+        for (var measurement in workoutDetail.value.measurements) {
+          final name = (measurement['name'] ?? '').toString().toLowerCase();
+          if (name == 'rest' || name == 'rests') {
+            final value = measurement['value'];
+            if (value != null) {
+              timer.value =
+                  (value is num)
+                      ? value.toDouble()
+                      : double.tryParse(value.toString()) ?? 1.0;
+            }
+          }
+        }
       } else {
         errorMessage.value = response?.message ?? 'Failed to load workout data';
         log("API returned error: ${errorMessage.value}");
@@ -156,9 +178,8 @@ class WorkoutDetailsController extends GetxController {
     }
   }
 
-///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Add workout >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Add workout >>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<void> addWorkout() async {
-
     try {
       isLoading.value = true;
 
@@ -167,7 +188,7 @@ class WorkoutDetailsController extends GetxController {
         exerciseId: exerciseId.value,
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         Get.back();
         SnackbarHelper.show(
           title: "Success",
@@ -183,15 +204,15 @@ class WorkoutDetailsController extends GetxController {
           textColor: Colors.white,
         );
       }
-    } catch (e,s) {
+    } catch (e, s) {
       SnackbarHelper.show(
         title: "Error",
-        message: "Login failed: $e",
+        message: "Add failed: $e",
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
-      log("Login failed (Controller) e: $e");
-      log("Login failed (Controller) s: $s");
+      log("Add failed (Controller) e: $e");
+      log("Add failed (Controller) s: $s");
     } finally {
       isLoading(false);
       update();
@@ -200,14 +221,16 @@ class WorkoutDetailsController extends GetxController {
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Complete workout >>>>>>>>>>>>>>>>>>>>
   Future<void> completeWorkout() async {
-
     try {
       isLoading.value = true;
 
-      final response = await userRepository.completeWorkout(workoutId, showMessage: true);
+      final response = await userRepository.completeWorkout(
+        workoutId,
+        showMessage: true,
+      );
 
       if (response?.statusCode == 200) {
-        Get.offNamed(RoutesName.traineeHomeScreen);
+        Get.offNamed(RoutesName.traineeNavBar);
         SnackbarHelper.show(
           title: "Success",
           message: response!.message,
@@ -222,7 +245,7 @@ class WorkoutDetailsController extends GetxController {
           textColor: Colors.white,
         );
       }
-    } catch (e,s) {
+    } catch (e, s) {
       SnackbarHelper.show(
         title: "Error",
         message: "Login failed: $e",
@@ -236,5 +259,4 @@ class WorkoutDetailsController extends GetxController {
       update();
     }
   }
-
 }

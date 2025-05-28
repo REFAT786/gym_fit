@@ -1,21 +1,23 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Helpers/other_helper.dart';
-import 'package:gym_fit/Utils/app_url.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../Common/widgets/custom_button.dart';
 import '../../../../../Common/widgets/custom_text_field.dart';
 import '../../../../../Common/widgets/custom_title_bar.dart';
 import '../../../../../Common/widgets/custom_trainer_gradient_background_color.dart';
 import '../../../../../Helpers/prefs_helper.dart';
 import '../../../../../Utils/app_colors.dart';
-import '../../../../../Utils/app_images.dart';
 import '../../../../../Utils/app_string.dart';
 import '../../../../../Utils/styles.dart';
 import '../../../../Trainee/color/controller/color_controller.dart';
 import '../../profile/controller/profile_controller.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
@@ -23,8 +25,22 @@ class EditProfileScreen extends StatelessWidget {
   final ProfileController controller = Get.find<ProfileController>();
   final ColorController colorController = Get.find<ColorController>();
 
+  // Helper method to extract country code and phone number
+  PhoneNumber? _parsePhoneNumber(String? phone) {
+    if (phone == null || phone.isEmpty) return null;
+    try {
+      // Assuming phone is in format "+8801949494949"
+      // Use the intl_phone_field package's PhoneNumber class to parse
+      return PhoneNumber.fromCompleteNumber(completeNumber: phone);
+    } catch (e) {
+      log("Error parsing phone number: $e");
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return CustomTrainerGradientBackgroundColor(
       child: Scaffold(
         body: Obx(() {
@@ -91,24 +107,31 @@ class EditProfileScreen extends StatelessWidget {
                       /// Phone Number Input
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: IntlPhoneField(
-                          controller: controller.phoneController,
-                          initialValue: controller.phoneController.text.isNotEmpty
-                              ? controller.phoneController.text
-                              : null,
-                          style: styleForText.copyWith(color: AppColors.textColor, fontSize: 16),
-                          //styleForText.copyWith(
-                          //       color: PrefsHelper.myRole == 'trainee'
-                          //           ? colorController.getTextColor()
-                          //           : AppColors.white,
+                        child: controller.countryCode.value.isNotEmpty &&
+                            controller.isPhoneNumberLoading.value?Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            height: 50,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(
+                                  20),
+                            ),
+                          ),
+                        ):IntlPhoneField(
+                          controller: controller.phoneController.value,
+                          validator: (value) => OtherHelper.validator(value?.number),
                           decoration: InputDecoration(
+                            labelStyle: styleForText.copyWith(color: Colors.white, fontSize: 16),
                             counterText: "",
                             hintText: AppString.phoneNumber,
                             hintStyle: styleForText.copyWith(
-                              color: PrefsHelper.myRole == 'trainee'
-                                  ? colorController.getHintTextColor()
+                              fontWeight: FontWeight.w500,
+                              color: PrefsHelper.myRole == "trainee"
+                                  ? ColorController.instance.getHintTextColor()
                                   : AppColors.hintGrey,
-                              fontWeight: FontWeight.w400,
                               fontSize: 16,
                             ),
                             fillColor: PrefsHelper.myRole == "trainee"
@@ -117,8 +140,25 @@ class EditProfileScreen extends StatelessWidget {
                             filled: true,
                             border: OutlineInputBorder(
                               borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(50),
+                              borderRadius: BorderRadius.circular(20),
                             ),
+                          ),
+                          initialCountryCode: controller.countryCode.value.isNotEmpty
+                              ? controller.countryCode.value
+                              : 'US',
+                          initialValue: controller.phoneController.value.text.isNotEmpty
+                              ? controller.phoneController.value.text
+                              : null,
+                          onChanged: (phone) {
+                            controller.countryCode.value = phone.countryISOCode;
+                            controller.phoneController.value.text = phone.number;
+                            controller.update();
+                          },
+                          style: styleForText.copyWith(
+                            color: PrefsHelper.myRole == 'trainee'
+                                ? ColorController.instance.getTextColor()
+                                : AppColors.textColor,
+                            fontSize: 16,
                           ),
                           dropdownTextStyle: TextStyle(
                             color: PrefsHelper.myRole == 'trainee'
@@ -127,6 +167,7 @@ class EditProfileScreen extends StatelessWidget {
                           ),
                           dropdownIcon: const Icon(Icons.arrow_drop_down, color: Colors.white),
                         ),
+
                       ),
                     ],
                   ),
@@ -147,7 +188,7 @@ class EditProfileScreen extends StatelessWidget {
                   textColor: PrefsHelper.myRole == "trainee"
                       ? colorController.getTextColor()
                       : AppColors.primary,
-                  onTap: controller.updateProfile,
+                  onTap: (){controller.updateProfile();},
                 ),
               ),
             ],

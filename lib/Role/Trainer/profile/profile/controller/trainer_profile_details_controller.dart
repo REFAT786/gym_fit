@@ -5,9 +5,11 @@ import '../../../../../Model/trainee_detail_model.dart';
 import '../../../../../Repository/user_repository.dart';
 
 class TrainerProfileDetailsController extends GetxController {
-  static TrainerProfileDetailsController get instance => Get.find<TrainerProfileDetailsController>();
 
+  static TrainerProfileDetailsController get instance => Get.find<TrainerProfileDetailsController>();
   final UserRepository userRepository = UserRepository();
+
+
 
   late String traineeId;
 
@@ -19,7 +21,7 @@ class TrainerProfileDetailsController extends GetxController {
   void onInit() {
     super.onInit();
     traineeId = Get.arguments['id'] ?? '';
-    log(">>>>>>>>>>>>>>>>>>>>>>>>> Trainee Id : $traineeId");
+    log("Trainee Id : $traineeId");
     fetchTraineeDetail();
   }
 
@@ -28,19 +30,22 @@ class TrainerProfileDetailsController extends GetxController {
       errorMessage.value = 'Trainee ID not provided';
       return;
     }
-    isLoading(true);
-    var response = await userRepository.getTraineeProfileById(traineeId, showMessage: true);
+    isLoading.value = true;
+    final response = await userRepository.getTraineeProfileById(traineeId, showMessage: true);
 
-    if (response?.statusCode == 200 && response?.data != null) {
+    if (response?.statusCode == 200) {
       try {
         traineeDetail.value = TraineeDetailModel.fromJson(response!.data['attributes']);
         errorMessage.value = '';
+        log("Trainee Detail fetched successfully");
       } catch (e) {
         errorMessage.value = 'Failed to parse trainee data';
+        log('Parse error: $e');
       }
     } else {
       errorMessage.value = response?.message ?? 'Failed to load trainee data';
+      log('Error: ${response?.message}');
     }
-    isLoading(false);
+    isLoading.value = false;
   }
 }

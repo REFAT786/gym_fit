@@ -19,7 +19,7 @@ class TrainerManagementScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 40),
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

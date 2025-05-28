@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -51,19 +53,19 @@ class TrainerHomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Spacer(),
-                CircleAvatar(
-                  radius: 27,
-                  backgroundColor: AppColors.primary,
-                  child: IconButton(
-                    onPressed: () => Get.to(NotificationScreen()),
-                    icon: const Icon(
-                      Icons.notifications,
-                      size: 35,
-                    ),
-                    color: AppColors.secondary,
-                  ),
-                )
+                // const Spacer(),
+                // CircleAvatar(
+                //   radius: 27,
+                //   backgroundColor: AppColors.primary,
+                //   child: IconButton(
+                //     onPressed: () => Get.to(NotificationScreen()),
+                //     icon: const Icon(
+                //       Icons.notifications,
+                //       size: 35,
+                //     ),
+                //     color: AppColors.secondary,
+                //   ),
+                // )
               ],
             ),
 
@@ -84,6 +86,7 @@ class TrainerHomeScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var trainee = controller.trainees[index];
                   var traineeId = trainee['user'];
+                  log("controller.trainees.length ::>>>>>>> ${controller.trainees.length}");
                   
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),

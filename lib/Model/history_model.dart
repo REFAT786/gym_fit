@@ -272,15 +272,26 @@ class Station {
     this.v = 0,
   });
 
-  factory Station.fromJson(Map<String, dynamic> json) => Station(
-    id: json['_id'] ?? '',
-    stationName: json['stationName'] ?? '',
-    stationNumber: json['stationNumber'] ?? 0,
-    description: json['description'] ?? '',
-    branch: json['branch'] ?? '',
-    exercise: json['exercise'] ?? '',
-    v: json['__v'] ?? 0,
-  );
+  factory Station.fromJson(Map<String, dynamic> json) {
+    dynamic rawStationNumber = json['stationNumber'];
+    int parsedStationNumber = 0;
+
+    if (rawStationNumber is int) {
+      parsedStationNumber = rawStationNumber;
+    } else if (rawStationNumber is String) {
+      parsedStationNumber = int.tryParse(rawStationNumber) ?? 0;
+    }
+
+    return Station(
+      id: json['_id'] ?? '',
+      stationName: json['stationName'] ?? '',
+      stationNumber: parsedStationNumber,
+      description: json['description'] ?? '',
+      branch: json['branch'] ?? '',
+      exercise: json['exercise'] ?? '',
+      v: json['__v'] ?? 0,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     '_id': id,

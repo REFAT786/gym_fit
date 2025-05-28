@@ -7,6 +7,7 @@ import '../../Role/Trainee/onboarding/on_boarding_controller.dart';
 import '../../Role/Trainee/workout_plan/controller/specific_workout_plan_controller.dart';
 import '../../Role/Trainee/workout_plan/controller/workout_plan_controller.dart';
 import '../../Role/Trainee/workout_plan/controller/workout_plan_detail_controller.dart';
+import '../../Role/Trainee/workout_progress/controller/workout_progress_controller.dart';
 import '../../Role/Trainer/Nav/controller/nav_controller.dart';
 import '../../Role/Trainer/auth/sign_in/controller/sign_in_controller.dart';
 import '../../Role/Trainer/home/controller/trainer_home_controller.dart';
@@ -48,6 +49,7 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => WorkoutPlanController(), fenix: true);
     Get.lazyPut(() => SpecificWorkoutPlanController(), fenix: true);
     Get.lazyPut(() => WorkoutPlanDetailController(), fenix: true);
+    Get.lazyPut(() => WorkoutProgressController(), fenix: true);
     //>>>>>>>>>>>>>>>>>
     Get.lazyPut(() => TraineeHomeController(), fenix: true);
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

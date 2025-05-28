@@ -69,53 +69,59 @@ class CustomCommonImage extends StatelessWidget {
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     if (imageType == ImageType.network) {
-      imageWidget = CachedNetworkImage(
-        height: size ?? height,
-        width: size?? width,
-        // imageUrl: "${AppUrls.imageUrl}/$imageSrc"
-        imageUrl: imageSrc,
-        imageBuilder: (context, imageProvider) => Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadius),
-            image: DecorationImage(
-              image: imageProvider,
-              fit: BoxFit.fill,
-            ),
-          ),
-        ),
-        progressIndicatorBuilder: (context, url, downloadProgress) {
-          return Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
-            child: Container(
-              height: size ?? height,
-              width: size ?? width,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(borderRadius),
+      // Check if imageSrc is actually a valid URL (starts with http/https)
+      if (imageSrc.startsWith('http')) {
+        imageWidget = CachedNetworkImage(
+          height: size ?? height,
+          width: size ?? width,
+          imageUrl: imageSrc,
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(borderRadius),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.fill,
               ),
             ),
-          );
-        },
-        errorWidget: (context, url, error) {
-          if (kDebugMode) {
-            print("============>>>error: $error");
-            print("============>>>error: $defaultImage");
-          }
-          return Container(
-            height: size ?? height,
-            width: size?? width,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius),
-                image: DecorationImage(image: AssetImage(defaultImage))
-            ),
-            // child: Image.asset(
-            //   defaultImage,
-            // ),
-          );
-        },
-      );
+          ),
+          progressIndicatorBuilder: (context, url, downloadProgress) {
+            return Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                height: size ?? height,
+                width: size ?? width,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(borderRadius),
+                ),
+              ),
+            );
+          },
+          errorWidget: (context, url, error) {
+            if (kDebugMode) {
+              print("============>>>error: $error");
+              print("============>>>error: $defaultImage");
+            }
+            return Image.asset(
+              defaultImage,
+              height: size ?? height,
+              width: size ?? width,
+              fit: fill,
+            );
+          },
+        );
+      } else {
+        // If imageSrc is NOT a valid URL, fallback to local asset image
+        imageWidget = Image.asset(
+          defaultImage,
+          height: size ?? height,
+          width: size ?? width,
+          fit: fill,
+        );
+      }
     }
+
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 

@@ -46,10 +46,13 @@ class WorkoutDetailsScreen extends StatelessWidget {
             },
             icon: CustomBackButton(),
           ),
-          title: Text(
-            AppString.letsPush,
-            style: styleForText.copyWith(fontSize: 24),
-          ),
+          title:
+              controller.workoutDetail.value.exerciseName.isNotEmpty
+                  ? Text(
+                    controller.workoutDetail.value.exerciseName,
+                    style: styleForText.copyWith(fontSize: 24),
+                  )
+                  : Text(""),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -78,8 +81,25 @@ class WorkoutDetailsScreen extends StatelessWidget {
                                   .isNotEmpty
                               ? CustomCommonImage(
                                 imageSrc:
-                                    "${AppUrl.baseUrl}${controller.workoutDetail.value.exerciseImage}",
-                                imageType: ImageType.network,
+                                    controller
+                                            .workoutDetail
+                                            .value
+                                            .exerciseImage
+                                            .isNotEmpty
+                                        ? "${AppUrl.baseUrl}${controller.workoutDetail.value.exerciseImage}"
+                                        : "",
+                                imageType:
+                                    controller
+                                            .workoutDetail
+                                            .value
+                                            .exerciseImage
+                                            .isNotEmpty
+                                        ? ImageType.network
+                                        : ImageType.png,
+                                defaultImage: "assets/images/noImage.png",
+                                height: 250,
+                                width: double.infinity,
+                                borderRadius: 16,
                               )
                               : Center(child: Text("No video available")),
                     );
@@ -260,48 +280,58 @@ class WorkoutDetailsScreen extends StatelessWidget {
 
                         Obx(() {
                           return ListView.builder(
-                            itemCount: controller.workoutDetail.value.measurements.length,
+                            itemCount:
+                                controller
+                                    .workoutDetail
+                                    .value
+                                    .measurements
+                                    .length,
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              var measurements = controller.workoutDetail.value.measurements[index];
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${measurements['name']}",
-                                  style: styleForText.copyWith(fontSize: 25),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.all(18),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    color:
-                                    PrefsHelper.myRole == 'trainee'
-                                        ? AppColors.traineeNavBArColor
-                                        : Color(0xff033a5b),
+                              log(
+                                ">>>>>>>>>>>>>>>>>???? --  controller.workoutDetail.value.measurements.length : ${controller.workoutDetail.value.measurements.length}",
+                              );
+                              var measurements =
+                                  controller
+                                      .workoutDetail
+                                      .value
+                                      .measurements[index];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${measurements['name']}",
+                                    style: styleForText.copyWith(fontSize: 25),
                                   ),
-                                  child: Text(
-                                    "${measurements['unit']}",
-                                    style: styleForText.copyWith(
-                                      fontWeight: FontWeight.w500,
+                                  Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.all(18),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
                                       color:
-                                      PrefsHelper.myRole == "trainee"
-                                          ? ColorController.instance
-                                          .getHintTextColor()
-                                          : AppColors.hintGrey,
-                                      fontSize: 16,
+                                          PrefsHelper.myRole == 'trainee'
+                                              ? AppColors.traineeNavBArColor
+                                              : Color(0xff033a5b),
+                                    ),
+                                    child: Text(
+                                      "${measurements['value']}",
+                                      style: styleForText.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color:
+                                            PrefsHelper.myRole == "trainee"
+                                                ? ColorController.instance
+                                                    .getHintTextColor()
+                                                : AppColors.hintGrey,
+                                        fontSize: 16,
+                                      ),
                                     ),
                                   ),
-                                )
-
-                              ],
-                            );
-                          },);
-                        },),
-
-
+                                ],
+                              );
+                            },
+                          );
+                        }),
 
                         SizedBox(height: 10),
 

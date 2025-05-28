@@ -16,7 +16,7 @@ class AppUrl {
   static const String policyTerms = "$baseUrl/api/v1/static-contents?type=";
   static const String editProfile = "$baseUrl/api/v1/users/update";
   static const String assignTrainee = "$baseUrl/api/v1/trainer/your-trainees";
-  static const String traineeManagement = "$baseUrl/api/v1/users/?role=";
+  static const String traineeManagement = "$baseUrl/api/v1/users/?role=trainee";
   static const String individualWorkout = "$baseUrl/api/v1/workout/";
   static const String workoutSearch = "$baseUrl/api/v1/exercise/?search=";
   static const String addWorkout = "$baseUrl/api/v1/workout/assign";
@@ -27,5 +27,7 @@ class AppUrl {
   static const String allWorkoutPlan = "$baseUrl/api/v1/exercise/exercise-group";
   static const String allSpecificWorkoutPlan = "$baseUrl/api/v1/exercise/?search=";
   static const String specificWorkoutPlan = "$baseUrl/api/v1/exercise/";
+  static const String workoutProgress = "$baseUrl/api/v1/workout/progress";
+  static const String searchAllWorkout = "$baseUrl/api/v1/exercise/";
 
 }
