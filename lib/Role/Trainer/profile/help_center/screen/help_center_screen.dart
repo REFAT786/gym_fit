@@ -48,7 +48,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> with SingleTickerPr
           ),
           title: Text(
             AppString.helpCenter,
-            style: styleForText.copyWith(fontSize: 24),
+            style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
           ),
           centerTitle: true,
           bottom: TabBar(
@@ -132,7 +132,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> with SingleTickerPr
                       controller.errorMessage.value.isNotEmpty
                           ? controller.errorMessage.value
                           : "No FAQs available",
-                      style: styleForText.copyWith(fontSize: 16, )
+                      style: styleForText.copyWith(fontSize: 16, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)
                       // const TextStyle(
                       //   fontSize: 16,
                       //   fontWeight: FontWeight.bold,

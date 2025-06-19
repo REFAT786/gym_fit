@@ -8,6 +8,9 @@ import 'package:gym_fit/Common/widgets/custom_list_tile.dart';
 import 'package:gym_fit/Common/widgets/custom_trainer_gradient_background_color.dart';
 import 'package:gym_fit/Utils/app_string.dart';
 import 'package:gym_fit/Utils/styles.dart';
+import '../../../../Helpers/prefs_helper.dart';
+import '../../../../Utils/app_colors.dart';
+import '../../color/controller/color_controller.dart';
 import '../controller/workout_plan_controller.dart';
 
 class WorkoutPlanScreen extends StatelessWidget {
@@ -24,7 +27,7 @@ class WorkoutPlanScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           title: Text(
             AppString.workoutPlan,
-            style: styleForText.copyWith(fontSize: 30),
+            style: styleForText.copyWith(fontSize: 30, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
           ),
           centerTitle: true,
         ),

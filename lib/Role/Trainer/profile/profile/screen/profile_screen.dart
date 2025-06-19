@@ -77,7 +77,7 @@ class ProfileScreen extends StatelessWidget {
                     profileController.myName.value.isNotEmpty
                         ? profileController.myName.value
                         : 'User Name',
-                    style: styleForText.copyWith(fontSize: 25),
+                    style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                   ),
                   const SizedBox(height: 20),
                   if (PrefsHelper.myRole == 'trainee')
@@ -94,17 +94,18 @@ class ProfileScreen extends StatelessWidget {
                             children: [
                               Text(
                                 AppString.age,
-                                style: TextStyle(
-                                  color: ColorController.instance.getTextColor(),
+                                style: styleForText.copyWith(
+                                  color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold
                                 ),
                               ),
                               Text(
                                 profileController.age.value.toString(),
-                                style: TextStyle(
-                                  color: ColorController.instance.getTextColor(),
-                                  fontSize: 18,
+                                style: styleForText.copyWith(
+                                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold
                                 ),
                               ),
                             ],
@@ -114,17 +115,18 @@ class ProfileScreen extends StatelessWidget {
                             children: [
                               Text(
                                 AppString.gender,
-                                style: TextStyle(
-                                    color: ColorController.instance.getTextColor(),
+                                style: styleForText.copyWith(
+                                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
                               Text(
                                 profileController.gender.value,
-                                style: TextStyle(
-                                  color: ColorController.instance.getTextColor(),
-                                  fontSize: 18,
+                                style: styleForText.copyWith(
+                                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold
                                 ),
                               ),
                             ],
@@ -134,17 +136,18 @@ class ProfileScreen extends StatelessWidget {
                             children: [
                               Text(
                                 AppString.weight,
-                                style: TextStyle(
-                                    color: ColorController.instance.getTextColor(),
+                                style: styleForText.copyWith(
+                                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
                               Text(
                                 profileController.weight.value,
-                                style: TextStyle(
-                                  color: ColorController.instance.getTextColor(),
-                                  fontSize: 18,
+                                style: styleForText.copyWith(
+                                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold
                                 ),
                               ),
                             ],
@@ -154,17 +157,18 @@ class ProfileScreen extends StatelessWidget {
                             children: [
                               Text(
                                 AppString.height,
-                                style: TextStyle(
-                                    color: ColorController.instance.getTextColor(),
+                                style: styleForText.copyWith(
+                                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
                               Text(
                                 profileController.height.value,
-                                style: TextStyle(
-                                  color: ColorController.instance.getTextColor(),
-                                  fontSize: 18,
+                                style: styleForText.copyWith(
+                                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold
                                 ),
                               ),
                             ],
@@ -174,17 +178,18 @@ class ProfileScreen extends StatelessWidget {
                             children: [
                               Text(
                                 AppString.bmi,
-                                style: TextStyle(
-                                    color: ColorController.instance.getTextColor(),
+                                style: styleForText.copyWith(
+                                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
                               Text(
                                 profileController.profileModel!.bmi.toString(),
-                                style: TextStyle(
-                                  color: ColorController.instance.getTextColor(),
-                                  fontSize: 18,
+                                style: styleForText.copyWith(
+                                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold
                                 ),
                               ),
                             ],
@@ -201,16 +206,15 @@ class ProfileScreen extends StatelessWidget {
                   Divider(indent: 10, endIndent: 10),
                   _buildMenuItem(AppString.language, Icons.language, LanguageScreen()),
                   Divider(indent: 10, endIndent: 10),
-                  _buildMenuItem(AppString.helpCenter, Icons.help, HelpCenterScreen()),
-                  Divider(indent: 10, endIndent: 10),
+                  // _buildMenuItem(AppString.helpCenter, Icons.help, HelpCenterScreen()),
+                  // Divider(indent: 10, endIndent: 10),
                   if (PrefsHelper.myRole == 'trainee')
                     _buildMenuItem(AppString.color, Icons.color_lens, ColorScreen()),
                   if (PrefsHelper.myRole == 'trainee') Divider(indent: 10, endIndent: 10),
-                  _buildMenuItem(AppString.termsOfService, Icons.miscellaneous_services_outlined,
-                      TermsOfServiceScreen()),
-                  Divider(indent: 10, endIndent: 10),
-                  _buildMenuItem(AppString.privacyPolicy, Icons.policy, PrivacyPolicyScreen()),
-                  Divider(indent: 10, endIndent: 10),
+                  // _buildMenuItem(AppString.termsOfService, Icons.miscellaneous_services_outlined, TermsOfServiceScreen()),
+                  // Divider(indent: 10, endIndent: 10),
+                  // _buildMenuItem(AppString.privacyPolicy, Icons.policy, PrivacyPolicyScreen()),
+                  // Divider(indent: 10, endIndent: 10),
                   InkWell(
                     onTap: profileController.logout,
                     child: ListTile(
@@ -244,7 +248,7 @@ class ProfileScreen extends StatelessWidget {
       onTap: () => Get.to(screen),
       child: ListTile(
         leading: Icon(icon, color: iconColor),
-        title: Text(title, style: styleForText.copyWith(fontSize: 18)),
+        title: Text(title, style: styleForText.copyWith(fontSize: 18, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)),
         trailing: Icon(
           Icons.arrow_forward_ios_rounded,
           color: PrefsHelper.myRole == "trainee"

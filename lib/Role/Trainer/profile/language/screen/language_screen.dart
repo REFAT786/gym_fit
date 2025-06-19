@@ -52,7 +52,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
           ),
           title: Text(
             AppString.language,
-            style: styleForText.copyWith(fontSize: 24),
+            style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
           ),
           centerTitle: true,
         ),

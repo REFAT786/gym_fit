@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Common/widgets/custom_button.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
@@ -50,7 +51,7 @@ class WorkoutDetailsScreen extends StatelessWidget {
               controller.workoutDetail.value.exerciseName.isNotEmpty
                   ? Text(
                     controller.workoutDetail.value.exerciseName,
-                    style: styleForText.copyWith(fontSize: 24),
+                    style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                   )
                   : Text(""),
           centerTitle: true,
@@ -101,7 +102,7 @@ class WorkoutDetailsScreen extends StatelessWidget {
                                 width: double.infinity,
                                 borderRadius: 16,
                               )
-                              : Center(child: Text("No video available")),
+                              : Center(child: Text(AppString.noVideoAvailable, style: styleForText.copyWith(color: Colors.white, fontSize: 14.sp),)),
                     );
                   }),
                   SizedBox(height: 10),
@@ -117,8 +118,8 @@ class WorkoutDetailsScreen extends StatelessWidget {
                                     .workoutDetail
                                     .value
                                     .stations[0]['number']
-                                : "No Station Number",
-                            style: styleForText.copyWith(fontSize: 25),
+                                : AppString.noStationNumber,
+                            style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                           );
                         }),
                         Obx(() {
@@ -129,13 +130,13 @@ class WorkoutDetailsScreen extends StatelessWidget {
                                     .value
                                     .stations[0]['name']
                                     .toString()
-                                : "No Station Name",
-                            style: styleForText.copyWith(fontSize: 25),
+                                : AppString.noStationName,
+                            style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                           );
                         }),
                         Text(
                           AppString.targetMuscles,
-                          style: styleForText.copyWith(fontSize: 25),
+                          style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                         ),
                         SizedBox(height: 10),
                         SizedBox(
@@ -186,8 +187,8 @@ class WorkoutDetailsScreen extends StatelessWidget {
 
                         SizedBox(height: 10),
                         Text(
-                          "Description",
-                          style: styleForText.copyWith(fontSize: 25),
+                          AppString.description,
+                          style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                         ),
                         SizedBox(height: 10),
                         Obx(() {
@@ -215,13 +216,14 @@ class WorkoutDetailsScreen extends StatelessWidget {
                               style: styleForText.copyWith(
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
+                                color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
                               ),
                             ),
                           );
                         }),
                         Text(
                           AppString.equipment,
-                          style: styleForText.copyWith(fontSize: 25),
+                          style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                         ),
                         SizedBox(height: 10),
 
@@ -240,8 +242,8 @@ class WorkoutDetailsScreen extends StatelessWidget {
                         }),
                         SizedBox(height: 10),
                         Text(
-                          "Equipment Description",
-                          style: styleForText.copyWith(fontSize: 25),
+                          AppString.equipmentDescription,
+                          style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                         ),
                         SizedBox(height: 10),
                         Obx(() {
@@ -271,6 +273,7 @@ class WorkoutDetailsScreen extends StatelessWidget {
                               style: styleForText.copyWith(
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
+                                color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
                               ),
                             ),
                           );
@@ -302,7 +305,7 @@ class WorkoutDetailsScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     "${measurements['name']}",
-                                    style: styleForText.copyWith(fontSize: 25),
+                                    style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                                   ),
                                   Container(
                                     width: double.infinity,

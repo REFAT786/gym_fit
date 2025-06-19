@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
 import 'package:gym_fit/Role/Trainee/workout_plan/screen/workout_plan_detail_screen.dart';
+import 'package:gym_fit/Utils/app_string.dart';
 import 'package:gym_fit/Utils/app_url.dart';
 
 
 import '../../../../Common/widgets/custom_back_button.dart';
 import '../../../../Common/widgets/custom_trainer_gradient_background_color.dart';
 import '../../../../Common/widgets/custom_workout_list_tile.dart';
+import '../../../../Helpers/prefs_helper.dart';
+import '../../../../Utils/app_colors.dart';
 import '../../../../Utils/app_images.dart';
 import '../../../../Utils/styles.dart';
+import '../../color/controller/color_controller.dart';
 import '../controller/specific_workout_plan_controller.dart';
 
 class SpecificWorkoutPlanScreen extends StatelessWidget {
@@ -23,7 +27,7 @@ class SpecificWorkoutPlanScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           leading: IconButton(onPressed: (){Get.back();}, icon: CustomBackButton()),
-          title: Text(controller.name.value, style: styleForText.copyWith(fontSize: 24),),
+          title: Text(controller.name.value, style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),),
           centerTitle: true,
         ),
         body: Obx(
@@ -51,8 +55,8 @@ class SpecificWorkoutPlanScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   child: Text(
-                    '${controller.specificWorkoutList.length} Exercises',
-                    style: styleForText.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
+                    '${controller.specificWorkoutList.length} ${AppString.exercises}',
+                    style: styleForText.copyWith(fontSize: 18, fontWeight: FontWeight.bold, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                   ),
                 ),
                 // List of workouts

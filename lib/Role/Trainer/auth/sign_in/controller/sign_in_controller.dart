@@ -8,7 +8,8 @@ import 'package:gym_fit/Repository/auth_repository.dart';
 import '../../../../../Helpers/snackbar_helper.dart';
 
 class SignInController extends GetxController {
-  TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'senior' : '');
+  // TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'senior' : '');
+  TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'junior' : '');
   TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? '123' : "");
   var isLoading = false.obs;
   String role = "";

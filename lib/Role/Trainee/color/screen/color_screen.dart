@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../Common/widgets/custom_back_button.dart';
 import '../../../../Common/widgets/custom_color_picker_dialog.dart';
+import '../../../../Helpers/prefs_helper.dart';
+import '../../../../Utils/app_colors.dart';
 import '../../../../Utils/styles.dart';
 import '../controller/color_controller.dart';
 
@@ -38,7 +40,7 @@ class ColorScreen extends StatelessWidget {
             ),
             title: Text(
               "Appearance",
-              style: styleForText.copyWith(fontSize: 24),
+              style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
             ),
             centerTitle: true,
           ),
@@ -49,7 +51,7 @@ class ColorScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 20),
-                  Text("Background Color", style: styleForText),
+                  Text("Background Color", style: styleForText.copyWith(color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)),
                   const SizedBox(height: 10),
                   buildColorSection(
                     selectedColor: colorController.selectedBgColor,
@@ -65,7 +67,7 @@ class ColorScreen extends StatelessWidget {
                     context: context,
                   ),
                   const SizedBox(height: 20),
-                  Text("Button Color", style: styleForText),
+                  Text("Button Color", style: styleForText.copyWith(color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)),
                   const SizedBox(height: 10),
                   buildColorSection(
                     selectedColor: colorController.selectedButtonColor,
@@ -81,7 +83,7 @@ class ColorScreen extends StatelessWidget {
                     context: context,
                   ),
                   const SizedBox(height: 20),
-                  Text("Text Color", style: styleForText),
+                  Text("Text Color", style: styleForText.copyWith(color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)),
                   const SizedBox(height: 10),
                   buildColorSection(
                     selectedColor: colorController.selectedTextColor,

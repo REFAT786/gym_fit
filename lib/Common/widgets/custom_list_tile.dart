@@ -54,7 +54,7 @@ class CustomListTile extends StatelessWidget {
               ),
         title: Text(
           "$title",
-          style: styleForText.copyWith(fontSize: titleFontSize),
+          style: styleForText.copyWith(fontSize: titleFontSize, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
         ),
         subtitle: (subTitle != '' || subTitleNext != '')
             ? Column(

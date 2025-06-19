@@ -84,7 +84,7 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
               CustomTitleBar(title: AppString.addWorkout),
 
               const SizedBox(height: 10),
-              Text("Select Exercise", style: styleForText.copyWith(fontSize: 24)),
+              Text(AppString.selectExercise, style: styleForText.copyWith(fontSize: 24)),
               const SizedBox(height: 5),
 
               // Search field: NO Obx needed because TextField doesn't reactively change UI
@@ -125,8 +125,8 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
                           fit: BoxFit.cover,
                         )
                             : SizedBox(width: 50, height: 50),
-                        title: Text(exercise.name),
-                        subtitle: Text(exercise.description),
+                        title: Text(exercise.name, style: styleForText.copyWith(fontSize: 16, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),),
+                        subtitle: Text(exercise.description, style: styleForText.copyWith(fontSize: 14, fontWeight: FontWeight.w500,color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),),
                         onTap: () {
 
                           controller.searchController.text = exercise.name;

@@ -31,7 +31,7 @@ class ChangePasswordScreen extends StatelessWidget {
             title: Text(
               AppString.changePassword,
               style: styleForText.copyWith(
-                  fontSize: 24
+                  fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
               ),
             ),
 

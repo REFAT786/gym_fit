@@ -29,7 +29,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
           title: Text(
             AppString.privacyPolicy,
-            style: styleForText.copyWith(fontSize: 24),
+            style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
           ),
           centerTitle: true,
         ),

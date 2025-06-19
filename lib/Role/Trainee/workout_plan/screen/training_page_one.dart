@@ -32,8 +32,8 @@ class TrainingPageOne extends StatelessWidget {
           icon: CustomBackButton(),
         ),
         title: Text(
-          AppString.letsPush,
-          style: styleForText.copyWith(fontSize: 24),
+          controller.workoutDetail.value.exerciseName,
+          style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
         ),
         centerTitle: true,
       ),
@@ -48,7 +48,7 @@ class TrainingPageOne extends StatelessWidget {
               );
             },
             child: CustomButton(
-              buttonText: "Complete Set ${controller.index.value}",
+              buttonText: "${AppString.completeSet} ${controller.index.value}",
               backgroundColor:
                   PrefsHelper.myRole == "trainee"
                       ? ColorController.instance.getButtonColor()
@@ -86,14 +86,14 @@ class TrainingPageOne extends StatelessWidget {
                   children: [
                     Obx(
                       () => Text(
-                        "Set ${controller.index.value} of ${controller.totalSets.value}",
-                        style: styleForText.copyWith(fontSize: 25),
+                        "${AppString.set} ${controller.index.value} of ${controller.totalSets.value}",
+                        style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      "Current Set",
-                      style: styleForText.copyWith(fontSize: 24),
+                      AppString.currentSet,
+                      style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                     ),
                     const SizedBox(height: 15),
                     GridView.builder(
@@ -118,9 +118,9 @@ class TrainingPageOne extends StatelessWidget {
                               Text(
                                 measurements['name'] == "rest" ||
                                         measurements['name'] == "rests"
-                                    ? "Rest Time"
+                                    ? AppString.restTime
                                     : measurements['name'],
-                                style: styleForText.copyWith(fontSize: 18),
+                                style: styleForText.copyWith(fontSize: 18, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                               ),
                               Container(
                                 width: double.infinity,

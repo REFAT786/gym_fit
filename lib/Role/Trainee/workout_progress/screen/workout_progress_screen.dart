@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../Common/widgets/custom_trainer_gradient_background_color.dart';
+import '../../../../Helpers/prefs_helper.dart';
 import '../../../../Model/workout_progress.dart';
 import '../../../../Utils/app_colors.dart';
 import '../../../../Utils/app_string.dart';
@@ -36,7 +37,7 @@ class WorkoutProgressScreen extends StatelessWidget {
                     AppString.workOutProgress,
                     style: styleForText.copyWith(
                       fontSize: 24,
-                      color: ColorController.instance.getTextColor(),
+                      color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
                     ),
                   );
                 }),
@@ -88,13 +89,13 @@ class WorkoutProgressScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Total Workouts", style: styleForText.copyWith(fontSize: 20)),
-                          Text("$totalWorkout", style: styleForText.copyWith(fontSize: 16)),
+                          Text(AppString.totalWorkout, style: styleForText.copyWith(fontSize: 20, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)),
+                          Text("$totalWorkout", style: styleForText.copyWith(fontSize: 16, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)),
                         ],
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(AppString.workoutTimesPerWeek, style: styleForText.copyWith(fontSize: 20)),
+                    Text(AppString.workoutTimesPerWeek, style: styleForText.copyWith(fontSize: 20, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)),
                     const SizedBox(height: 10),
 
                     Container(

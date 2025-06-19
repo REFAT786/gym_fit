@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
 import 'package:gym_fit/Helpers/other_helper.dart';
@@ -108,12 +109,14 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                           controller.profileName.value,
                           style: styleForText.copyWith(
                             fontSize: 18,
+                            color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
                           ),
                         )),
                         Text(
                           AppString.readyToWorkout,
                           style: styleForText.copyWith(
                             fontSize: 25,
+                            color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -150,7 +153,7 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
               const SizedBox(height: 10),
               Text(
                 AppString.createYourOwnWorkout,
-                style: styleForText.copyWith(fontSize: 24),
+                style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
               ),
               const SizedBox(height: 10),
               InkWell(
@@ -167,8 +170,8 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                     child: ListTile(
                       leading: Icon(Icons.calendar_month_outlined, color: AppColors.white),
                       title: Text(
-                        "View Calender",
-                        style: styleForText.copyWith(fontSize: 20),
+                        AppString.viewCalender,
+                        style: styleForText.copyWith(fontSize: 20, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                       ),
                     ),
                   );
@@ -178,7 +181,7 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(AppString.workOutPlan,
-                    style: styleForText.copyWith(fontSize: 24)),
+                    style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)),
               ),
               const SizedBox(height: 10),
 
@@ -196,7 +199,7 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                 }
 
                 if (controller.workoutList.isEmpty) {
-                  return const Text("No workouts available");
+                  return  Text(AppString.noWorkoutsAvailable, style: styleForText.copyWith(color: Colors.white, fontSize: 14.sp),);
                 }
 
                 return ListView.builder(

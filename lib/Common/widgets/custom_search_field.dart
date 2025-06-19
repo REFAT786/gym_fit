@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../Helpers/prefs_helper.dart';
+import '../../Role/Trainee/color/controller/color_controller.dart';
 import '../../Utils/app_colors.dart';
 import '../../Utils/app_string.dart';
 import '../../Utils/styles.dart';
@@ -26,7 +28,7 @@ class CustomSearchField extends StatelessWidget {
             ),
             prefixIcon: Icon(Icons.search, color: AppColors.white,),
             hintText: AppString.search,
-            hintStyle: styleForText.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+            hintStyle: styleForText.copyWith(fontSize: 14, fontWeight: FontWeight.w400, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
             suffixIcon: IconButton(onPressed: qrPressed, icon: Icon(Icons.qr_code), color: color,)
         ),
       ),

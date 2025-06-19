@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 import '../Helpers/prefs_helper.dart';
-
 import 'package:http_parser/http_parser.dart';
 
 class ApiResponse {
@@ -226,8 +225,6 @@ class ApiService extends GetxService {
           );
         }
       }
-
-      ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Api Response >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       return ApiResponse(
         success: success,
         message: message,

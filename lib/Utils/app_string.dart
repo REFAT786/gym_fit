@@ -60,6 +60,42 @@ class AppString {
   static String get faq => "faq".tr;
   static String get contactUs => "contact_us".tr;
   static String get color => "color".tr;
+  static String get selectExercise => "select_exercise".tr;
+  static String get description => "description".tr;
+  static String get equipmentDescription => "equipment_description".tr;
+  static String get next => "next".tr;
+  static String get finish => "finish".tr;
+  static String get whatsYourGender => "whats_your_gender".tr;
+  static String get whatsYourAge => "whats_your_age".tr;
+  static String get whatsYourHeight => "whats_your_height".tr;
+  static String get inches => "inches".tr;
+  static String get cm => "cm".tr;
+  static String get whatsYourWeight => "whats_your_weight".tr;
+  static String get lb => "lb".tr;
+  static String get kg => "kg".tr;
+  static String get yourBMISummary => "your_BMI_summary".tr;
+  static String get years => "years".tr;
+  static String get viewCalender => "view_calender".tr;
+  static String get noWorkoutsAvailable => "no_workouts_available".tr;
+  static String get noStation => "no_station".tr;
+  static String get noVideoAvailable => "no_video_available".tr;
+  static String get noStationNumber => "no_station_number".tr;
+  static String get noStationName => "no_station_name".tr;
+  static String get completeSet => "complete_set".tr;
+  static String get set => "set".tr;
+  static String get currentSet => "current_set".tr;
+  static String get restTime => "rest_time".tr;
+  static String get of => "of".tr;
+  static String get skipRest => "skip_rest".tr;
+  static String get restTimeRemaining => "rest_time_remaining".tr;
+  static String get completeSets => "complete_sets".tr;
+  static String get noHistoryFound => "no_history_found".tr;
+  static String get unnamedExercise => "unnamed_exercise".tr;
+  static String get noMuscleGroups => "no_muscle_groups".tr;
+  static String get noWorkoutTypes => "no_workout_types".tr;
+  static String get instructions => "instructions".tr;
+  static String get exercises => "exercises".tr;
+  static String get totalWorkout => "total_workout".tr;
 
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

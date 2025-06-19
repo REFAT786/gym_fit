@@ -42,7 +42,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         child: TextFormField(
           onChanged: widget.onChanged,
           validator: widget.validator,
-          style: styleForText.copyWith(color: AppColors.textColor, fontSize: 16),
+          style: styleForText.copyWith(color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white, fontSize: 16, ),
           controller: widget.controller,
           obscureText: widget.isSuffix ? !passwordVisible : passwordVisible,
           cursorColor: Colors.white,

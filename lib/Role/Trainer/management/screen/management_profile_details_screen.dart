@@ -70,11 +70,11 @@ class ManagementProfileDetailsScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildProfileDetailItem('Age', detail.traineeDetails.age.toString()),
-                    _buildProfileDetailItem('Gender', detail.traineeDetails.gender),
-                    _buildProfileDetailItem('Weight', detail.traineeDetails.weight),
-                    _buildProfileDetailItem('Height', detail.traineeDetails.height),
-                    _buildProfileDetailItem('BMI', detail.traineeDetails.bmi.toString()),
+                    _buildProfileDetailItem(AppString.age, detail.traineeDetails.age.toString()),
+                    _buildProfileDetailItem(AppString.gender, detail.traineeDetails.gender),
+                    _buildProfileDetailItem(AppString.weight, detail.traineeDetails.weight),
+                    _buildProfileDetailItem(AppString.height, detail.traineeDetails.height),
+                    _buildProfileDetailItem(AppString.bmi, detail.traineeDetails.bmi.toString()),
                   ],
                 ),
               ),

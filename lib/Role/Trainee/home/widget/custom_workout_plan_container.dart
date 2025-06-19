@@ -40,12 +40,12 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(workout.exerciseName, style: styleForText.copyWith(fontSize: 20.sp)),
+              Text(workout.exerciseName, style: styleForText.copyWith(fontSize: 20.sp, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)),
               Text(
                 workout.stations.isNotEmpty
-                    ? "Station ${workout.stations[0]['number']}"
-                    : 'No Station',
-                style: styleForText.copyWith(fontSize: 20.sp),
+                    ? "${AppString.station} ${workout.stations[0]['number']}"
+                    : AppString.noStation,
+                style: styleForText.copyWith(fontSize: 20.sp, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
               ),
             ],
           ),
@@ -71,7 +71,7 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
                   children: [
                     Text(
                       AppString.trainingGoals,
-                      style: styleForText.copyWith(fontSize: 20.sp),
+                      style: styleForText.copyWith(fontSize: 20.sp, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                     ),
 
                     // Muscle Groups List (Horizontally scrollable)
@@ -88,7 +88,7 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
                               children: [
                                 Text(
                                   mg.name,
-                                  style: styleForText.copyWith(fontSize: 12),
+                                  style: styleForText.copyWith(fontSize: 12, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                                 ),
                                 const SizedBox(height: 3),
                                 CustomCommonImage(
@@ -109,7 +109,7 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
                     // Training Type Title
                     Text(
                       AppString.trainingType,
-                      style: styleForText.copyWith(fontSize: 20.sp),
+                      style: styleForText.copyWith(fontSize: 20.sp, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                     ),
 
                     // Workout Types Icons horizontally scrollable
@@ -128,7 +128,7 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 Text(
                                   wt.name,
-                                  style: styleForText.copyWith(fontSize: 12),
+                                  style: styleForText.copyWith(fontSize: 12, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,)
                                 ),
                               ],
                             ),
@@ -152,7 +152,7 @@ class CustomWorkoutPlanContainer extends StatelessWidget {
                 return CustomButton(
                   borderRadius: 12,
                   buttonText: AppString.startWorkout,
-                  textColor: ColorController.instance.getTextColor(),
+                  textColor: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white,
                   backgroundColor: PrefsHelper.myRole == "trainee"
                       ? ColorController.instance.getButtonColor()
                       : AppColors.secondary,

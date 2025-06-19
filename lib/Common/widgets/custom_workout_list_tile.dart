@@ -62,17 +62,17 @@ class CustomWorkoutListTile extends StatelessWidget {
               children: [
                 Text(
                   "$station",
-                  style: styleForText.copyWith(fontSize: 14),
+                  style: styleForText.copyWith(fontSize: 14, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                 ),
                 SizedBox(height: 5),
                 Text(
                   "$gymCategory",
-                  style: styleForText.copyWith(fontSize: 20),
+                  style: styleForText.copyWith(fontSize: 20, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                 ),
                 SizedBox(height: 8),
                 Text(
                   "$gymSet",
-                  style: styleForText.copyWith(fontSize: 16),
+                  style: styleForText.copyWith(fontSize: 16, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                 ),
               ],
             ),

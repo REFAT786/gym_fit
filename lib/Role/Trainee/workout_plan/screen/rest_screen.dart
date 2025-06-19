@@ -89,7 +89,7 @@ class _RestScreenState extends State<RestScreen> {
                       children: [
                         Obx(
                           () => Text(
-                            "Set ${controller.index.value} of ${controller.totalSets.value}",
+                            "${AppString.set} ${controller.index.value} ${AppString.of} ${controller.totalSets.value}",
                             style: styleForText.copyWith(fontSize: 25),
                           ),
                         ),
@@ -100,7 +100,7 @@ class _RestScreenState extends State<RestScreen> {
                           },
                           child: Chip(
                             label: Text(
-                              "Skip Rest",
+                              AppString.skipRest,
                               style: styleForText.copyWith(
                                 color: Colors.white,
                                 fontSize: 20.sp,
@@ -149,7 +149,7 @@ class _RestScreenState extends State<RestScreen> {
                           }),
                           SizedBox(height: 5),
                           Text(
-                            "Rest Time Remaining",
+                            AppString.restTimeRemaining,
                             style: styleForText.copyWith(fontSize: 24),
                           ),
                         ],
@@ -157,7 +157,7 @@ class _RestScreenState extends State<RestScreen> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      "Complete Sets",
+                      AppString.completeSets,
                       style: styleForText.copyWith(fontSize: 24),
                     ),
                     ...List.generate(controller.index.value, (index) {
@@ -179,7 +179,7 @@ class _RestScreenState extends State<RestScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Set ${index + 1} | $date",
+                              "${AppString.set} ${index + 1} | $date",
                               style: styleForText.copyWith(fontSize: 20),
                             ),
                             SizedBox(height: 5),
@@ -253,7 +253,7 @@ class _RestScreenState extends State<RestScreen> {
                     }),
                     SizedBox(height: 10),
                     Text(
-                      "Current Set",
+                      AppString.currentSet,
                       style: styleForText.copyWith(fontSize: 24),
                     ),
                     const SizedBox(height: 5),
@@ -279,7 +279,7 @@ class _RestScreenState extends State<RestScreen> {
                               Text(
                                 measurements['name'] == "rest" ||
                                         measurements['name'] == "rests"
-                                    ? "Rest Time"
+                                    ? AppString.restTime
                                     : measurements['name'],
                                 style: styleForText.copyWith(fontSize: 18),
                               ),
@@ -321,7 +321,7 @@ class _RestScreenState extends State<RestScreen> {
                           opacity: isButtonEnabled ? 1.0 : 0.5,
                           child: CustomButton(
                             buttonText:
-                                "Complete Set ${controller.index.value}",
+                                "${AppString.completeSet} ${controller.index.value}",
                             backgroundColor:
                                 PrefsHelper.myRole == "trainee"
                                     ? ColorController.instance.getButtonColor()

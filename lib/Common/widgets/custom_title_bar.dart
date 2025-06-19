@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../Helpers/prefs_helper.dart';
+import '../../Role/Trainee/color/controller/color_controller.dart';
+import '../../Utils/app_colors.dart';
 import '../../Utils/styles.dart';
 import 'custom_back_button.dart';
 
@@ -18,7 +21,7 @@ class CustomTitleBar extends StatelessWidget {
         Expanded(  // This ensures the Text is centered
           child: Text(
             title,
-            style: styleForText.copyWith(fontSize: 24),
+            style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
             textAlign: TextAlign.center,
           ),
         ),

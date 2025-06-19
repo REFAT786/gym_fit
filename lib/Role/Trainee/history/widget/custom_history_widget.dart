@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_fit/Utils/app_string.dart';
 import '../../../../Model/history_model.dart';
 import '../../../../Utils/app_colors.dart';
 import '../../../../Utils/app_url.dart';
@@ -36,15 +37,15 @@ class CustomHistoryWidget extends StatelessWidget {
                 child: Text(
                   history.exercise.name.isNotEmpty
                       ? history.exercise.name
-                      : 'Unnamed Exercise',
+                      : AppString.unnamedExercise,
                   style: styleForText.copyWith(fontSize: 20),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 history.exercise.stations.isNotEmpty
-                    ? "Station ${history.exercise.stations[0].stationNumber}"
-                    : 'No Station',
+                    ? "${AppString.station} ${history.exercise.stations[0].stationNumber}"
+                    : AppString.noStation,
                 style: styleForText.copyWith(fontSize: 20),
               ),
             ],
@@ -65,13 +66,13 @@ class CustomHistoryWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Training Goals',
+                      AppString.trainingGoals,
                       style: styleForText.copyWith(fontSize: 20),
                     ),
                     SizedBox(
                       height: 75,
                       child: history.exercise.muscleGroup.isEmpty
-                          ? const Text('No Muscle Groups')
+                          ?  Text(AppString.noMuscleGroups)
                           : ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: history.exercise.muscleGroup.length,
@@ -102,13 +103,13 @@ class CustomHistoryWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      'Training Type',
+                      AppString.trainingType,
                       style: styleForText.copyWith(fontSize: 20),
                     ),
                     SizedBox(
                       height: 40,
                       child: history.exercise.workoutType.isEmpty
-                          ? const Text('No Workout Types')
+                          ?  Text(AppString.noWorkoutTypes)
                           : ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: history.exercise.workoutType.length,

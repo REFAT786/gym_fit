@@ -35,7 +35,7 @@ class WorkoutPlanDetailScreen extends StatelessWidget {
             controller.specificList.isNotEmpty
                 ? controller.specificList[0].name
                 : 'Workout Plan',
-            style: styleForText.copyWith(fontSize: 24),
+            style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
           )),
           centerTitle: true,
         ),
@@ -79,7 +79,7 @@ class WorkoutPlanDetailScreen extends StatelessWidget {
                 // Target Muscles
                 Text(
                   AppString.targetMuscles,
-                  style: styleForText.copyWith(fontSize: 25),
+                  style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                 ),
                 const SizedBox(height: 10),
 
@@ -96,7 +96,7 @@ class WorkoutPlanDetailScreen extends StatelessWidget {
                     ),
                     child: Text(
                       muscle.mgName,
-                      style: styleForText.copyWith(fontSize: 16),
+                      style: styleForText.copyWith(fontSize: 16, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                     ),
                   )).toList(),
                 ),
@@ -105,7 +105,7 @@ class WorkoutPlanDetailScreen extends StatelessWidget {
                 // Description
                 Text(
                   "${AppString.whatIs} ${workout.name}",
-                  style: styleForText.copyWith(fontSize: 25),
+                  style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                 ),
                 const SizedBox(height: 10),
                 Container(
@@ -122,6 +122,7 @@ class WorkoutPlanDetailScreen extends StatelessWidget {
                     style: styleForText.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
+                      color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
                     ),
                   ),
                 ),
@@ -130,7 +131,7 @@ class WorkoutPlanDetailScreen extends StatelessWidget {
                 // Equipment
                 Text(
                   AppString.equipment,
-                  style: styleForText.copyWith(fontSize: 25),
+                  style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -138,14 +139,15 @@ class WorkoutPlanDetailScreen extends StatelessWidget {
                   style: styleForText.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.normal,
+                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
                   ),
                 ),
                 const SizedBox(height: 20),
 
                 // Instructions
                 Text(
-                  "instructions",
-                  style: styleForText.copyWith(fontSize: 25),
+                  AppString.instructions,
+                  style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -153,6 +155,7 @@ class WorkoutPlanDetailScreen extends StatelessWidget {
                   style: styleForText.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
+                    color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
                   ),
                 ),
                 const SizedBox(height: 20),

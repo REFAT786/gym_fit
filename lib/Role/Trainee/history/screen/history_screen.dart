@@ -44,7 +44,7 @@ class HistoryScreen extends StatelessWidget {
           if (controller.historyList.isEmpty) {
             return Center(
                 child: Text(
-                  "No history found",
+                  AppString.noHistoryFound,
                   style: styleForText.copyWith(color: Colors.white),
                 ));
           }

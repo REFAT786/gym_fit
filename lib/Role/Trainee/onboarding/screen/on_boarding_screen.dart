@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Utils/app_string.dart';
 import 'package:simple_ruler_picker/simple_ruler_picker.dart';
 
 import '../../../../Helpers/prefs_helper.dart';
@@ -99,7 +100,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      currentPage < 4 ? "Next" : "Finish",
+                      currentPage < 4 ? AppString.next : AppString.finish,
                       style: styleForText.copyWith(fontSize: 18, color: Colors.white),
                     ),
                     const SizedBox(width: 8),
@@ -122,8 +123,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           () => Column(
         children: [
           const SizedBox(height: 40),
-          const Text(
-            "What’s Your Gender?",
+           Text(
+            AppString.whatsYourGender,
             style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 30),
@@ -170,7 +171,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         children: [
           const SizedBox(height: 40),
           Text(
-            "What's Your Age?",
+            AppString.whatsYourAge,
             style: styleForText.copyWith(fontSize: 24, color: AppColors.textColor),
           ),
           const SizedBox(height: 30),
@@ -215,8 +216,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           () => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "What's Your Height?",
+           Text(
+            AppString.whatsYourHeight,
             style: TextStyle(color: Colors.white, fontSize: 24),
           ),
           const SizedBox(height: 30),
@@ -229,14 +230,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             onPressed: (index) {
               controller.isCmSelected.value = index == 1;
             },
-            children: const [
+            children:  [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text('inches'),
+                child: Text(AppString.inches),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text('cm'),
+                child: Text(AppString.cm),
               ),
             ],
           ),
@@ -252,8 +253,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               children: [
                 Text(
                   controller.isCmSelected.value
-                      ? '${controller.selectedHeightCm.value} cm'
-                      : '${controller.selectedHeightInches.value} inches',
+                      ? '${controller.selectedHeightCm.value} ${AppString.cm}'
+                      : '${controller.selectedHeightInches.value} ${AppString.inches}',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 36,
@@ -289,8 +290,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           () => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "What's Your Weight?",
+           Text(
+            AppString.whatsYourWeight,
             style: TextStyle(color: Colors.white, fontSize: 24),
           ),
           const SizedBox(height: 30),
@@ -303,14 +304,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             onPressed: (index) {
               controller.isKgSelected.value = index == 1;
             },
-            children: const [
+            children:  [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text('lb'),
+                child: Text(AppString.lb),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text('kg'),
+                child: Text(AppString.kg),
               ),
             ],
           ),
@@ -326,8 +327,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               children: [
                 Text(
                   controller.isKgSelected.value
-                      ? '${controller.selectedWeightKg.value} kg'
-                      : '${controller.selectedWeightLbs.value} lb',
+                      ? '${controller.selectedWeightKg.value} ${AppString.kg}'
+                      : '${controller.selectedWeightLbs.value} ${AppString.lb}',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 36,
@@ -364,7 +365,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Your BMI Summary",
+            AppString.yourBMISummary,
             style: styleForText.copyWith(color: AppColors.textColor, fontSize: 24),
           ),
           const SizedBox(height: 20),
@@ -379,8 +380,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Gender: ${controller.selectedGender.value.capitalizeFirst}",
-                  style: const TextStyle(
+                  "${AppString.gender}: ${controller.selectedGender.value.capitalizeFirst}",
+                  style:  styleForText.copyWith(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -388,8 +389,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "Age: ${controller.selectedAge.value} years",
-                  style: const TextStyle(
+                  "${AppString.age}: ${controller.selectedAge.value} ${AppString.years}",
+                  style: styleForText.copyWith(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -397,8 +398,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "Height: ${controller.isCmSelected.value ? '${controller.selectedHeightCm.value} cm' : '${controller.selectedHeightInches.value} inches'}",
-                  style: const TextStyle(
+                  "${AppString.height}: ${controller.isCmSelected.value ? '${controller.selectedHeightCm.value} ${AppString.cm}' : '${controller.selectedHeightInches.value} ${AppString.inches}'}",
+                  style: styleForText.copyWith(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -406,8 +407,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "Weight: ${controller.isKgSelected.value ? '${controller.selectedWeightKg.value} kg' : '${controller.selectedWeightLbs.value} lb'}",
-                  style: const TextStyle(
+                  "${AppString.weight}: ${controller.isKgSelected.value ? '${controller.selectedWeightKg.value} ${AppString.kg}' : '${controller.selectedWeightLbs.value} ${AppString.lb}'}",
+                  style:styleForText.copyWith(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -415,8 +416,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "BMI: ${controller.calculateBMI.toStringAsFixed(2)}",
-                  style: const TextStyle(
+                  "${AppString.bmi}: ${controller.calculateBMI.toStringAsFixed(2)}",
+                  style: styleForText.copyWith(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
