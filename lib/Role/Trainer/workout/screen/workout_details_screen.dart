@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Common/widgets/custom_button.dart';
+import 'package:gym_fit/Common/widgets/custom_text_field.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
 import 'package:gym_fit/Role/Trainer/workout/controller/workout_details_controller.dart';
 import 'package:gym_fit/Utils/app_url.dart';
@@ -20,10 +21,6 @@ import '../../../Trainee/color/controller/color_controller.dart';
 class WorkoutDetailsScreen extends StatelessWidget {
   WorkoutDetailsScreen({super.key});
 
-  TextEditingController setController = TextEditingController();
-  TextEditingController resController = TextEditingController();
-  TextEditingController wightController = TextEditingController();
-  TextEditingController repController = TextEditingController();
 
   WorkoutDetailsController controller = Get.find<WorkoutDetailsController>();
 
@@ -307,6 +304,18 @@ class WorkoutDetailsScreen extends StatelessWidget {
                                     "${measurements['name']}",
                                     style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
                                   ),
+
+                                  CustomTextField(
+                                    hintText: "Enter ${measurements['name']}",
+                                    isSuffix: false,
+                                    controller:
+                                    controller.measurementControllers[index],
+                                    onChanged: (value) {
+                                      controller.updateMeasurementValue(
+                                          index, value);
+                                    },
+                                  ),
+
                                   Container(
                                     width: double.infinity,
                                     padding: EdgeInsets.all(18),

@@ -2,8 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Common/widgets/custom_button.dart';
+import 'package:gym_fit/Core/routes/routes.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
 import 'package:gym_fit/Helpers/other_helper.dart';
+import 'package:gym_fit/Role/Trainer/auth/sign_in/controller/sign_in_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import '../../../../Common/widgets/custom_common_image.dart';
@@ -64,8 +67,8 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
               onPrimary: Colors.white,
               surface: AppColors.traineeNavBArColor,
               onSurface: Colors.white,
-
-            ), dialogTheme: DialogThemeData(backgroundColor: Colors.black),
+            ),
+            dialogTheme: DialogThemeData(backgroundColor: Colors.black),
           ),
           child: child!,
         );
@@ -75,7 +78,10 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
     if (pickedDate != null) {
       // Format pickedDate as yyyy-MM-dd
       final selectedDateStr = DateFormat('yyyy-MM-dd').format(pickedDate);
-      Get.toNamed(RoutesName.historyScreen, arguments: {'date': selectedDateStr});
+      Get.toNamed(
+        RoutesName.historyScreen,
+        arguments: {'date': selectedDateStr},
+      );
     }
   }
 
@@ -84,6 +90,39 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
     return CustomTrainerGradientBackgroundColor(
       child: Scaffold(
         backgroundColor: Colors.transparent,
+
+        floatingActionButton:  InkWell(
+          onTap: (){
+            Get.toNamed(RoutesName.addWorkout);
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 0, right: 90),
+            child: Container(
+              width: 180,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: ColorController.instance.getButtonColor(),
+              ),
+              child: ListTile(
+                leading: Icon(
+                  Icons.add,
+                  color: AppColors.white,
+                ),
+                title: Text(
+                  AppString.addWorkout,
+                  style: styleForText.copyWith(
+                    fontSize: 16,
+                    color:
+                    PrefsHelper.myRole == 'trainee'
+                        ? ColorController.instance.getTextColor()
+                        : AppColors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(10),
           child: Column(
@@ -92,31 +131,41 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
               const SizedBox(height: 40),
               Row(
                 children: [
-                  Obx(() => CustomCommonImage(
-                    imageSrc: controller.profileImage.value,
-                    imageType: ImageType.network,
-                    borderRadius: 55,
-                    height: 55,
-                    width: 55,
-                  )),
+                  Obx(
+                    () => CustomCommonImage(
+                      imageSrc: controller.profileImage.value,
+                      imageType: ImageType.network,
+                      borderRadius: 55,
+                      height: 55,
+                      width: 55,
+                    ),
+                  ),
                   const SizedBox(width: 5),
                   SizedBox(
                     width: 220,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Obx(() => Text(
-                          controller.profileName.value,
-                          style: styleForText.copyWith(
-                            fontSize: 18,
-                            color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
+                        Obx(
+                          () => Text(
+                            controller.profileName.value,
+                            style: styleForText.copyWith(
+                              fontSize: 18,
+                              color:
+                                  PrefsHelper.myRole == 'trainee'
+                                      ? ColorController.instance.getTextColor()
+                                      : AppColors.white,
+                            ),
                           ),
-                        )),
+                        ),
                         Text(
                           AppString.readyToWorkout,
                           style: styleForText.copyWith(
                             fontSize: 25,
-                            color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
+                            color:
+                                PrefsHelper.myRole == 'trainee'
+                                    ? ColorController.instance.getTextColor()
+                                    : AppColors.white,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -147,19 +196,28 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                 return CustomSearchField(
                   searchController: controller.searchController,
                   qrPressed: openQRScanner,
-                  color: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
+                  color:
+                      PrefsHelper.myRole == "trainee"
+                          ? ColorController.instance.getButtonColor()
+                          : AppColors.secondary,
                 );
-              },),
+              }),
               const SizedBox(height: 10),
               Text(
                 AppString.createYourOwnWorkout,
-                style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
+                style: styleForText.copyWith(
+                  fontSize: 24,
+                  color:
+                      PrefsHelper.myRole == 'trainee'
+                          ? ColorController.instance.getTextColor()
+                          : AppColors.white,
+                ),
               ),
               const SizedBox(height: 10),
               InkWell(
-                  onTap: () async {
-                    await _showDatePickerAndNavigate();
-                  },
+                onTap: () async {
+                  await _showDatePickerAndNavigate();
+                },
                 child: Obx(() {
                   return Container(
                     width: 217,
@@ -168,20 +226,37 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                       color: ColorController.instance.getButtonColor(),
                     ),
                     child: ListTile(
-                      leading: Icon(Icons.calendar_month_outlined, color: AppColors.white),
+                      leading: Icon(
+                        Icons.calendar_month_outlined,
+                        color: AppColors.white,
+                      ),
                       title: Text(
                         AppString.viewCalender,
-                        style: styleForText.copyWith(fontSize: 20, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
+                        style: styleForText.copyWith(
+                          fontSize: 20,
+                          color:
+                              PrefsHelper.myRole == 'trainee'
+                                  ? ColorController.instance.getTextColor()
+                                  : AppColors.white,
+                        ),
                       ),
                     ),
                   );
-                },)
+                }),
               ),
               const SizedBox(height: 20),
               Align(
                 alignment: Alignment.bottomLeft,
-                child: Text(AppString.workOutPlan,
-                    style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white)),
+                child: Text(
+                  AppString.workOutPlan,
+                  style: styleForText.copyWith(
+                    fontSize: 24,
+                    color:
+                        PrefsHelper.myRole == 'trainee'
+                            ? ColorController.instance.getTextColor()
+                            : AppColors.white,
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
 
@@ -199,7 +274,13 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                 }
 
                 if (controller.workoutList.isEmpty) {
-                  return  Text(AppString.noWorkoutsAvailable, style: styleForText.copyWith(color: Colors.white, fontSize: 14.sp),);
+                  return Text(
+                    AppString.noWorkoutsAvailable,
+                    style: styleForText.copyWith(
+                      color: Colors.white,
+                      fontSize: 14.sp,
+                    ),
+                  );
                 }
 
                 return ListView.builder(
@@ -214,13 +295,17 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                       child: CustomWorkoutPlanContainer(
                         workout: workout,
                         startWorkoutTap: () {
-                          Get.to(() => WorkoutDetailsScreen(), arguments: {'id': workout.id});
+                          Get.to(
+                            () => WorkoutDetailsScreen(),
+                            arguments: {'id': workout.id},
+                          );
                         },
                       ),
                     );
                   },
                 );
               }),
+
               ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             ],
           ),
@@ -261,8 +346,12 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
       });
       if (result != null && result!.code != null) {
         Get.back();
-        Get.snackbar('QR Code Result', result!.code!,
-            backgroundColor: AppColors.primary, colorText: AppColors.white);
+        Get.snackbar(
+          'QR Code Result',
+          result!.code!,
+          backgroundColor: AppColors.primary,
+          colorText: AppColors.white,
+        );
         qrController?.stopCamera();
       }
     });

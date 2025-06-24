@@ -44,33 +44,22 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
       floatingActionButton: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(left: 30),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              CustomButton(
-                backgroundColor: AppColors.secondary,
-                textColor: AppColors.primary,
-                buttonText: AppString.addWorkout,
-                onTap: () {
-                  controller.searchController.text.isNotEmpty
-                      ? controller.addWorkout()
-                      : SnackbarHelper.show(
-                    title: "Warning",
-                    message: "Please search",
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                  );
-                },
-              ),
-              const SizedBox(height: 10),
-              CustomButton(
-                backgroundColor: Colors.transparent,
-                textColor: AppColors.white,
-                buttonText: AppString.cancel,
-                onTap: () => Get.back(),
-              ),
-            ],
+          child: CustomButton(
+            backgroundColor: PrefsHelper.myRole == 'trainee'?ColorController.instance.getButtonColor():AppColors.secondary,
+            textColor: PrefsHelper.myRole == 'trainee'
+                ? ColorController.instance.getTextColor()
+                : AppColors.primary,
+            buttonText: AppString.addWorkout,
+            onTap: () {
+              controller.searchController.text.isNotEmpty
+                  ? controller.addWorkout()
+                  : SnackbarHelper.show(
+                title: "Warning",
+                message: "Please search",
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+              );
+            },
           ),
         ),
       ),

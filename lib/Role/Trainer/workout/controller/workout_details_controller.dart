@@ -14,6 +14,7 @@ class WorkoutDetailsController extends GetxController {
   RxList magermentList = [].obs;
   final UserRepository userRepository = UserRepository();
   final TextEditingController searchController = TextEditingController();
+  RxList<TextEditingController> measurementControllers = <TextEditingController>[].obs;
   RxList<ExerciseModel> searchResults = <ExerciseModel>[].obs;
 
   late String workoutId;
@@ -258,4 +259,14 @@ class WorkoutDetailsController extends GetxController {
       update();
     }
   }
+
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  void updateMeasurementValue(int index, String value) {
+    if (index < workoutDetail.value.measurements.length) {
+      workoutDetail.value.measurements[index]['value'] = value;
+      workoutDetail.refresh(); // Notify listeners
+    }
+  }
+
 }

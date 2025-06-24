@@ -8,9 +8,11 @@ import 'package:gym_fit/Repository/auth_repository.dart';
 import '../../../../../Helpers/snackbar_helper.dart';
 
 class SignInController extends GetxController {
-  // TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'senior' : '');
+  static SignInController get instance => Get.find<SignInController>();
+  RxBool enabled = false.obs;
   TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'junior' : '');
-  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? '123' : "");
+  // TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'rifatrahman@gmail.com' : '');
+  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? 'hello123' : "");
   var isLoading = false.obs;
   String role = "";
 
@@ -63,7 +65,9 @@ class SignInController extends GetxController {
         pin: !isEmail ? pin : "",
       );
 
-      if (response.success) {
+      if (response.success|| response.statusCode ==200) {
+
+        enabled.value = response.data['attributes']['enabled'];
 
         PrefsHelper.token = response.data['accessToken'];
         PrefsHelper.myRole = response.data['attributes']['role'];
