@@ -10,12 +10,13 @@ import '../../../../Model/search_workout_response.dart';
 import '../../../../Repository/user_repository.dart';
 
 class WorkoutDetailsController extends GetxController {
-  //===========================================================
-  RxList magermentList = [].obs;
   final UserRepository userRepository = UserRepository();
   final TextEditingController searchController = TextEditingController();
-  RxList<TextEditingController> measurementControllers = <TextEditingController>[].obs;
   RxList<ExerciseModel> searchResults = <ExerciseModel>[].obs;
+
+  // List to store TextEditingControllers for measurements
+  RxList<TextEditingController> measurementControllers =
+      <TextEditingController>[].obs;
 
   late String workoutId;
   RxInt index = 1.obs;
@@ -25,7 +26,6 @@ class WorkoutDetailsController extends GetxController {
   late RxDouble totalSets = 1.0.obs;
   late RxDouble timer = 1.0.obs;
 
-  // Reactive variables for loading state, workout data, and error message
   var isLoading = false.obs;
   Rx<WorkOutModel> workoutDetail = WorkOutModel().obs;
   var errorMessage = ''.obs;
@@ -33,12 +33,11 @@ class WorkoutDetailsController extends GetxController {
   RxInt remainingSeconds = 0.obs;
   Timer? _timer;
 
-  // Call this method to start timer countdown
   void startTimer() {
-    stopTimer(); // Stop any previous timer
+    stopTimer();
     remainingSeconds.value = (timer.value * 60).toInt();
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (remainingSeconds.value > 0) {
         remainingSeconds.value--;
       } else {
@@ -55,6 +54,12 @@ class WorkoutDetailsController extends GetxController {
   @override
   void onClose() {
     stopTimer();
+    // Dispose all measurement controllers
+    for (var controller in measurementControllers) {
+      controller.dispose();
+    }
+    measurementControllers.clear();
+    searchController.dispose();
     super.onClose();
   }
 
@@ -71,8 +76,6 @@ class WorkoutDetailsController extends GetxController {
     fetchWorkoutDetail();
   }
 
-
-
   Timer? _debounce;
   void onSearchChanged({String value = ""}) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
@@ -81,8 +84,6 @@ class WorkoutDetailsController extends GetxController {
       searchWorkout(query: value);
     });
   }
-
-
 
   void searchWorkout({String query = ''}) async {
     isLoading.value = true;
@@ -95,10 +96,8 @@ class WorkoutDetailsController extends GetxController {
       );
       if (response?.statusCode == 200) {
         List data = response!.data["exercises"];
-        // log("excersice=====${data["exercises"]}");
         searchResults.value =
             data.map((value) => ExerciseModel.fromJson(value)).toList();
-
         log("searchResults=====$searchResults");
       } else {
         errorMessage.value = response?.message ?? "Failed to search";
@@ -131,28 +130,23 @@ class WorkoutDetailsController extends GetxController {
       log("responseData -====>${response?.statusCode}");
 
       if (response?.statusCode == 200) {
-        // Parse the full JSON response into WorkOutModel
         log("workoutData=====>${response?.data}");
         List data = response!.data["attributes"];
         if (data.isNotEmpty) {
           workoutDetail.value = WorkOutModel.fromJson(data[0]);
+          // Initialize TextEditingControllers for measurements
+          measurementControllers.clear();
+          for (var measurement in workoutDetail.value.measurements) {
+            measurementControllers.add(
+              TextEditingController(text: "${measurement['value'] ?? ''}"),
+            );
+          }
         }
         errorMessage.value = '';
         log("Workout data loaded successfully");
         log("myData=====>${workoutDetail.value.id}");
         log("myData=====>${workoutDetail.value.exerciseName}");
-
-        for (var measurement in workoutDetail.value.measurements) {
-          final name = (measurement['name'] ?? '').toString().toLowerCase();
-          if (name == 'sets' || name == 'set') {
-            final value = measurement['value'];
-            if (value != null) {
-              // The value is like "5 unit", so extract the number
-              final numberStr = value.toString().split(' ').first;
-              totalSets.value = double.tryParse(numberStr) ?? 1.0;
-            }
-          }
-        }
+        log("measurementControllers length: ${measurementControllers.length}");
 
         for (var measurement in workoutDetail.value.measurements) {
           final name = (measurement['name'] ?? '').toString().toLowerCase();
@@ -178,7 +172,25 @@ class WorkoutDetailsController extends GetxController {
     }
   }
 
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Add workout >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  void startWorkout() {
+    for (var measurement in workoutDetail.value.measurements) {
+      final name = (measurement['name'] ?? '').toString().toLowerCase();
+      if (name == 'sets' || name == 'set') {
+        final value = measurement['value'];
+        if (value != null) {
+          log(">>>>>>>>>>>>>>>>>>>> print : $value");
+          log(">>>>>>>>>>>>>>>>>>>> print : ${value.runtimeType}");
+          if (value is int) {
+            totalSets.value = value.toDouble();
+          } else {
+            totalSets.value = value ?? 1.0;
+          }
+        }
+      }
+    }
+    Get.toNamed(RoutesName.trainingPageOne);
+  }
+
   Future<void> addWorkout() async {
     try {
       isLoading.value = true;
@@ -214,18 +226,35 @@ class WorkoutDetailsController extends GetxController {
       log("Add failed (Controller) e: $e");
       log("Add failed (Controller) s: $s");
     } finally {
-      isLoading(false);
+      isLoading.value = false;
       update();
     }
   }
-
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Complete workout >>>>>>>>>>>>>>>>>>>>
+//========================================================================================
+  RxList setList = [].obs;
   Future<void> completeWorkout() async {
     try {
       isLoading.value = true;
 
+      // if (workoutDetail.value.measurements.isNotEmpty) {
+      //   for (var i = 0; i < workoutDetail.value.measurements.length; i++) {
+      //     var data = workoutDetail.value.measurements[i];
+      //     setList.add({
+      //       "name": "Set ${i + 1}",
+      //       "measurements": [
+      //         {"name": data["name"], "value": data["value"], "unit": "unit"},
+      //       ],
+      //     });
+      //   }
+      // }
+
+      log("setlist=====$setList");
+      log("measurementlist=====${workoutDetail.value.measurements}");
+
+      Map<String, dynamic> body = {"sets": setList};
+
       final response = await userRepository.completeWorkout(
-        workoutId,
+        body: body,
         showMessage: true,
       );
 
@@ -253,20 +282,10 @@ class WorkoutDetailsController extends GetxController {
         textColor: Colors.white,
       );
       log("workout done failed (Controller) e: $e");
-      log("workout done  (Controller) s: $s");
+      log("workout done (Controller) s: $s");
     } finally {
-      isLoading(false);
+      isLoading.value = false;
       update();
     }
   }
-
-  //>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-  void updateMeasurementValue(int index, String value) {
-    if (index < workoutDetail.value.measurements.length) {
-      workoutDetail.value.measurements[index]['value'] = value;
-      workoutDetail.refresh(); // Notify listeners
-    }
-  }
-
 }

@@ -12,7 +12,7 @@ class SignInController extends GetxController {
   RxBool enabled = false.obs;
   TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'junior' : '');
   // TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'rifatrahman@gmail.com' : '');
-  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? 'hello123' : "");
+  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? '123' : "");
   var isLoading = false.obs;
   String role = "";
 

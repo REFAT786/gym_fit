@@ -31,10 +31,10 @@ class TrainingPageOne extends StatelessWidget {
           },
           icon: CustomBackButton(),
         ),
-        title: Text(
+        title: Obx(() => Text(
           controller.workoutDetail.value.exerciseName,
           style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
-        ),
+        ),),
         centerTitle: true,
       ),
       floatingActionButton: Padding(

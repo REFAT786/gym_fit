@@ -218,11 +218,15 @@ class UserRepository {
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Complete Workout >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<ApiResponse?> completeWorkout(
-      String id, {
+      {
+        var body,
         bool showMessage = false,
       }) async {
-    final url = "${AppUrl.completeWorkout}$id";
-    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    final url = AppUrl.completeWorkout;
+    final response = await ApiService.to.postApi(
+        url,
+        body,
+        showMessage: showMessage);
     log("Fetch individual Workout by ID Response: $response");
 
     if (response.statusCode == 200) {

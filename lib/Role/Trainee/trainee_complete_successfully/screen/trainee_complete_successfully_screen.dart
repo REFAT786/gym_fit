@@ -36,15 +36,7 @@ class TraineeCompleteSuccessfullyScreen extends StatelessWidget {
                 SizedBox(height: 20), // Space between the text and the button
                 InkWell(
                   onTap: () {
-
                     controller.completeWorkout();
-                    //
-                    // if(PrefsHelper.myRole=="trainee"){
-                    //   Get.off(TraineeNavBarScreen());
-                    // }else{
-                    //   Get.off(NavBarScreen());
-                    // }
-
                   },
                   child: CustomButton(
                     backgroundColor: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,

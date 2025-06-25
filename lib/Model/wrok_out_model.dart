@@ -13,7 +13,7 @@ class WorkOutModel {
   final List<WorkoutType> workoutTypes;
   final List<dynamic> stations;
   final List<MuscleGroup> muscleGroups;
-  final List<dynamic> measurements; // Keep this as dynamic list
+  late final List<dynamic> measurements;
 
   WorkOutModel({
     this.id = '',
@@ -61,7 +61,6 @@ class WorkOutModel {
         ? []
         : List<MuscleGroup>.from(
         json["muscleGroups"].map((x) => MuscleGroup.fromJson(x))),
-    // THIS IS THE KEY FIX: Use "measurement" (singular) here
     measurements: json["measurement"] ?? [],
   );
 
@@ -83,7 +82,7 @@ class WorkOutModel {
     "workoutTypes": workoutTypes.map((x) => x.toJson()).toList(),
     "stations": stations,
     "muscleGroups": muscleGroups.map((x) => x.toJson()).toList(),
-    "measurement": measurements, // Keep singular to match API JSON
+    "measurement": measurements,
   };
 }
 
@@ -168,5 +167,31 @@ class MuscleGroup {
     "id": id,
     "name": name,
     "image": image,
+  };
+}
+
+
+class MeasurementModel {
+  final String name;
+  final dynamic value;
+  final String unit;
+
+  MeasurementModel({
+    this.name = '',
+    this.value,
+    this.unit = '',
+  });
+
+  factory MeasurementModel.fromJson(Map<String, dynamic> json) =>
+      MeasurementModel(
+        name: json["name"] ?? '',
+        value: json["value"],
+        unit: json["unit"] ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "value": value,
+    "unit": unit,
   };
 }

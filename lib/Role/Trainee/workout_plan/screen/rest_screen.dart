@@ -221,30 +221,6 @@ class _RestScreenState extends State<RestScreen> {
                                   },
                                 ),
 
-                                // Column(
-                                //   children: [
-                                //     Text("Reps", style: styleForText.copyWith(fontSize: 18, fontWeight:FontWeight.w400),),
-                                //     Text("12", style: styleForText.copyWith(fontSize: 18),),
-                                //   ],
-                                // ),
-                                // Column(
-                                //   children: [
-                                //     Text("Sets", style: styleForText.copyWith(fontSize: 18, fontWeight:FontWeight.w400),),
-                                //     Text("5", style: styleForText.copyWith(fontSize: 18),),
-                                //   ],
-                                // ),
-                                // Column(
-                                //   children: [
-                                //     Text("Weight(Kg)", style: styleForText.copyWith(fontSize: 18, fontWeight:FontWeight.w400),),
-                                //     Text("30", style: styleForText.copyWith(fontSize: 18),),
-                                //   ],
-                                // ),
-                                // Column(
-                                //   children: [
-                                //     Text("Rest", style: styleForText.copyWith(fontSize: 18, fontWeight:FontWeight.w400),),
-                                //     Text("00.59", style: styleForText.copyWith(fontSize: 18),),
-                                //   ],
-                                // ),
                               ],
                             ),
                           ],
@@ -333,8 +309,7 @@ class _RestScreenState extends State<RestScreen> {
                             onTap: () {
                               if (isButtonEnabled) {
                                 controller.index.value++;
-                                if (controller.index.value >
-                                    controller.totalSets.value) {
+                                if (controller.index.value > controller.totalSets.value) {
                                   Get.toNamed(RoutesName.completeSuccessful);
                                   controller.index.value = 1;
                                 } else {

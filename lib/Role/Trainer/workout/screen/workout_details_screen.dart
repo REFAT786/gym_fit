@@ -21,8 +21,8 @@ import '../../../Trainee/color/controller/color_controller.dart';
 class WorkoutDetailsScreen extends StatelessWidget {
   WorkoutDetailsScreen({super.key});
 
-
-  WorkoutDetailsController controller = Get.find<WorkoutDetailsController>();
+  final WorkoutDetailsController controller =
+      Get.find<WorkoutDetailsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,6 @@ class WorkoutDetailsScreen extends StatelessWidget {
     log(
       ">>>>>>>>>>>>>>>>>>>>>>>>> Exercise name  ${controller.workoutDetail.value.id}",
     );
-    // var workOut = controller.workoutDetail.value;
     return CustomTrainerGradientBackgroundColor(
       child: Scaffold(
         appBar: AppBar(
@@ -42,34 +41,38 @@ class WorkoutDetailsScreen extends StatelessWidget {
             onPressed: () {
               Get.back();
             },
-            icon: CustomBackButton(),
+            icon: const CustomBackButton(),
           ),
-          title:
-              controller.workoutDetail.value.exerciseName.isNotEmpty
-                  ? Text(
-                    controller.workoutDetail.value.exerciseName,
-                    style: styleForText.copyWith(fontSize: 24, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
-                  )
-                  : Text(""),
+          title: Obx(
+            () =>
+                controller.workoutDetail.value.exerciseName.isNotEmpty
+                    ? Text(
+                      controller.workoutDetail.value.exerciseName,
+                      style: styleForText.copyWith(
+                        fontSize: 24,
+                        color:
+                            PrefsHelper.myRole == 'trainee'
+                                ? ColorController.instance.getTextColor()
+                                : AppColors.white,
+                      ),
+                    )
+                    : const Text(""),
+          ),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 15),
+          padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 15),
           child: Column(
             children: [
-              // SizedBox(height: 40),
               Column(
                 children: [
-                  // Obx(() => Text("???????????????????${controller.workoutDetail.value.measurements[0]['unit']}"),),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Obx(() {
                     return Container(
                       height: 250,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        // border: Border.all(color: AppColors.secondary, width: 2),
                         borderRadius: BorderRadius.circular(16),
-                        // color: AppColors.primary
                       ),
                       child:
                           controller
@@ -79,32 +82,27 @@ class WorkoutDetailsScreen extends StatelessWidget {
                                   .isNotEmpty
                               ? CustomCommonImage(
                                 imageSrc:
-                                    controller
-                                            .workoutDetail
-                                            .value
-                                            .exerciseImage
-                                            .isNotEmpty
-                                        ? "${AppUrl.baseUrl}${controller.workoutDetail.value.exerciseImage}"
-                                        : "",
-                                imageType:
-                                    controller
-                                            .workoutDetail
-                                            .value
-                                            .exerciseImage
-                                            .isNotEmpty
-                                        ? ImageType.network
-                                        : ImageType.png,
+                                    "${AppUrl.baseUrl}${controller.workoutDetail.value.exerciseImage}",
+                                imageType: ImageType.network,
                                 defaultImage: "assets/images/noImage.png",
                                 height: 250,
                                 width: double.infinity,
                                 borderRadius: 16,
                               )
-                              : Center(child: Text(AppString.noVideoAvailable, style: styleForText.copyWith(color: Colors.white, fontSize: 14.sp),)),
+                              : Center(
+                                child: Text(
+                                  AppString.noVideoAvailable,
+                                  style: styleForText.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ),
                     );
                   }),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -112,30 +110,51 @@ class WorkoutDetailsScreen extends StatelessWidget {
                           return Text(
                             controller.workoutDetail.value.stations.isNotEmpty
                                 ? controller
-                                    .workoutDetail
-                                    .value
-                                    .stations[0]['number']
+                                        .workoutDetail
+                                        .value
+                                        .stations[0]['number']
+                                        ?.toString() ??
+                                    AppString.noStationNumber
                                 : AppString.noStationNumber,
-                            style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
+                            style: styleForText.copyWith(
+                              fontSize: 25,
+                              color:
+                                  PrefsHelper.myRole == 'trainee'
+                                      ? ColorController.instance.getTextColor()
+                                      : AppColors.white,
+                            ),
                           );
                         }),
                         Obx(() {
                           return Text(
                             controller.workoutDetail.value.stations.isNotEmpty
                                 ? controller
-                                    .workoutDetail
-                                    .value
-                                    .stations[0]['name']
-                                    .toString()
+                                        .workoutDetail
+                                        .value
+                                        .stations[0]['name']
+                                        ?.toString() ??
+                                    AppString.noStationName
                                 : AppString.noStationName,
-                            style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
+                            style: styleForText.copyWith(
+                              fontSize: 25,
+                              color:
+                                  PrefsHelper.myRole == 'trainee'
+                                      ? ColorController.instance.getTextColor()
+                                      : AppColors.white,
+                            ),
                           );
                         }),
                         Text(
                           AppString.targetMuscles,
-                          style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
+                          style: styleForText.copyWith(
+                            fontSize: 25,
+                            color:
+                                PrefsHelper.myRole == 'trainee'
+                                    ? ColorController.instance.getTextColor()
+                                    : AppColors.white,
+                          ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         SizedBox(
                           height: 90,
                           child: Obx(() {
@@ -181,16 +200,21 @@ class WorkoutDetailsScreen extends StatelessWidget {
                             );
                           }),
                         ),
-
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
                           AppString.description,
-                          style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
+                          style: styleForText.copyWith(
+                            fontSize: 25,
+                            color:
+                                PrefsHelper.myRole == 'trainee'
+                                    ? ColorController.instance.getTextColor()
+                                    : AppColors.white,
+                          ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Obx(() {
                           return Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color:
@@ -213,17 +237,26 @@ class WorkoutDetailsScreen extends StatelessWidget {
                               style: styleForText.copyWith(
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
-                                color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
+                                color:
+                                    PrefsHelper.myRole == 'trainee'
+                                        ? ColorController.instance
+                                            .getTextColor()
+                                        : AppColors.white,
                               ),
                             ),
                           );
                         }),
                         Text(
                           AppString.equipment,
-                          style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
+                          style: styleForText.copyWith(
+                            fontSize: 25,
+                            color:
+                                PrefsHelper.myRole == 'trainee'
+                                    ? ColorController.instance.getTextColor()
+                                    : AppColors.white,
+                          ),
                         ),
-                        SizedBox(height: 10),
-
+                        const SizedBox(height: 10),
                         Obx(() {
                           return Row(
                             children: [
@@ -237,15 +270,21 @@ class WorkoutDetailsScreen extends StatelessWidget {
                             ],
                           );
                         }),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
                           AppString.equipmentDescription,
-                          style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
+                          style: styleForText.copyWith(
+                            fontSize: 25,
+                            color:
+                                PrefsHelper.myRole == 'trainee'
+                                    ? ColorController.instance.getTextColor()
+                                    : AppColors.white,
+                          ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Obx(() {
                           return Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color:
@@ -270,14 +309,16 @@ class WorkoutDetailsScreen extends StatelessWidget {
                               style: styleForText.copyWith(
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
-                                color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white
+                                color:
+                                    PrefsHelper.myRole == 'trainee'
+                                        ? ColorController.instance
+                                            .getTextColor()
+                                        : AppColors.white,
                               ),
                             ),
                           );
                         }),
-
-                        SizedBox(height: 10),
-
+                        const SizedBox(height: 10),
                         Obx(() {
                           return ListView.builder(
                             itemCount:
@@ -287,12 +328,16 @@ class WorkoutDetailsScreen extends StatelessWidget {
                                     .measurements
                                     .length,
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               log(
                                 ">>>>>>>>>>>>>>>>>???? --  controller.workoutDetail.value.measurements.length : ${controller.workoutDetail.value.measurements.length}",
                               );
-                              var measurements =
+                              if (index >=
+                                  controller.measurementControllers.length) {
+                                return const SizedBox.shrink(); // Safeguard against out-of-bounds
+                              }
+                              final measurements =
                                   controller
                                       .workoutDetail
                                       .value
@@ -300,57 +345,67 @@ class WorkoutDetailsScreen extends StatelessWidget {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "${measurements['name']}",
-                                    style: styleForText.copyWith(fontSize: 25, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "${measurements['name'] ?? 'Unknown'}",
+                                        style: styleForText.copyWith(
+                                          fontSize: 25,
+                                          color:
+                                              PrefsHelper.myRole == 'trainee'
+                                                  ? ColorController.instance
+                                                      .getTextColor()
+                                                  : AppColors.white,
+                                        ),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "(${measurements['unit'] ?? 'Unknown'})",
+                                        style: styleForText.copyWith(
+                                          fontSize: 25,
+                                          color:
+                                              PrefsHelper.myRole == 'trainee'
+                                                  ? ColorController.instance
+                                                      .getTextColor()
+                                                  : AppColors.white,
+                                        ),
+                                      ),
+                                    ],
                                   ),
 
                                   CustomTextField(
-                                    hintText: "Enter ${measurements['name']}",
+                                    hintText: "",
                                     isSuffix: false,
                                     controller:
-                                    controller.measurementControllers[index],
+                                        controller
+                                            .measurementControllers[index],
+                                    backgroundColor:
+                                        PrefsHelper.myRole == 'trainee'
+                                            ? AppColors.traineeNavBArColor
+                                            : const Color(0xff033a5b),
+
                                     onChanged: (value) {
-                                      controller.updateMeasurementValue(
-                                          index, value);
+                                      measurements['value'] =
+                                          double.tryParse(value) ??
+                                          measurements['value'];
+                                      controller.workoutDetail.refresh();
+                                      log(
+                                        ">>>>>>>>>> measurements['value'] : ${measurements['value']}",
+                                      );
                                     },
                                   ),
 
-                                  Container(
-                                    width: double.infinity,
-                                    padding: EdgeInsets.all(18),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      color:
-                                          PrefsHelper.myRole == 'trainee'
-                                              ? AppColors.traineeNavBArColor
-                                              : Color(0xff033a5b),
-                                    ),
-                                    child: Text(
-                                      "${measurements['value']}",
-                                      style: styleForText.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color:
-                                            PrefsHelper.myRole == "trainee"
-                                                ? ColorController.instance
-                                                    .getHintTextColor()
-                                                : AppColors.hintGrey,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
+                                  const SizedBox(height: 10),
                                 ],
                               );
                             },
                           );
                         }),
-
-                        SizedBox(height: 10),
-
+                        const SizedBox(height: 10),
                         if (PrefsHelper.myRole == "trainee")
                           InkWell(
                             onTap: () {
-                              Get.toNamed(RoutesName.trainingPageOne);
+                              controller.startWorkout();
                             },
                             child: CustomButton(
                               buttonText: AppString.startWorkout,
@@ -365,69 +420,7 @@ class WorkoutDetailsScreen extends StatelessWidget {
                                       : AppColors.primary,
                             ),
                           ),
-
-                        SizedBox(height: 10),
-
-                        // Text(
-                        //   AppString.notes,
-                        //   style: styleForText.copyWith(fontSize: 25),
-                        // ),
-                        // Container(
-                        //   padding: EdgeInsets.all(5),
-                        //   height: 100,
-                        //   decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(20),
-                        //     color: PrefsHelper.myRole == "trainee"
-                        //         ? AppColors.traineeNavBArColor
-                        //         : AppColors.primary,
-                        //   ),
-                        //   child: TextField(
-                        //     maxLines: 3,
-                        //     style: TextStyle(color: Colors.white),
-                        //     decoration: InputDecoration(
-                        //       hintText: AppString.notes,
-                        //       hintStyle: styleForText.copyWith(
-                        //           fontSize: 16,
-                        //           fontWeight: FontWeight.w400,),
-                        //       border: OutlineInputBorder(
-                        //         borderSide: BorderSide.none,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   height: 10,
-                        // ),
-                        // Text(
-                        //   AppString.history,
-                        //   style: styleForText.copyWith(fontSize: 25),
-                        // ),
-                        // ListView.builder(
-                        //   padding: EdgeInsets.all(0),
-                        //   itemCount: 5,
-                        //   shrinkWrap: true,
-                        //   physics: NeverScrollableScrollPhysics(),
-                        //   itemBuilder: (context, index) {
-                        //     return Padding(
-                        //       padding: const EdgeInsets.only(bottom: 10),
-                        //       child: CustomHistoryContainer(),
-                        //     );
-                        //   },
-                        // ),
-                        // SizedBox(
-                        //   height: 10,
-                        // ),
-                        // InkWell(
-                        //     onTap: () {
-                        //       Get.to(TraineeCompleteSuccessfullyScreen());
-                        //     },
-                        //     child: CustomButton(
-                        //       buttonText: AppString.finishWorkout,
-                        //       backgroundColor: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
-                        //       textColor: PrefsHelper.myRole == 'trainee'
-                        //           ? ColorController.instance.getTextColor()
-                        //           : AppColors.primary,
-                        //     ))
+                        const SizedBox(height: 10),
                       ],
                     ),
                   ),
