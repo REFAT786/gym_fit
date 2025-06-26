@@ -115,6 +115,10 @@ class AppTranslations extends Translations {
       'instructions': 'Instructions',
       'exercises': 'Exercises',
       'total_workout': 'Total Workouts',
+
+      'enable_trainee_choice': 'Enable Trainee Choice',
+      'disable_trainee_choice': 'Disable Trainee Choice',
+
     },
     'ar': {
       'welcome_back_glad_to_see_you_again':

@@ -61,6 +61,53 @@ class UserRepository {
       );
     }
   }
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Trainee enable status >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse?> getChangeEnableStatusId(
+      String id, {
+        bool showMessage = false,
+      }) async {
+    final url = "${AppUrl.changeEnableStatusId}$id";
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log("Fetch Trainee by ID Response: $response");
+
+    if (response.statusCode == 200) {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Success Trainee status");
+      return response;
+    } else {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error Trainee status");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Trainee disable status >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<ApiResponse?> getChangeDisableStatusId(
+      String id, {
+        bool showMessage = false,
+      }) async {
+    final url = "${AppUrl.changeDisableStatusId}$id";
+    final response = await ApiService.to.getApi(url, showMessage: showMessage);
+    log("Fetch Trainee by ID Response: $response");
+
+    if (response.statusCode == 200) {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Success Trainee status");
+      return response;
+    } else {
+      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error Trainee status");
+      return ApiResponse(
+        success: false,
+        message: response.message,
+        data: null,
+        statusCode: response.statusCode,
+      );
+    }
+  }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Trainee management  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -218,29 +265,14 @@ class UserRepository {
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Complete Workout >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<ApiResponse?> completeWorkout(
-      {
-        var body,
-        bool showMessage = false,
-      }) async {
+      {var body, bool showMessage = false,}) async {
     final url = AppUrl.completeWorkout;
     final response = await ApiService.to.postApi(
         url,
         body,
         showMessage: showMessage);
     log("Fetch individual Workout by ID Response: $response");
-
-    if (response.statusCode == 200) {
-      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Success individual Workout");
-      return response;
-    } else {
-      log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error individual Workout");
-      return ApiResponse(
-        success: false,
-        message: response.message,
-        data: null,
-        statusCode: response.statusCode,
-      );
-    }
+    return response;
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> View History  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

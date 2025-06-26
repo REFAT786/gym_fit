@@ -1,5 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
+import 'package:gym_fit/Role/Trainee/history/screen/history_detail_screen.dart';
 import '../../Role/Trainee/color/screen/color_screen.dart';
 import '../../Role/Trainee/history/screen/history_screen.dart';
 import '../../Role/Trainee/home/screen/trainee_home_screen.dart';
@@ -96,6 +97,9 @@ class AppRoutes {
         ),GetPage(
           name: RoutesName.getHistoryScreen(),
           page: () => HistoryScreen()
+        ),GetPage(
+          name: RoutesName.getHistoryDetail(),
+          page: () => HistoryDetailScreen()
         ),
 
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

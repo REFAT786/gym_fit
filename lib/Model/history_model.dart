@@ -54,252 +54,149 @@ class HistoryData {
 }
 
 class HistoryAttribute {
-  final Workout workout;
+  final List<String> stations;
+  final String exerciseName;
+  final String exerciseImage;
+  final List<SetModel> sets;
+  final List<MuscleGroup> muscleGroups;
+  final List<WorkoutType> workoutTypes;
   final String completedAt;
-  final Exercise exercise;
 
   HistoryAttribute({
-    required this.workout,
-    this.completedAt = '',
-    required this.exercise,
-  });
-
-  factory HistoryAttribute.fromJson(Map<String, dynamic> json) => HistoryAttribute(
-    workout: Workout.fromJson(json['workout'] ?? {}),
-    completedAt: json['completedAt'] ?? '',
-    exercise: Exercise.fromJson(json['exercise'] ?? {}),
-  );
-
-  Map<String, dynamic> toJson() => {
-    'workout': workout.toJson(),
-    'completedAt': completedAt,
-    'exercise': exercise.toJson(),
-  };
-}
-
-class Workout {
-  final String id;
-  final String user;
-  final String exercise;
-  final bool completed;
-  final String createdAt;
-  final String updatedAt;
-  final int v;
-
-  Workout({
-    this.id = '',
-    this.user = '',
-    this.exercise = '',
-    this.completed = false,
-    this.createdAt = '',
-    this.updatedAt = '',
-    this.v = 0,
-  });
-
-  factory Workout.fromJson(Map<String, dynamic> json) => Workout(
-    id: json['_id'] ?? '',
-    user: json['user'] ?? '',
-    exercise: json['exercise'] ?? '',
-    completed: json['completed'] ?? false,
-    createdAt: json['createdAt'] ?? '',
-    updatedAt: json['updatedAt'] ?? '',
-    v: json['__v'] ?? 0,
-  );
-
-  Map<String, dynamic> toJson() => {
-    '_id': id,
-    'user': user,
-    'exercise': exercise,
-    'completed': completed,
-    'createdAt': createdAt,
-    'updatedAt': updatedAt,
-    '__v': v,
-  };
-}
-
-class Exercise {
-  final String id;
-  final String name;
-  final String description;
-  final String instructions;
-  final String exerciseImage;
-  final String exerciseVideo;
-  final List<WorkoutType> workoutType;
-  final List<MuscleGroup> muscleGroup;
-  final List<Station> stations;
-
-  Exercise({
-    this.id = '',
-    this.name = '',
-    this.description = '',
-    this.instructions = '',
-    this.exerciseImage = '',
-    this.exerciseVideo = '',
-    this.workoutType = const [],
-    this.muscleGroup = const [],
     this.stations = const [],
+    this.exerciseName = '',
+    this.exerciseImage = '',
+    this.sets = const [],
+    this.muscleGroups = const [],
+    this.workoutTypes = const [],
+    this.completedAt = '',
   });
 
-  factory Exercise.fromJson(Map<String, dynamic> json) => Exercise(
-    id: json['_id'] ?? '',
-    name: json['name'] ?? '',
-    description: json['description'] ?? '',
-    instructions: json['instructions'] ?? '',
-    exerciseImage: json['exerciseImage'] ?? '',
-    exerciseVideo: json['exerciseVideo'] ?? '',
-    workoutType: json['wrokouttype'] != null
-        ? List<WorkoutType>.from(
-        json['wrokouttype'].map((x) => WorkoutType.fromJson(x)))
-        : [],
-    muscleGroup: json['muscleGroup'] != null
-        ? List<MuscleGroup>.from(
-        json['muscleGroup'].map((x) => MuscleGroup.fromJson(x)))
-        : [],
-    stations: json['stations'] != null
-        ? List<Station>.from(json['stations'].map((x) => Station.fromJson(x)))
-        : [],
-  );
+  factory HistoryAttribute.fromJson(Map<String, dynamic> json) =>
+      HistoryAttribute(
+        stations: List<String>.from(json['stations'] ?? []),
+        exerciseName: json['exerciseName'] ?? '',
+        exerciseImage: json['exerciseImage'] ?? '',
+        sets: json['sets'] != null
+            ? List<SetModel>.from(
+            json['sets'].map((x) => SetModel.fromJson(x)))
+            : [],
+        muscleGroups: json['muscleGroups'] != null
+            ? List<MuscleGroup>.from(
+            json['muscleGroups'].map((x) => MuscleGroup.fromJson(x)))
+            : [],
+        workoutTypes: json['workoutTypes'] != null
+            ? List<WorkoutType>.from(
+            json['workoutTypes'].map((x) => WorkoutType.fromJson(x)))
+            : [],
+        completedAt: json['completedAt'] ?? '',
+      );
 
   Map<String, dynamic> toJson() => {
-    '_id': id,
-    'name': name,
-    'description': description,
-    'instructions': instructions,
+    'stations': stations,
+    'exerciseName': exerciseName,
     'exerciseImage': exerciseImage,
-    'exerciseVideo': exerciseVideo,
-    'wrokouttype': List<dynamic>.from(workoutType.map((x) => x.toJson())),
-    'muscleGroup': List<dynamic>.from(muscleGroup.map((x) => x.toJson())),
-    'stations': List<dynamic>.from(stations.map((x) => x.toJson())),
+    'sets': sets.map((x) => x.toJson()).toList(),
+    'muscleGroups': muscleGroups.map((x) => x.toJson()).toList(),
+    'workoutTypes': workoutTypes.map((x) => x.toJson()).toList(),
+    'completedAt': completedAt,
   };
 }
 
-class WorkoutType {
-  final String id;
-  final String image;
+class SetModel {
   final String name;
-  final String description;
-  final String createdAt;
-  final String updatedAt;
-  final int v;
+  final List<Measurement> measurements;
 
-  WorkoutType({
-    this.id = '',
-    this.image = '',
+  SetModel({
     this.name = '',
-    this.description = '',
-    this.createdAt = '',
-    this.updatedAt = '',
-    this.v = 0,
+    this.measurements = const [],
   });
 
-  factory WorkoutType.fromJson(Map<String, dynamic> json) => WorkoutType(
-    id: json['_id'] ?? '',
-    image: json['image'] ?? '',
+  factory SetModel.fromJson(Map<String, dynamic> json) => SetModel(
     name: json['name'] ?? '',
-    description: json['description'] ?? '',
-    createdAt: json['createdAt'] ?? '',
-    updatedAt: json['updatedAt'] ?? '',
-    v: json['__v'] ?? 0,
+    measurements: json['measurements'] != null
+        ? List<Measurement>.from(
+        json['measurements'].map((x) => Measurement.fromJson(x)))
+        : [],
   );
 
   Map<String, dynamic> toJson() => {
-    '_id': id,
-    'image': image,
     'name': name,
-    'description': description,
-    'createdAt': createdAt,
-    'updatedAt': updatedAt,
-    '__v': v,
+    'measurements': measurements.map((x) => x.toJson()).toList(),
   };
 }
 
-class MuscleGroup {
-  final String id;
-  final String mgName;
-  final String mgImage;
-  final String description;
-  final String createdAt;
-  final String updatedAt;
-  final int v;
+class Measurement {
+  final String name;
+  final String value;
+  final String? id;
 
-  MuscleGroup({
-    this.id = '',
-    this.mgName = '',
-    this.mgImage = '',
-    this.description = '',
-    this.createdAt = '',
-    this.updatedAt = '',
-    this.v = 0,
+  Measurement({
+    this.name = '',
+    this.value = '',
+    this.id,
   });
 
-  factory MuscleGroup.fromJson(Map<String, dynamic> json) => MuscleGroup(
-    id: json['_id'] ?? '',
-    mgName: json['mgName'] ?? '',
-    mgImage: json['mgImage'] ?? '',
-    description: json['description'] ?? '',
-    createdAt: json['createdAt'] ?? '',
-    updatedAt: json['updatedAt'] ?? '',
-    v: json['__v'] ?? 0,
-  );
-
-  Map<String, dynamic> toJson() => {
-    '_id': id,
-    'mgName': mgName,
-    'mgImage': mgImage,
-    'description': description,
-    'createdAt': createdAt,
-    'updatedAt': updatedAt,
-    '__v': v,
-  };
-}
-
-class Station {
-  final String id;
-  final String stationName;
-  final int stationNumber;
-  final String description;
-  final String branch;
-  final String exercise;
-  final int v;
-
-  Station({
-    this.id = '',
-    this.stationName = '',
-    this.stationNumber = 0,
-    this.description = '',
-    this.branch = '',
-    this.exercise = '',
-    this.v = 0,
-  });
-
-  factory Station.fromJson(Map<String, dynamic> json) {
-    dynamic rawStationNumber = json['stationNumber'];
-    int parsedStationNumber = 0;
-
-    if (rawStationNumber is int) {
-      parsedStationNumber = rawStationNumber;
-    } else if (rawStationNumber is String) {
-      parsedStationNumber = int.tryParse(rawStationNumber) ?? 0;
-    }
-
-    return Station(
-      id: json['_id'] ?? '',
-      stationName: json['stationName'] ?? '',
-      stationNumber: parsedStationNumber,
-      description: json['description'] ?? '',
-      branch: json['branch'] ?? '',
-      exercise: json['exercise'] ?? '',
-      v: json['__v'] ?? 0,
+  factory Measurement.fromJson(Map<String, dynamic> json) {
+    return Measurement(
+      name: json['name'] ?? '',
+      value: json['value']?.toString() ?? '',
+      id: json['_id'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-    '_id': id,
-    'stationName': stationName,
-    'stationNumber': stationNumber,
-    'description': description,
-    'branch': branch,
-    'exercise': exercise,
-    '__v': v,
+    'name': name,
+    'value': value,
+    if (id != null) '_id': id,
+  };
+}
+
+
+class WorkoutType {
+  final String name;
+  final String image;
+  final String? id;
+
+  WorkoutType({
+    this.name = '',
+    this.image = '',
+    this.id,
+  });
+
+  factory WorkoutType.fromJson(Map<String, dynamic> json) => WorkoutType(
+    name: json['name'] ?? '',
+    image: json['image'] ?? '',
+    id: json['_id'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'image': image,
+    if (id != null) '_id': id,
+  };
+}
+
+class MuscleGroup {
+  final String name;
+  final String image;
+  final String? id;
+
+  MuscleGroup({
+    this.name = '',
+    this.image = '',
+    this.id,
+  });
+
+  factory MuscleGroup.fromJson(Map<String, dynamic> json) => MuscleGroup(
+    name: json['name'] ?? '',
+    image: json['image'] ?? '',
+    id: json['_id'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'image': image,
+    if (id != null) '_id': id,
   };
 }

@@ -12,11 +12,11 @@ class CustomHistoryWidget extends StatelessWidget {
   final VoidCallback? startWorkoutTap;
 
   const CustomHistoryWidget({
-    Key? key,
+    super.key,
     required this.history,
     this.startWorkoutTap,
     this.isButton = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +35,16 @@ class CustomHistoryWidget extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  history.exercise.name.isNotEmpty
-                      ? history.exercise.name
-                      : AppString.unnamedExercise,
+                  history.exerciseName.isNotEmpty
+                      ? history.exerciseName
+                      : "No Exercise",
                   style: styleForText.copyWith(fontSize: 20),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
-                history.exercise.stations.isNotEmpty
-                    ? "${AppString.station} ${history.exercise.stations[0].stationNumber}"
+                history.stations.isNotEmpty
+                    ? "${AppString.station} ${history.stations[0]}"
                     : AppString.noStation,
                 style: styleForText.copyWith(fontSize: 20),
               ),
@@ -55,7 +55,7 @@ class CustomHistoryWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomCommonImage(
-                imageSrc: "${AppUrl.baseUrl}${history.exercise.exerciseImage}",
+                imageSrc: "${history.exerciseImage}",
                 imageType: ImageType.network,
                 height: 170,
                 width: 125,
@@ -71,25 +71,25 @@ class CustomHistoryWidget extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 75,
-                      child: history.exercise.muscleGroup.isEmpty
+                      child: history.muscleGroups.isEmpty
                           ?  Text(AppString.noMuscleGroups)
                           : ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: history.exercise.muscleGroup.length,
+                        itemCount: history.muscleGroups.length,
                         itemBuilder: (context, index) {
-                          final mg = history.exercise.muscleGroup[index];
+                          final mg = history.muscleGroups[index];
                           return Padding(
                             padding: const EdgeInsets.only(right: 10),
                             child: Column(
                               children: [
                                 Text(
-                                  mg.mgName.isNotEmpty ? mg.mgName : 'Unknown',
+                                  mg.name.isNotEmpty ? mg.name : 'Unknown',
                                   style: styleForText.copyWith(fontSize: 12),
                                 ),
                                 const SizedBox(height: 3),
                                 CustomCommonImage(
-                                  imageSrc: mg.mgImage.isNotEmpty
-                                      ? "${AppUrl.baseUrl}${mg.mgImage}"
+                                  imageSrc: mg.image.isNotEmpty
+                                      ? "${mg.image}"
                                       : 'https://via.placeholder.com/50',
                                   imageType: ImageType.network,
                                   height: 50,
@@ -108,20 +108,20 @@ class CustomHistoryWidget extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 40,
-                      child: history.exercise.workoutType.isEmpty
+                      child: history.workoutTypes.isEmpty
                           ?  Text(AppString.noWorkoutTypes)
                           : ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: history.exercise.workoutType.length,
+                        itemCount: history.workoutTypes.length,
                         itemBuilder: (context, index) {
-                          final wt = history.exercise.workoutType[index];
+                          final wt = history.workoutTypes[index];
                           return Padding(
                             padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 CustomCommonImage(
                                   imageSrc: wt.image.isNotEmpty
-                                      ? "${AppUrl.baseUrl}${wt.image}"
+                                      ? "${wt.image}"
                                       : 'https://via.placeholder.com/44',
                                   imageType: ImageType.network,
                                   height: 44,

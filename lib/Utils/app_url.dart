@@ -29,5 +29,7 @@ class AppUrl {
   static const String specificWorkoutPlan = "$baseUrl/api/v1/exercise/";
   static const String workoutProgress = "$baseUrl/api/v1/workout/progress";
   static const String searchAllWorkout = "$baseUrl/api/v1/exercise/";
+  static const String changeEnableStatusId = "$baseUrl/api/v1/trainee/enable/";
+  static const String changeDisableStatusId = "$baseUrl/api/v1/trainee/disable/";
 
 }

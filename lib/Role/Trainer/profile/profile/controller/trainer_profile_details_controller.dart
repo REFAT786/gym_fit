@@ -48,4 +48,52 @@ class TrainerProfileDetailsController extends GetxController {
     }
     isLoading.value = false;
   }
+
+
+  Future<void> changeStatusEnable() async {
+    isLoading.value = true;
+
+    final response = await userRepository.getChangeEnableStatusId(traineeId, showMessage: true);
+
+    if (response?.statusCode == 200) {
+      try {
+        errorMessage.value = '';
+        log("Status change successfully === Enable === true");
+        // Reload the trainee detail to get updated data
+        await fetchTraineeDetail();
+      } catch (e) {
+        errorMessage.value = 'Failed to parse trainee Status change';
+        log('Parse error: $e');
+        isLoading.value = false;
+      }
+    } else {
+      errorMessage.value = response?.message ?? 'Failed to load trainee Status change';
+      log('Error: ${response?.message}');
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> changeStatusDisable() async {
+    isLoading.value = true;
+
+    final response = await userRepository.getChangeDisableStatusId(traineeId, showMessage: true);
+
+    if (response?.statusCode == 200) {
+      try {
+        errorMessage.value = '';
+        log("Status change successfully === Disable === false");
+        // Reload the trainee detail to get updated data
+        await fetchTraineeDetail();
+      } catch (e) {
+        errorMessage.value = 'Failed to parse trainee Status change';
+        log('Parse error: $e');
+        isLoading.value = false;
+      }
+    } else {
+      errorMessage.value = response?.message ?? 'Failed to load trainee Status change';
+      log('Error: ${response?.message}');
+      isLoading.value = false;
+    }
+  }
+
 }

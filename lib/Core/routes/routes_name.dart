@@ -33,6 +33,7 @@ class RoutesName {
   static const workoutPlan = '/workout-plan';
   static const specificWorkoutPlan = '/specific-workout-plan';
   static const workoutPlanDetail = '/workout-plan-detail';
+  static const historyDetail = '/history-detail';
 
 
   static String getSignInScreen() => login;
@@ -56,6 +57,7 @@ class RoutesName {
   static String getTrainingPageOneScreen() => trainingPageOne;
   static String getRestScreen() => restScreen;
   static String getHistoryScreen() => historyScreen;
+  static String getHistoryDetail() => historyDetail;
 
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

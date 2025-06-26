@@ -38,6 +38,7 @@ class UserDetails {
   String email;
   String image;
   bool isBanned;
+  bool enabled;
   String createdAt;
   String gym;
   String gymLocation;
@@ -53,6 +54,7 @@ class UserDetails {
     this.email = '',
     this.image = '',
     this.isBanned = false,
+    this.enabled = false,
     this.createdAt = '',
     this.gym = '',
     this.gymLocation = '',
@@ -70,6 +72,7 @@ class UserDetails {
       email: json['email'] ?? '',
       image: json['image'] ?? '',
       isBanned: json['isBanned'] ?? false,
+      enabled: json['enabled'] ?? false,
       createdAt: json['createdAt'] ?? '',
       gym: json['gym'] ?? '',
       gymLocation: json['gymLocation'] ?? '',

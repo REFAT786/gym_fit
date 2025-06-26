@@ -183,7 +183,9 @@ class TrainerProfileDetailsScreen extends StatelessWidget {
               ),
 
               SizedBox(height: 5),
-              Padding(
+
+              detail.userDetails.enabled == false
+                  ? Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 10,
@@ -195,22 +197,53 @@ class TrainerProfileDetailsScreen extends StatelessWidget {
                       backgroundColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: AppColors.secondary)
+                        side: BorderSide(color: AppColors.secondary),
                       ),
                     ),
                     onPressed: () {
                       // Get.to(() => AddWorkoutScreen());
+                      controller.changeStatusEnable();
                     },
                     child: Text(
-                      "Enable Trainee Choice",
+                      AppString.enableTraineeChoice,
                       style: styleForText.copyWith(
                         fontSize: 18,
                         color: AppColors.secondary,
                       ),
-                    ),
+                    )
                   ),
                 ),
-              ),
+              )
+                  : Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                child: SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(color: AppColors.secondary),
+                      ),
+                    ),
+                    onPressed: () {
+                      // Get.to(() => AddWorkoutScreen());
+                      controller.changeStatusDisable();
+                    },
+                    child: Text(
+                      AppString.disableTraineeChoice,
+                      style: styleForText.copyWith(
+                        fontSize: 18,
+                        color: AppColors.secondary,
+                      ),
+                    )
+                  ),
+                ),
+              )
+              ,
             ],
           );
         }),

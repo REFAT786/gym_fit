@@ -5,11 +5,9 @@ import 'package:get/get.dart';
 
 import '../../../../Common/widgets/custom_common_image.dart';
 import '../../../../Common/widgets/custom_list_tile.dart';
-import '../../../../Utils/app_colors.dart';
 import '../../../../Utils/app_string.dart';
 import '../../../../Utils/app_url.dart';
 import '../../../../Utils/styles.dart';
-import '../../notification/screen/notification_screen.dart';
 import '../controller/trainer_home_controller.dart';
 
 class TrainerHomeScreen extends StatelessWidget {
@@ -17,7 +15,7 @@ class TrainerHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<TrainerHomeController>(); // get controller
+    final controller = Get.find<TrainerHomeController>();
 
     return Scaffold(
       body: SingleChildScrollView(

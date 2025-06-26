@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Core/routes/routes.dart';
+import 'package:gym_fit/Core/routes/routes_name.dart';
 import '../../../../Common/widgets/custom_back_button.dart';
 import '../../../../Utils/app_string.dart';
 import '../../../../Utils/styles.dart';
@@ -53,7 +55,11 @@ class HistoryScreen extends StatelessWidget {
             itemCount: controller.historyList.length,
             itemBuilder: (context, index) {
               final history = controller.historyList[index];
-              return CustomHistoryWidget(history: history, isButton: false);
+              return InkWell(
+                  onTap: (){
+                    Get.toNamed(RoutesName.historyDetail, arguments: {'data': history});
+                  },
+                  child: CustomHistoryWidget(history: history, isButton: false));
             },
           );
         }),

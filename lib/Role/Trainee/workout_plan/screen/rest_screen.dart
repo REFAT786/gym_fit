@@ -34,7 +34,16 @@ class _RestScreenState extends State<RestScreen> {
     super.initState();
     date = Get.arguments['date'];
     log(">>>>>>>>>>>>>>>>>>>> date : $date");
-    controller.startTimer();
+    // Defer startTimer to after the build phase
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.startTimer();
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.stopTimer(); // Stop timer when leaving the screen
+    super.dispose();
   }
 
   String formatDuration(int seconds) {
@@ -179,7 +188,7 @@ class _RestScreenState extends State<RestScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${AppString.set} ${index + 1} | $date",
+                              "${AppString.set} ${index + 1}",
                               style: styleForText.copyWith(fontSize: 20),
                             ),
                             SizedBox(height: 5),

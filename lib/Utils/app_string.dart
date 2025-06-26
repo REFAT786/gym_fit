@@ -122,5 +122,11 @@ class AppString {
   static String get time => "time".tr;
 
 
+  static String get enableTraineeChoice => "enable_trainee_choice".tr;
+  static String get disableTraineeChoice => "disable_trainee_choice".tr;
+
+
+
+
 
 }
