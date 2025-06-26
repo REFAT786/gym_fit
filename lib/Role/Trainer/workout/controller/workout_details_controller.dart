@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
+import 'package:gym_fit/Helpers/prefs_helper.dart';
 import 'package:gym_fit/Model/wrok_out_model.dart';
 import '../../../../Helpers/snackbar_helper.dart';
 import '../../../../Model/search_workout_response.dart';
@@ -168,8 +169,14 @@ class WorkoutDetailsController extends GetxController {
   Future<void> addWorkout() async {
     try {
       isLoading.value = true;
+      String user;
+      if(PrefsHelper.myRole == "trainee"){
+        user = PrefsHelper.userId;
+      }else{
+        user = traineeId.value;
+      }
       final response = await userRepository.addWorkOut(
-        traineeId: traineeId.value,
+        traineeId: user,
         exerciseId: exerciseId.value,
       );
       if (response.statusCode == 201) {

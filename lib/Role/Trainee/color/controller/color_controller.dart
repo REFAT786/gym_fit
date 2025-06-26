@@ -6,7 +6,7 @@ import '../../../../Helpers/prefs_helper.dart';
 import '../../../../Utils/app_colors.dart';
 
 class ColorController extends GetxController {
-  static ColorController get instance => Get.put(ColorController());
+  static ColorController get instance => Get.find<ColorController>();
 
   var selectedBgColor = "default".obs;
   var selectedButtonColor = "default".obs;
