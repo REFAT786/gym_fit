@@ -157,6 +157,8 @@ class WorkoutDetailsController extends GetxController {
           log(">>>>>>>>>>>>>>>>>>>> print : ${value.runtimeType}");
           if (value is int) {
             totalSets.value = value.toDouble();
+          }else if(value is String){
+
           } else {
             totalSets.value = value ?? 1.0;
           }

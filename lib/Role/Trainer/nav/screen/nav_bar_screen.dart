@@ -22,7 +22,7 @@ class NavBarScreen extends StatelessWidget {
   // Function to get the active screen
   Widget _getActiveScreen() {
     if (navController.isHomeActive.value) {
-      return const TrainerHomeScreen();
+      return  TrainerHomeScreen();
     } else if (navController.isGymActive.value) {
       return  TrainerManagementScreen();
     } else if (navController.isProfileActive.value) {

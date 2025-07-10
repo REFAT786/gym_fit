@@ -146,6 +146,8 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200) {
+        PrefsHelper.myImage = "${AppUrl.baseUrl}${response.body['data']['image']}";
+        PrefsHelper.setString("myImage", PrefsHelper.myImage);
         Get.back();
         await profile();
         SnackbarHelper.showSuccess('Update Successful');

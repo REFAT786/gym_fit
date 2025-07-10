@@ -45,8 +45,9 @@ class TrainerHomeController extends GetxController {
         } else {
           errorMessage.value = "Invalid data structure.";
         }
-      } catch (e) {
+      } catch (e, s) {
         errorMessage.value = "Error parsing trainees.";
+        log("Error Line: $s");
       }
     } else {
       errorMessage.value = response?.message ?? "Error fetching trainees.";

@@ -5,17 +5,42 @@ import 'package:get/get.dart';
 
 import '../../../../Common/widgets/custom_common_image.dart';
 import '../../../../Common/widgets/custom_list_tile.dart';
+import '../../../../Helpers/prefs_helper.dart';
 import '../../../../Utils/app_string.dart';
 import '../../../../Utils/app_url.dart';
 import '../../../../Utils/styles.dart';
 import '../controller/trainer_home_controller.dart';
 
-class TrainerHomeScreen extends StatelessWidget {
-  const TrainerHomeScreen({super.key});
+class TrainerHomeScreen extends StatefulWidget {
+   TrainerHomeScreen({super.key});
+
+
+  @override
+  State<TrainerHomeScreen> createState() => _TrainerHomeScreenState();
+}
+
+
+class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
+
+  final controller = Get.find<TrainerHomeController>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getProfileData();
+  }
+
+  getProfileData(){
+
+    controller.profileImage.value = PrefsHelper.myImage;
+    log("image====${controller.profileImage.value}");
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<TrainerHomeController>();
+
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -85,7 +110,7 @@ class TrainerHomeScreen extends StatelessWidget {
                   var trainee = controller.trainees[index];
                   var traineeId = trainee['user'];
                   log("controller.trainees.length ::>>>>>>> ${controller.trainees.length}");
-                  
+
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: InkWell(

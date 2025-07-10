@@ -5,14 +5,16 @@ import 'package:get/get.dart';
 import 'package:gym_fit/Core/routes/routes_name.dart';
 import 'package:gym_fit/Helpers/prefs_helper.dart';
 import 'package:gym_fit/Repository/auth_repository.dart';
+import 'package:gym_fit/Utils/app_url.dart';
 import '../../../../../Helpers/snackbar_helper.dart';
 
 class SignInController extends GetxController {
   static SignInController get instance => Get.find<SignInController>();
   RxBool enabled = false.obs;
-  TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'junior' : '');
+  RxBool enabledqq = false.obs;
+  TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'hilizyjip@mailinator.com' : '');
   // TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'rifatrahman@gmail.com' : '');
-  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? '123' : "");
+  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? 'hello123' : "");
   var isLoading = false.obs;
   String role = "";
 
@@ -68,11 +70,14 @@ class SignInController extends GetxController {
       if (response.success|| response.statusCode ==200) {
 
         enabled.value = response.data['attributes']['enabled'];
+        enabledqq.value = response.data['attributes']['enabled'];
+        log(">>>>>>>>>>> Enable : ========${enabled.value}");
+        log(">>>>>>>>>>> Enable : ========${enabledqq.value}");
 
         PrefsHelper.token = response.data['accessToken'];
         PrefsHelper.myRole = response.data['attributes']['role'];
         PrefsHelper.userId = response.data['attributes']['_id'];
-        PrefsHelper.myImage = response.data['attributes']['image'];
+        PrefsHelper.myImage = "${AppUrl.baseUrl}${response.data['attributes']['image']}";
         PrefsHelper.myName = response.data['attributes']['fullName'];
 
         PrefsHelper.setString("token", PrefsHelper.token);
@@ -83,7 +88,7 @@ class SignInController extends GetxController {
 
 
         if (PrefsHelper.myRole == "trainee") {
-          Get.offAllNamed(RoutesName.onBoarding);
+          Get.toNamed(RoutesName.onBoarding);
         } else if (PrefsHelper.myRole == "trainer") {
           Get.offAllNamed(RoutesName.navBar);
         } else {

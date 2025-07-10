@@ -38,9 +38,10 @@ class TrainerProfileDetailsController extends GetxController {
         traineeDetail.value = TraineeDetailModel.fromJson(response!.data['attributes']);
         errorMessage.value = '';
         log("Trainee Detail fetched successfully");
-      } catch (e) {
+      } catch (e, s) {
         errorMessage.value = 'Failed to parse trainee data';
         log('Parse error: $e');
+        log('error: $s');
       }
     } else {
       errorMessage.value = response?.message ?? 'Failed to load trainee data';
@@ -61,9 +62,10 @@ class TrainerProfileDetailsController extends GetxController {
         log("Status change successfully === Enable === true");
         // Reload the trainee detail to get updated data
         await fetchTraineeDetail();
-      } catch (e) {
+      } catch (e, s) {
         errorMessage.value = 'Failed to parse trainee Status change';
         log('Parse error: $e');
+        log('error: $s');
         isLoading.value = false;
       }
     } else {
@@ -84,9 +86,10 @@ class TrainerProfileDetailsController extends GetxController {
         log("Status change successfully === Disable === false");
         // Reload the trainee detail to get updated data
         await fetchTraineeDetail();
-      } catch (e) {
+      } catch (e, s) {
         errorMessage.value = 'Failed to parse trainee Status change';
         log('Parse error: $e');
+        log('error: $s');
         isLoading.value = false;
       }
     } else {

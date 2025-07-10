@@ -181,17 +181,17 @@ class Workout {
 
 class Measurement {
   String name;
-  String value;
+  num value;
 
   Measurement({
     this.name = '',
-    this.value = '',
+    this.value = 0,
   });
 
   factory Measurement.fromJson(Map<String, dynamic> json) {
     return Measurement(
       name: json['name'] ?? '',
-      value: json['value'] ?? '',
+      value: json['value'] ?? 0,
     );
   }
 }

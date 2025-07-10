@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +15,7 @@ import '../../../../Common/widgets/custom_search_field.dart';
 import '../../../../Common/widgets/custom_trainer_gradient_background_color.dart';
 import '../../../../Helpers/date_time_formator.dart';
 import '../../../../Helpers/prefs_helper.dart';
+import '../../../../Utils/app_url.dart';
 import '../../../Trainer/workout/screen/add_workout_screen.dart';
 import '../../../Trainer/workout/screen/workout_details_screen.dart';
 import '../../color/controller/color_controller.dart';
@@ -37,6 +39,21 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
   QRViewController? qrController;
 
   final TraineeHomeController controller = Get.put(TraineeHomeController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getProfileData();
+  }
+
+  getProfileData(){
+
+    controller.profileImage.value = PrefsHelper.myImage;
+    log("image====${controller.profileImage.value}");
+
+  }
+
 
   @override
   void reassemble() {
@@ -87,11 +104,13 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(">>>>>>>>>>>>> ================ ${SignInController.instance.enabled.value}");
+    log(">>>>>>>>>>>>> ================ ${SignInController.instance.enabledqq.value}");
     return CustomTrainerGradientBackgroundColor(
       child: Scaffold(
         backgroundColor: Colors.transparent,
 
-        floatingActionButton:  InkWell(
+        floatingActionButton: SignInController.instance.enabled.value == true? InkWell(
           onTap: (){
             Get.toNamed(RoutesName.addWorkout);
           },
@@ -121,7 +140,7 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
               ),
             ),
           ),
-        ),
+        ): SizedBox(),
 
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(10),
