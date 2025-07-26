@@ -21,7 +21,7 @@ class AppUrl {
   static const String workoutSearch = "$baseUrl/api/v1/exercise/?search=";
   static const String addWorkout = "$baseUrl/api/v1/workout/assign";
   static const String bmiResult = "$baseUrl/api/v1/trainee/";
-  static const String workOutPlan = "$baseUrl/api/v1/workout";
+  static const String workOutPlan = "$baseUrl/api/v1/workout/";
   static const String completeWorkout = "$baseUrl/api/v1/workout/completed";
   static const String historyView = "$baseUrl/api/v1/workout/progress-history/";
   static const String allWorkoutPlan = "$baseUrl/api/v1/exercise/exercise-group";

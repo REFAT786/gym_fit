@@ -10,6 +10,7 @@ import '../../../../Helpers/snackbar_helper.dart';
 import '../../../../Model/search_workout_response.dart';
 import '../../../../Repository/user_repository.dart';
 import '../../../../Utils/app_url.dart';
+import '../../profile/profile/controller/trainer_profile_details_controller.dart';
 
 class WorkoutDetailsController extends GetxController {
   final UserRepository userRepository = UserRepository();
@@ -23,6 +24,9 @@ class WorkoutDetailsController extends GetxController {
   RxString traineeId = "".obs;
   late RxDouble totalSets = 1.0.obs;
   late RxDouble timer = 1.0.obs;
+
+  final restKeywords = {'rest', 'rests', 'راحة', 'покой', '휴식', 'rest time'}; // English, Arabic, Russian, Korean
+  final setKeywords = {'set', 'sets', 'مجموعة', 'набор', '세트', 'סטים'}; // English, Arabic, Russian, Korean
 
   var isLoading = false.obs;
   Rx<WorkOutModel> workoutDetail = WorkOutModel().obs;
@@ -128,12 +132,21 @@ class WorkoutDetailsController extends GetxController {
         log("measurementControllers length: ${measurementControllers.length}");
         for (var measurement in workoutDetail.value.measurements) {
           final name = (measurement['name'] ?? '').toString().toLowerCase();
-          if (name == 'rest' || name == 'rests') {
+          // if (name == 'rest' || name == 'rests') {
+          //   final value = measurement['value'];
+          //   if (value != null) {
+          //     timer.value = (value is num) ? value.toDouble() : double.tryParse(value.toString()) ?? 1.0;
+          //   }
+          // }
+
+
+          if (restKeywords.contains(name.toLowerCase())) {
             final value = measurement['value'];
             if (value != null) {
               timer.value = (value is num) ? value.toDouble() : double.tryParse(value.toString()) ?? 1.0;
             }
           }
+
         }
       } else {
         errorMessage.value = response?.message ?? 'Failed to load workout data';
@@ -150,7 +163,9 @@ class WorkoutDetailsController extends GetxController {
   void startWorkout() {
     for (var measurement in workoutDetail.value.measurements) {
       final name = (measurement['name'] ?? '').toString().toLowerCase();
-      if (name == 'sets' || name == 'set') {
+
+
+      if (setKeywords.contains(name.toLowerCase())) {
         final value = measurement['value'];
         if (value != null) {
           log(">>>>>>>>>>>>>>>>>>>> print : $value");
@@ -182,6 +197,10 @@ class WorkoutDetailsController extends GetxController {
         exerciseId: exerciseId.value,
       );
       if (response.statusCode == 201) {
+        if(PrefsHelper.myRole == "trainer"){
+          await TrainerProfileDetailsController.instance.fetchTraineeDetail();
+        }
+
         Get.back();
         SnackbarHelper.show(
           title: "Success",

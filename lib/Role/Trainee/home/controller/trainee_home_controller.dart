@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -32,9 +33,17 @@ class TraineeHomeController extends GetxController {
     profileName.value = PrefsHelper.myName;
   }
 
-  Future<void> fetchWorkoutPlan() async {
+  Timer? _debounce;
+  void onSearchChanged({String value = ""}) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 600), () {
+      fetchWorkoutPlan(query: value);
+    });
+  }
+
+  Future<void> fetchWorkoutPlan({String query = ""}) async {
     isLoading.value = true;
-    final response = await userRepository.getWorkoutPlan(showMessage: true);
+    final response = await userRepository.getWorkoutPlan(query, showMessage: true);
 
     if (response?.statusCode == 200) {
       try {

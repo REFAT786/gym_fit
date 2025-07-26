@@ -14,9 +14,10 @@ class SignInController extends GetxController {
   RxBool enabledqq = false.obs;
   TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'hilizyjip@mailinator.com' : '');
   // TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'rifatrahman@gmail.com' : '');
-  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? 'hello123' : "");
+  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? '123456' : "");
   var isLoading = false.obs;
   String role = "";
+  RxBool isCompleted = false.obs;
 
   final AuthRepository signInRepository = AuthRepository();
 
@@ -71,6 +72,7 @@ class SignInController extends GetxController {
 
         enabled.value = response.data['attributes']['enabled'];
         enabledqq.value = response.data['attributes']['enabled'];
+        isCompleted.value = response.data['attributes']['isCompleted'];
         log(">>>>>>>>>>> Enable : ========${enabled.value}");
         log(">>>>>>>>>>> Enable : ========${enabledqq.value}");
 
@@ -88,7 +90,12 @@ class SignInController extends GetxController {
 
 
         if (PrefsHelper.myRole == "trainee") {
-          Get.toNamed(RoutesName.onBoarding);
+          if(isCompleted.value == true){
+            Get.offAllNamed(RoutesName.traineeNavBar);
+          }else{
+            Get.toNamed(RoutesName.onBoarding);
+          }
+
         } else if (PrefsHelper.myRole == "trainer") {
           Get.offAllNamed(RoutesName.navBar);
         } else {

@@ -242,8 +242,9 @@ class UserRepository {
   }
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Workout plan >>>>>>>>>>>>>>
 
-  Future<ApiResponse?> getWorkoutPlan({bool showMessage = false}) async {
-    final url = AppUrl.workOutPlan;
+  Future<ApiResponse?> getWorkoutPlan(String query, {bool showMessage = false}) async {
+    String queryText = query.isNotEmpty?"?exerciseName=$query":"";
+    final url = AppUrl.workOutPlan+queryText;
     log("Fetch Workout plan URL: $url");
 
     final response = await ApiService.to.getApi(url, showMessage: showMessage);

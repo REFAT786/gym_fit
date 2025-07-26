@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Common/widgets/custom_text_field.dart';
 
 import '../../../../Common/widgets/custom_back_button.dart';
 import '../../../../Common/widgets/custom_button.dart';
@@ -229,7 +230,6 @@ class _RestScreenState extends State<RestScreen> {
                                     );
                                   },
                                 ),
-
                               ],
                             ),
                           ],
@@ -262,34 +262,60 @@ class _RestScreenState extends State<RestScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                measurements['name'] == "rest" ||
-                                        measurements['name'] == "rests"
+                                controller.restKeywords.contains(
+                                      measurements['name']
+                                          .toString()
+                                          .toLowerCase(),
+                                    )
                                     ? AppString.restTime
                                     : measurements['name'],
                                 style: styleForText.copyWith(fontSize: 18),
                               ),
-                              Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(18),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color:
-                                      PrefsHelper.myRole == 'trainee'
-                                          ? AppColors.traineeNavBArColor
-                                          : const Color(0xff033a5b),
-                                ),
-                                child: Text(
-                                  measurements['value'].toString(),
-                                  style: styleForText.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color:
-                                        PrefsHelper.myRole == "trainee"
-                                            ? ColorController.instance
-                                                .getHintTextColor()
-                                            : AppColors.hintGrey,
-                                    fontSize: 16,
-                                  ),
-                                ),
+
+                              CustomTextField(
+                                hintText: '',
+                                isSuffix: false,
+                                controller:
+                                    controller.measurementControllers[index],
+                                backgroundColor:
+                                    PrefsHelper.myRole == 'trainee'
+                                        ? AppColors.traineeNavBArColor
+                                        : const Color(0xff033a5b),
+                                onChanged: (value) {
+                                  final parsedValue = double.tryParse(
+                                    value.toString(),
+                                  );
+                                  // controller.measurementControllers[index].text = parsedValue.toString();
+                                  for (var measurement in controller.workoutDetail.value.measurements) {
+                                    final name = (measurement['name'] ?? '').toString().toLowerCase();
+                                    log(">>>>>>>>>>> name ================ $name");
+                                    if (controller.setKeywords.contains(name.toLowerCase())) {
+                                      log("After condition Set======== $name");
+                                      controller.totalSets.value = double.parse(value,);
+                                    }
+                                  }
+                                  for (var measurement in controller.workoutDetail.value.measurements) {
+                                    final name = (measurement['name'] ?? '').toString().toLowerCase();
+                                    log(">>>>>>>>>>> name 2================== $name");
+                                    if (controller.restKeywords.contains(name.toLowerCase())) {
+                                      log("After condition Rest======== $name");
+                                      controller.remainingSeconds.value = int.parse(value);
+                                    }
+                                  }
+                                  setState(() {
+                                    controller
+                                            .workoutDetail
+                                            .value
+                                            .measurements[index]['value'] =
+                                        parsedValue ??
+                                        controller
+                                            .workoutDetail
+                                            .value
+                                            .measurements[index]['value'];
+                                    controller.workoutDetail.refresh();
+                                  });
+                                  controller.workoutDetail.refresh();
+                                },
                               ),
                             ],
                           );
@@ -318,11 +344,13 @@ class _RestScreenState extends State<RestScreen> {
                             onTap: () {
                               if (isButtonEnabled) {
                                 controller.index.value++;
-                                if (controller.index.value > controller.totalSets.value) {
+                                if (controller.index.value >
+                                    controller.totalSets.value) {
                                   Get.toNamed(RoutesName.completeSuccessful);
                                   controller.index.value = 1;
                                 } else {
                                   Get.back();
+                                  setState(() {});
                                 }
                               }
                             },

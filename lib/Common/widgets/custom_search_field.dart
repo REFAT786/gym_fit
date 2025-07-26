@@ -7,10 +7,11 @@ import '../../Utils/app_string.dart';
 import '../../Utils/styles.dart';
 
 class CustomSearchField extends StatelessWidget {
-  const CustomSearchField({super.key, required this.searchController, this.qrPressed, this.color});
+  const CustomSearchField({super.key, required this.searchController, this.qrPressed, this.color, this.onChanged});
 
   final TextEditingController searchController;
   final Function()? qrPressed;
+  final Function(String)? onChanged;
   final Color? color;
 
   @override
@@ -22,6 +23,8 @@ class CustomSearchField extends StatelessWidget {
       ),
       child: TextField(
         controller: searchController,
+        onChanged: onChanged,
+        style: styleForText.copyWith(fontSize: 14, fontWeight: FontWeight.w400, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
         decoration: InputDecoration(
             border: OutlineInputBorder(
                 borderSide: BorderSide.none
@@ -29,7 +32,7 @@ class CustomSearchField extends StatelessWidget {
             prefixIcon: Icon(Icons.search, color: AppColors.white,),
             hintText: AppString.search,
             hintStyle: styleForText.copyWith(fontSize: 14, fontWeight: FontWeight.w400, color: PrefsHelper.myRole == 'trainee'?ColorController.instance.getTextColor():AppColors.white),
-            suffixIcon: IconButton(onPressed: qrPressed, icon: Icon(Icons.qr_code), color: color,)
+            suffixIcon: IconButton(onPressed: qrPressed, icon: Icon(Icons.qr_code), color: color,),
         ),
       ),
     );

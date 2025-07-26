@@ -157,6 +157,7 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                       borderRadius: 55,
                       height: 55,
                       width: 55,
+
                     ),
                   ),
                   const SizedBox(width: 5),
@@ -215,6 +216,9 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
                 return CustomSearchField(
                   searchController: controller.searchController,
                   qrPressed: openQRScanner,
+                  onChanged: (value){
+                    controller.fetchWorkoutPlan(query: value);
+                  },
                   color:
                       PrefsHelper.myRole == "trainee"
                           ? ColorController.instance.getButtonColor()
