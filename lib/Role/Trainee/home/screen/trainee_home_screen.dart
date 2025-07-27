@@ -110,7 +110,7 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
 
-        floatingActionButton: SignInController.instance.enabled.value == true? InkWell(
+        floatingActionButton: PrefsHelper.enabled == true? InkWell(
           onTap: (){
             Get.toNamed(RoutesName.addWorkout);
           },

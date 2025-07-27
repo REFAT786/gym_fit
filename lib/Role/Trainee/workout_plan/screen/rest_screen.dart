@@ -170,7 +170,8 @@ class _RestScreenState extends State<RestScreen> {
                       AppString.completeSets,
                       style: styleForText.copyWith(fontSize: 24),
                     ),
-                    ...List.generate(controller.index.value, (index) {
+
+                    ...List.generate(controller.sets.length, (index) {
                       return Container(
                         width: double.infinity,
                         margin: EdgeInsets.symmetric(
@@ -197,34 +198,14 @@ class _RestScreenState extends State<RestScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 ...List.generate(
-                                  controller
-                                      .workoutDetail
-                                      .value
-                                      .measurements
-                                      .length,
-                                  (valueIndex) {
-                                    var data =
-                                        controller
-                                            .workoutDetail
-                                            .value
-                                            .measurements[valueIndex];
+                                  controller.sets[index]["measurements"].length, (valueIndex) {
+                                    var data = controller.sets[index]["measurements"][valueIndex];
                                     return SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
                                       child: Column(
                                         children: [
-                                          Text(
-                                            data["name"],
-                                            style: styleForText.copyWith(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                          Text(
-                                            data["value"].toString(),
-                                            style: styleForText.copyWith(
-                                              fontSize: 18,
-                                            ),
-                                          ),
+                                          Text(data["name"], style: styleForText.copyWith(fontSize: 18, fontWeight: FontWeight.w400,),),
+                                          Text(data["value"].toString(), style: styleForText.copyWith(fontSize: 18,),),
                                         ],
                                       ),
                                     );
@@ -236,6 +217,7 @@ class _RestScreenState extends State<RestScreen> {
                         ),
                       );
                     }),
+
                     SizedBox(height: 10),
                     Text(
                       AppString.currentSet,
@@ -275,47 +257,36 @@ class _RestScreenState extends State<RestScreen> {
                               CustomTextField(
                                 hintText: '',
                                 isSuffix: false,
-                                controller:
-                                    controller.measurementControllers[index],
-                                backgroundColor:
-                                    PrefsHelper.myRole == 'trainee'
-                                        ? AppColors.traineeNavBArColor
-                                        : const Color(0xff033a5b),
-                                onChanged: (value) {
-                                  final parsedValue = double.tryParse(
-                                    value.toString(),
-                                  );
-                                  // controller.measurementControllers[index].text = parsedValue.toString();
-                                  for (var measurement in controller.workoutDetail.value.measurements) {
-                                    final name = (measurement['name'] ?? '').toString().toLowerCase();
-                                    log(">>>>>>>>>>> name ================ $name");
-                                    if (controller.setKeywords.contains(name.toLowerCase())) {
-                                      log("After condition Set======== $name");
-                                      controller.totalSets.value = double.parse(value,);
+                                controller: controller.measurementControllers[index],
+                                backgroundColor: PrefsHelper.myRole == 'trainee' ? AppColors.traineeNavBArColor : const Color(0xff033a5b),
+                                  onChanged: (value) {
+                                    final parsedValue = double.tryParse(value);
+
+                                    final name = (measurements['name'] ?? '').toString().toLowerCase();
+
+                                    log("Field Changed => name: $name, value: $parsedValue");
+
+                                    if (controller.setKeywords.contains(name)) {
+                                      log("Matched Set Keyword: $name");
+                                      controller.totalSets.value = parsedValue?.toDouble() ?? controller.totalSets.value;
                                     }
-                                  }
-                                  for (var measurement in controller.workoutDetail.value.measurements) {
-                                    final name = (measurement['name'] ?? '').toString().toLowerCase();
-                                    log(">>>>>>>>>>> name 2================== $name");
-                                    if (controller.restKeywords.contains(name.toLowerCase())) {
-                                      log("After condition Rest======== $name");
-                                      controller.remainingSeconds.value = int.parse(value);
+
+                                    if (controller.restKeywords.contains(name)) {
+                                      final newVal = parsedValue ?? controller.timer.value;
+                                      if (newVal != controller.timer.value) {
+                                        controller.timer.value = newVal;
+
+                                        log("Timer updated: $newVal minutes, remainingSeconds set to ${controller.remainingSeconds.value}");
+                                      }
                                     }
-                                  }
-                                  setState(() {
-                                    controller
-                                            .workoutDetail
-                                            .value
-                                            .measurements[index]['value'] =
-                                        parsedValue ??
-                                        controller
-                                            .workoutDetail
-                                            .value
-                                            .measurements[index]['value'];
+
+                                    // Update measurement value
+                                    controller.workoutDetail.value.measurements[index]['value'] = parsedValue ??
+                                        controller.workoutDetail.value.measurements[index]['value'];
+
                                     controller.workoutDetail.refresh();
-                                  });
-                                  controller.workoutDetail.refresh();
-                                },
+                                  },
+
                               ),
                             ],
                           );
@@ -341,19 +312,61 @@ class _RestScreenState extends State<RestScreen> {
                                 PrefsHelper.myRole == 'trainee'
                                     ? ColorController.instance.getTextColor()
                                     : AppColors.primary,
-                            onTap: () {
-                              if (isButtonEnabled) {
-                                controller.index.value++;
-                                if (controller.index.value >
-                                    controller.totalSets.value) {
-                                  Get.toNamed(RoutesName.completeSuccessful);
-                                  controller.index.value = 1;
-                                } else {
-                                  Get.back();
-                                  setState(() {});
+                              onTap: () {
+                                if (isButtonEnabled) {
+                                  RxList workList = [].obs;
+                                  bool showWarning = false;
+
+                                  for (var measurement in controller.workoutDetail.value.measurements) {
+                                    final name = (measurement['name'] ?? '').toString().toLowerCase();
+
+                                    if (controller.setKeywords.contains(name)) {
+                                      final value = measurement['value'];
+                                      final numericValue = double.tryParse(value.toString());
+
+                                      if (numericValue != null &&
+                                          numericValue < controller.index.value.toDouble()) {
+                                        Get.snackbar(
+                                          "Warning",
+                                          "Set value must be greater than step value ${controller.index.value}",
+                                          backgroundColor: Colors.deepOrange,
+                                          colorText: Colors.white,
+                                        );
+                                        showWarning = true;
+                                        break; // Exit the loop, don’t proceed
+                                      }
+
+                                      controller.totalSets.value = numericValue ?? 1.0;
+                                    }
+
+                                    workList.add({
+                                      "name": name,
+                                      "value": measurement["value"],
+                                      "unit": measurement["unit"],
+                                    });
+                                  }
+
+                                  if (showWarning) return; // Stop further execution if warning shown
+
+                                  controller.sets.add({
+                                    "name": "Set ${controller.sets.length + 1}",
+                                    "measurements": workList,
+                                  });
+
+                                  controller.index.value++;
+
+                                  log("sets data==== index====${controller.sets.length}===========${controller.sets}");
+
+                                  if (controller.index.value > controller.totalSets.value) {
+                                    Get.toNamed(RoutesName.completeSuccessful);
+                                    controller.index.value = 1;
+                                    controller.sets.clear();
+                                  } else {
+                                    Get.back();
+                                  }
                                 }
-                              }
-                            },
+                              },
+
                           ),
                         ),
                       );

@@ -12,6 +12,7 @@ class PrefsHelper extends GetxController {
   static bool isLogIn = false;
   static bool adminVerified = false;
   static bool subscription = false;
+  static bool enabled = false;
   //static bool isNotifications = true;
   static String refreshToken = "";
   static String userId = "";
@@ -70,6 +71,7 @@ class PrefsHelper extends GetxController {
     isLogIn = preferences.getBool("isLogIn") ?? false;
     adminVerified = preferences.getBool("adminVerified") ?? false;
     subscription = preferences.getBool("subscription") ?? false;
+    enabled = preferences.getBool("enabled") ?? false;
     about = preferences.getString("about") ?? "";
     phone = preferences.getString("phone") ?? "";
     phoneCountryCode = preferences.getString("phoneCountryCode") ?? "";
@@ -127,6 +129,7 @@ class PrefsHelper extends GetxController {
     preferences.setBool("isLogIn", false);
     preferences.setBool("adminVerified", false);
     preferences.setBool("subscription", false);
+    preferences.setBool("enabled", false);
     //preferences.setBool("isNotifications", true);
     //preferences.setString("mySubscription", "shopping");
     preferences.setStringList("interests", []);

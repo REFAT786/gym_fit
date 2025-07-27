@@ -68,21 +68,21 @@ class SignInController extends GetxController {
         pin: !isEmail ? pin : "",
       );
 
-      if (response.success|| response.statusCode ==200) {
+      if (response.statusCode == 201|| response.statusCode ==200) {
 
-        enabled.value = response.data['attributes']['enabled'];
-        enabledqq.value = response.data['attributes']['enabled'];
+        // enabled.value = response.data['attributes']['enabled'];
         isCompleted.value = response.data['attributes']['isCompleted'];
         log(">>>>>>>>>>> Enable : ========${enabled.value}");
-        log(">>>>>>>>>>> Enable : ========${enabledqq.value}");
 
         PrefsHelper.token = response.data['accessToken'];
+        PrefsHelper.enabled =  response.data['attributes']['enabled'];
         PrefsHelper.myRole = response.data['attributes']['role'];
         PrefsHelper.userId = response.data['attributes']['_id'];
         PrefsHelper.myImage = "${AppUrl.baseUrl}${response.data['attributes']['image']}";
         PrefsHelper.myName = response.data['attributes']['fullName'];
 
         PrefsHelper.setString("token", PrefsHelper.token);
+        PrefsHelper.setBool("enabled", PrefsHelper.enabled);
         PrefsHelper.setString("myRole", PrefsHelper.myRole);
         PrefsHelper.setString("userId", PrefsHelper.userId);
         PrefsHelper.setString("myImage", PrefsHelper.myImage);

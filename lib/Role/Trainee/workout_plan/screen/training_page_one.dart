@@ -315,13 +315,8 @@ class TrainingPageOne extends StatelessWidget {
                           mainAxisExtent: 100,
                         ),
                         itemBuilder: (context, index) {
-                          final measurements = controller
-                              .workoutDetail.value.measurements[index];
-                          final isRest = controller.restKeywords.contains(
-                            measurements['name']
-                                .toString()
-                                .toLowerCase(),
-                          );
+                          final measurements = controller.workoutDetail.value.measurements[index];
+                          final isRest = controller.restKeywords.contains(measurements['name'].toString().toLowerCase());
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

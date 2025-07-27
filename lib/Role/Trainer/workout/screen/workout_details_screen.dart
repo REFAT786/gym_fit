@@ -385,13 +385,50 @@ class WorkoutDetailsScreen extends StatelessWidget {
                                             : const Color(0xff033a5b),
 
                                     onChanged: (value) {
-                                      measurements['value'] =
-                                          double.tryParse(value) ??
-                                          measurements['value'];
-                                      controller.workoutDetail.refresh();
-                                      log(
-                                        ">>>>>>>>>> measurements['value'] : ${measurements['value']}",
+                                      final parsedValue = double.tryParse(
+                                        value,
                                       );
+
+                                      final name =
+                                          (measurements['name'] ?? '')
+                                              .toString()
+                                              .toLowerCase();
+
+                                      log(
+                                        "Field Changed => name: $name, value: $parsedValue",
+                                      );
+
+                                      if (controller.setKeywords.contains(
+                                        name,
+                                      )) {
+                                        log("Matched Set Keyword: $name");
+                                        controller.totalSets.value =
+                                            parsedValue?.toDouble() ??
+                                            controller.totalSets.value;
+                                      }
+
+                                      if (controller.restKeywords.contains(
+                                        name,
+                                      )) {
+                                        final newVal =
+                                            parsedValue ??
+                                            controller.timer.value;
+                                        if (newVal != controller.timer.value) {
+                                          controller.timer.value = newVal;
+
+                                          log(
+                                            "Timer updated: $newVal minutes, remainingSeconds set to ${controller.remainingSeconds.value}",
+                                          );
+                                        }
+                                      }
+
+
+
+                                      // Update measurement value
+                                      controller.workoutDetail.value.measurements[index]['value'] = parsedValue ??
+                                          controller.workoutDetail.value.measurements[index]['value'];
+
+                                      controller.workoutDetail.refresh();
                                     },
                                   ),
 

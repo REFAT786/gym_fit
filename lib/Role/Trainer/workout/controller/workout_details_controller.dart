@@ -17,7 +17,8 @@ class WorkoutDetailsController extends GetxController {
   final TextEditingController searchController = TextEditingController();
   RxList<ExerciseModel> searchResults = <ExerciseModel>[].obs;
 
-  RxList<TextEditingController> measurementControllers = <TextEditingController>[].obs;
+  RxList<TextEditingController> measurementControllers =
+      <TextEditingController>[].obs;
   late String workoutId;
   RxInt index = 1.obs;
   RxString exerciseId = "".obs;
@@ -25,8 +26,22 @@ class WorkoutDetailsController extends GetxController {
   late RxDouble totalSets = 1.0.obs;
   late RxDouble timer = 1.0.obs;
 
-  final restKeywords = {'rest', 'rests', 'راحة', 'покой', '휴식', 'rest time'}; // English, Arabic, Russian, Korean
-  final setKeywords = {'set', 'sets', 'مجموعة', 'набор', '세트', 'סטים'}; // English, Arabic, Russian, Korean
+  final restKeywords = {
+    'rest',
+    'rests',
+    'راحة',
+    'покой',
+    '휴식',
+    'rest time',
+  }; // English, Arabic, Russian, Korean
+  final setKeywords = {
+    'set',
+    'sets',
+    'مجموعة',
+    'набор',
+    '세트',
+    'סטים',
+  }; // English, Arabic, Russian, Korean
 
   var isLoading = false.obs;
   Rx<WorkOutModel> workoutDetail = WorkOutModel().obs;
@@ -34,6 +49,9 @@ class WorkoutDetailsController extends GetxController {
 
   RxInt remainingSeconds = 0.obs;
   Timer? _timer;
+
+  List<Map<String, dynamic>> sets = [];
+  List<Map<String, dynamic>> measurements = [];
 
   void startTimer() {
     stopTimer();
@@ -66,9 +84,12 @@ class WorkoutDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    workoutId = (Get.arguments != null && Get.arguments is Map && Get.arguments['id'] != null)
-        ? Get.arguments['id']
-        : '';
+    workoutId =
+        (Get.arguments != null &&
+                Get.arguments is Map &&
+                Get.arguments['id'] != null)
+            ? Get.arguments['id']
+            : '';
     log("WorkoutDetailsController initialized with workoutId: $workoutId");
     fetchWorkoutDetail();
   }
@@ -85,10 +106,14 @@ class WorkoutDetailsController extends GetxController {
     isLoading.value = true;
     errorMessage.value = '';
     try {
-      final response = await userRepository.searchWorkOut(query, showMessage: true);
+      final response = await userRepository.searchWorkOut(
+        query,
+        showMessage: true,
+      );
       if (response?.statusCode == 200) {
         List data = response!.data["exercises"];
-        searchResults.value = data.map((value) => ExerciseModel.fromJson(value)).toList();
+        searchResults.value =
+            data.map((value) => ExerciseModel.fromJson(value)).toList();
         log("searchResults=====$searchResults");
       } else {
         errorMessage.value = response?.message ?? "Failed to search";
@@ -111,7 +136,10 @@ class WorkoutDetailsController extends GetxController {
     isLoading.value = true;
     errorMessage.value = '';
     try {
-      final response = await userRepository.getIndividualWorkoutById(workoutId, showMessage: true);
+      final response = await userRepository.getIndividualWorkoutById(
+        workoutId,
+        showMessage: true,
+      );
       log("responseData -====>${response?.statusCode}");
       if (response?.statusCode == 200) {
         log("workoutData=====>${response?.data}");
@@ -139,14 +167,15 @@ class WorkoutDetailsController extends GetxController {
           //   }
           // }
 
-
           if (restKeywords.contains(name.toLowerCase())) {
             final value = measurement['value'];
             if (value != null) {
-              timer.value = (value is num) ? value.toDouble() : double.tryParse(value.toString()) ?? 1.0;
+              timer.value =
+                  (value is num)
+                      ? value.toDouble()
+                      : double.tryParse(value.toString()) ?? 1.0;
             }
           }
-
         }
       } else {
         errorMessage.value = response?.message ?? 'Failed to load workout data';
@@ -161,9 +190,9 @@ class WorkoutDetailsController extends GetxController {
   }
 
   void startWorkout() {
+    RxList workList = [].obs;
     for (var measurement in workoutDetail.value.measurements) {
       final name = (measurement['name'] ?? '').toString().toLowerCase();
-
 
       if (setKeywords.contains(name.toLowerCase())) {
         final value = measurement['value'];
@@ -172,14 +201,25 @@ class WorkoutDetailsController extends GetxController {
           log(">>>>>>>>>>>>>>>>>>>> print : ${value.runtimeType}");
           if (value is int) {
             totalSets.value = value.toDouble();
-          }else if(value is String){
-
+          } else if (value is String) {
           } else {
             totalSets.value = value ?? 1.0;
           }
         }
       }
+
+      workList.add({
+        "name": name,
+        "value": measurement["value"],
+        "unit": measurement["unit"],
+      });
+
     }
+    sets.add({
+      "name": "Set ${sets.length+1}",
+      "measurements": workList,
+    });
+    log("sets data===============$sets");
     Get.toNamed(RoutesName.trainingPageOne);
   }
 
@@ -187,9 +227,9 @@ class WorkoutDetailsController extends GetxController {
     try {
       isLoading.value = true;
       String user;
-      if(PrefsHelper.myRole == "trainee"){
+      if (PrefsHelper.myRole == "trainee") {
         user = PrefsHelper.userId;
-      }else{
+      } else {
         user = traineeId.value;
       }
       final response = await userRepository.addWorkOut(
@@ -197,7 +237,7 @@ class WorkoutDetailsController extends GetxController {
         exerciseId: exerciseId.value,
       );
       if (response.statusCode == 201) {
-        if(PrefsHelper.myRole == "trainer"){
+        if (PrefsHelper.myRole == "trainer") {
           await TrainerProfileDetailsController.instance.fetchTraineeDetail();
         }
 
@@ -236,59 +276,68 @@ class WorkoutDetailsController extends GetxController {
       isLoading.value = true;
 
       // Prepare sets list with measurements from controllers
-      List<Map<String, dynamic>> sets = [];
+
       for (var i = 0; i < totalSets.value.toInt(); i++) {
-        List<Map<String, dynamic>> measurements = [];
         for (var j = 0; j < workoutDetail.value.measurements.length; j++) {
           if (j >= measurementControllers.length) continue; // Safeguard
           final measurement = workoutDetail.value.measurements[j];
           final controller = measurementControllers[j];
           dynamic value;
           if (controller.text.isNotEmpty) {
-            if (measurement['unit'] == 'unit' && measurement['name'].toString().toLowerCase() == 'reps') {
-              value = int.tryParse(controller.text) ?? measurement['value'] ?? 0;
-            } else if (measurement['unit'] == 'unit' && measurement['name'].toString().toLowerCase() == 'weight') {
-              value = double.tryParse(controller.text) ?? measurement['value'] ?? 0.0;
+            if (measurement['unit'] == 'unit' &&
+                measurement['name'].toString().toLowerCase() == 'reps') {
+              value =
+                  int.tryParse(controller.text) ?? measurement['value'] ?? 0;
+            } else if (measurement['unit'] == 'unit' &&
+                measurement['name'].toString().toLowerCase() == 'weight') {
+              value =
+                  double.tryParse(controller.text) ??
+                  measurement['value'] ??
+                  0.0;
             } else {
               value = controller.text;
             }
           } else {
             value = measurement['value'] ?? 0;
           }
-          measurements.add({
-            "name": measurement['name'] ?? '',
-            "value": value,
-            "unit": measurement['unit'] ?? '',
-          });
+
         }
-        sets.add({
-          "name": "Set ${i + 1}",
-          "measurements": measurements,
-        });
+
       }
 
       // Prepare stations as an array of strings
-      List<String> stationsData = workoutDetail.value.stations.map((station) {
-        return station is Map && station.containsKey('name') ? station['name'].toString() : station.toString();
-      }).toList();
+      List<String> stationsData =
+          workoutDetail.value.stations.map((station) {
+            return station is Map && station.containsKey('name')
+                ? station['name'].toString()
+                : station.toString();
+          }).toList();
 
       // Prepare muscle groups
-      List<Map<String, dynamic>> muscleGroups = workoutDetail.value.muscleGroups.map((e) => {
-        "name": e.name,
-        "image": "${AppUrl.baseUrl}${e.image}",
-      }).toList();
+      List<Map<String, dynamic>> muscleGroups =
+          workoutDetail.value.muscleGroups
+              .map(
+                (e) => {"name": e.name, "image": "${AppUrl.baseUrl}${e.image}"},
+              )
+              .toList();
 
       // Prepare workout types
-      List<Map<String, dynamic>> workoutTypes = workoutDetail.value.workoutTypes.map((e) => {
-        "name": e.name,
-        "image": "${AppUrl.baseUrl}${e.image}",
-      }).toList();
+      List<Map<String, dynamic>> workoutTypes =
+          workoutDetail.value.workoutTypes
+              .map(
+                (e) => {"name": e.name, "image": "${AppUrl.baseUrl}${e.image}"},
+              )
+              .toList();
 
       // Prepare request body
       Map<String, dynamic> body = {
-        "user": traineeId.value.isNotEmpty ? traineeId.value : workoutDetail.value.userName,
+        "user":
+            traineeId.value.isNotEmpty
+                ? traineeId.value
+                : workoutDetail.value.userName,
         "exerciseName": workoutDetail.value.exerciseName,
-        "exerciseImage": "${AppUrl.baseUrl}${workoutDetail.value.exerciseImage}",
+        "exerciseImage":
+            "${AppUrl.baseUrl}${workoutDetail.value.exerciseImage}",
         "stations": stationsData,
         "muscleGroups": muscleGroups,
         "workoutTypes": workoutTypes,
