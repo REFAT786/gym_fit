@@ -119,6 +119,15 @@ class AppTranslations extends Translations {
       'enable_trainee_choice': 'Enable Trainee Choice',
       'disable_trainee_choice': 'Disable Trainee Choice',
 
+      'forget_password_pin': 'Forget Password/Pin?',
+      'email_username': 'Email / Username',
+      'password_pin': 'Password / Pin',
+      'forget_password': 'Forget Password',
+      'forget_pin': 'Forget Pin',
+      'verify_otp': 'Verify Otp',
+      'resend_otp': 'Resend Otp',
+      'continue_text': 'Continue',
+
     },
     'ar': {
       'welcome_back_glad_to_see_you_again':

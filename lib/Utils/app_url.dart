@@ -1,10 +1,10 @@
 class AppUrl {
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Live >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  static const String baseUrl = "http://172.252.13.74:8032";
+  // static const String baseUrl = "http://172.252.13.74:8032";
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Local >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  // static const String baseUrl = "http://10.10.10.33:8032";
+  static const String baseUrl = "http://10.10.10.33:8032";
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -31,5 +31,9 @@ class AppUrl {
   static const String searchAllWorkout = "$baseUrl/api/v1/exercise/";
   static const String changeEnableStatusId = "$baseUrl/api/v1/trainee/enable/";
   static const String changeDisableStatusId = "$baseUrl/api/v1/trainee/disable/";
+  static const String forgetPassword = "$baseUrl/api/v1/auth/forget-password";
+  static const String otp = "$baseUrl/api/v1/auth/verify-otp";
+  static const String resetPass = "$baseUrl/api/v1/auth/reset-password";
+  static const String resetPin = "$baseUrl/api/v1/auth/reset-pin";
 
 }

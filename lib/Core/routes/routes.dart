@@ -29,102 +29,122 @@ import '../../Role/Trainer/profile/profile/screen/profile_screen.dart';
 import '../../Role/Trainer/profile/terms_of_service/screen/terms_of_service_screen.dart';
 import '../../Role/Trainer/workout/screen/add_workout_screen.dart';
 import '../../Role/Trainer/workout/screen/workout_details_screen.dart';
+import '../../Role/common/choose_forget_screen.dart';
+import '../../Role/common/forget_email_screen.dart';
+import '../../Role/common/new_password_screen.dart';
+import '../../Role/common/otp_screen.dart';
 
 class AppRoutes {
-  static appRoutes() =>
-      [
-        GetPage(
-          name: RoutesName.getNavBarScreen(),
-          page: () => NavBarScreen(),
-        ),
-        GetPage(
-          name: RoutesName.getSignInScreen(),
-          page: () => SignInScreen(),
-        ),GetPage(
-          name: RoutesName.getTrainerHomeScreen(),
-          page: () => TrainerHomeScreen(),
-        ),GetPage(
-          name: RoutesName.getTrainerProfileDetailScreen(),
-          page: () => TrainerProfileDetailsScreen(),
-        ),GetPage(
-          name: RoutesName.getProfileScreen(),
-          page: () => ProfileScreen(),
-        ),GetPage(
-          name: RoutesName.getTrainerManagementScreen(),
-          page: () => TrainerManagementScreen(),
-        ),GetPage(
-          name: RoutesName.getTrainerManagementDetailScreen(),
-          page: () => ManagementProfileDetailsScreen(),
-        ),GetPage(
-          name: RoutesName.getWorkoutDetailsScreen(),
-          page: () => WorkoutDetailsScreen(),
-        ),GetPage(
-          name: RoutesName.getAddWorkoutScreen(),
-          page: () => AddWorkoutScreen(),
-        ),GetPage(
-          name: RoutesName.getEditProfileScreen(),
-          page: () => EditProfileScreen(),
-        ),GetPage(
-          name: RoutesName.getHelpCenterScreen(),
-          page: () => HelpCenterScreen(),
-        ),GetPage(
-          name: RoutesName.getPrivacyPolicyScreen(),
-          page: () => PrivacyPolicyScreen(),
-        ),GetPage(
-          name: RoutesName.getTermsOfServiceScreen(),
-          page: () => TermsOfServiceScreen(),
-        ),GetPage(
-          name: RoutesName.getLanguageScreen(),
-          page: () => LanguageScreen()
-        ),GetPage(
-          name: RoutesName.getChangePasswordScreen(),
-          page: () => ChangePasswordScreen()
-        ),GetPage(
-          name: RoutesName.getNotificationScreen(),
-          page: () => NotificationScreen()
-        ),GetPage(
-          name: RoutesName.getOnBoardingScreen(),
-          page: () => OnBoardingScreen()
-        ),GetPage(
-          name: RoutesName.getTraineeNavBarScreen(),
-          page: () => TraineeNavBarScreen()
-        ),GetPage(
-          name: RoutesName.getTrainingPageOneScreen(),
-          page: () => TrainingPageOne()
-        ),GetPage(
-          name: RoutesName.getRestScreen(),
-          page: () => RestScreen()
-        ),GetPage(
-          name: RoutesName.getHistoryScreen(),
-          page: () => HistoryScreen()
-        ),GetPage(
-          name: RoutesName.getHistoryDetail(),
-          page: () => HistoryDetailScreen()
-        ),
+  static appRoutes() => [
+    GetPage(name: RoutesName.getNavBarScreen(), page: () => NavBarScreen()),
+    GetPage(name: RoutesName.getSignInScreen(), page: () => SignInScreen()),
+    GetPage(
+      name: RoutesName.getTrainerHomeScreen(),
+      page: () => TrainerHomeScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getTrainerProfileDetailScreen(),
+      page: () => TrainerProfileDetailsScreen(),
+    ),
+    GetPage(name: RoutesName.getProfileScreen(), page: () => ProfileScreen()),
+    GetPage(
+      name: RoutesName.getTrainerManagementScreen(),
+      page: () => TrainerManagementScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getTrainerManagementDetailScreen(),
+      page: () => ManagementProfileDetailsScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getWorkoutDetailsScreen(),
+      page: () => WorkoutDetailsScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getAddWorkoutScreen(),
+      page: () => AddWorkoutScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getEditProfileScreen(),
+      page: () => EditProfileScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getHelpCenterScreen(),
+      page: () => HelpCenterScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getPrivacyPolicyScreen(),
+      page: () => PrivacyPolicyScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getTermsOfServiceScreen(),
+      page: () => TermsOfServiceScreen(),
+    ),
+    GetPage(name: RoutesName.getLanguageScreen(), page: () => LanguageScreen()),
+    GetPage(
+      name: RoutesName.getChangePasswordScreen(),
+      page: () => ChangePasswordScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getNotificationScreen(),
+      page: () => NotificationScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getOnBoardingScreen(),
+      page: () => OnBoardingScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getTraineeNavBarScreen(),
+      page: () => TraineeNavBarScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getTrainingPageOneScreen(),
+      page: () => TrainingPageOne(),
+    ),
+    GetPage(name: RoutesName.getRestScreen(), page: () => RestScreen()),
+    GetPage(name: RoutesName.getHistoryScreen(), page: () => HistoryScreen()),
+    GetPage(
+      name: RoutesName.getHistoryDetail(),
+      page: () => HistoryDetailScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getChooseForgetScreen(),
+      page: () => ChooseForgetScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getForgetEmailScreen(),
+      page: () => ForgetEmailScreen(),
+    ),
+    GetPage(name: RoutesName.getOtpScreen(), page: () => OtpScreen()),
+    GetPage(
+      name: RoutesName.getNewPasswordScreen(),
+      page: () => NewPasswordScreen(),
+    ),
 
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        GetPage(
-            name: RoutesName.getTraineeHomeScreen(),
-            page: () => TraineeHomeScreen()
-        ), GetPage(
-            name: RoutesName.getWorkoutProgressScreen(),
-            page: () => WorkoutProgressScreen()
-        ),GetPage(
-            name: RoutesName.getColorScreen(),
-            page: () => ColorScreen()
-        ),GetPage(
-            name: RoutesName.getTraineeCompleteSuccessfullyScreen(),
-            page: () => TraineeCompleteSuccessfullyScreen()
-        ),GetPage(
-            name: RoutesName.getWorkoutPlanScreen(),
-            page: () => WorkoutPlanScreen()
-        ),GetPage(
-            name: RoutesName.getSpecificWorkoutPlanScreen(),
-            page: () => SpecificWorkoutPlanScreen()
-        ),GetPage(
-            name: RoutesName.getWorkoutPlanDetailScreen(),
-            page: () => WorkoutPlanDetailScreen()
-        ),
-
-      ];
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    GetPage(
+      name: RoutesName.getTraineeHomeScreen(),
+      page: () => TraineeHomeScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getWorkoutProgressScreen(),
+      page: () => WorkoutProgressScreen(),
+    ),
+    GetPage(name: RoutesName.getColorScreen(), page: () => ColorScreen()),
+    GetPage(
+      name: RoutesName.getTraineeCompleteSuccessfullyScreen(),
+      page: () => TraineeCompleteSuccessfullyScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getWorkoutPlanScreen(),
+      page: () => WorkoutPlanScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getSpecificWorkoutPlanScreen(),
+      page: () => SpecificWorkoutPlanScreen(),
+    ),
+    GetPage(
+      name: RoutesName.getWorkoutPlanDetailScreen(),
+      page: () => WorkoutPlanDetailScreen(),
+    ),
+  ];
 }

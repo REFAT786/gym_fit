@@ -108,34 +108,32 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
     log(">>>>>>>>>>>>> ================ ${SignInController.instance.enabledqq.value}");
     return CustomTrainerGradientBackgroundColor(
       child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         backgroundColor: Colors.transparent,
 
         floatingActionButton: PrefsHelper.enabled == true? InkWell(
           onTap: (){
             Get.toNamed(RoutesName.addWorkout);
           },
-          child: Padding(
-            padding: const EdgeInsets.only(left: 0, right: 90),
-            child: Container(
-              width: 180,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: ColorController.instance.getButtonColor(),
+          child: Container(
+            width: 190,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: ColorController.instance.getButtonColor(),
+            ),
+            child: ListTile(
+              leading: Icon(
+                Icons.add,
+                color: AppColors.white,
               ),
-              child: ListTile(
-                leading: Icon(
-                  Icons.add,
-                  color: AppColors.white,
-                ),
-                title: Text(
-                  AppString.addWorkout,
-                  style: styleForText.copyWith(
-                    fontSize: 16,
-                    color:
-                    PrefsHelper.myRole == 'trainee'
-                        ? ColorController.instance.getTextColor()
-                        : AppColors.white,
-                  ),
+              title: Text(
+                AppString.addWorkout,
+                style: styleForText.copyWith(
+                  fontSize: 16,
+                  color:
+                  PrefsHelper.myRole == 'trainee'
+                      ? ColorController.instance.getTextColor()
+                      : AppColors.white,
                 ),
               ),
             ),
@@ -143,7 +141,7 @@ class _TraineeHomeScreenState extends State<TraineeHomeScreen> {
         ): SizedBox(),
 
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.only(left: 10, right: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

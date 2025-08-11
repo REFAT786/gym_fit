@@ -31,6 +31,32 @@ class AuthRepository {
     return response;
   }
 
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Forget Password >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Future<ApiResponse> forgetPassword({required String email,}) async {
+    final Map<String, dynamic> body = {"email": email};
+    final response = await ApiService.to.postApi(AppUrl.forgetPassword, body);
+    return response;
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> verify otp >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Future<ApiResponse> otp({body}) async {
+    final response = await ApiService.to.postApi(AppUrl.otp, body);
+    return response;
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> reset pass >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Future<ApiResponse> resetPassword({body}) async {
+    final response = await ApiService.to.postApi(AppUrl.resetPass, body);
+    return response;
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> reset pin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Future<ApiResponse> resetPin({body}) async {
+    final response = await ApiService.to.postApi(AppUrl.resetPin, body);
+    return response;
+  }
+
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Get Profile >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<ProfileModel?> getProfile() async {
     final url = AppUrl.profile;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gym_fit/Core/routes/routes.dart';
+import 'package:gym_fit/Core/routes/routes_name.dart';
 
 import '../../../../../Common/widgets/custom_button.dart';
 import '../../../../../Common/widgets/custom_text_field.dart';
@@ -40,18 +42,25 @@ class SignInScreen extends StatelessWidget {
               SizedBox(height: 20),
               CustomTextField(
                 backgroundColor: AppColors.primary,
-                hintText: "Email / Username",//AppString.enterEmailText,
+                hintText: AppString.emailUsername,//AppString.enterEmailText,
                 controller:controller.emailTextEditingController,
                 isSuffix: false,
               ),
               SizedBox(height: 20),
               CustomTextField(
                 backgroundColor: AppColors.primary,
-                hintText: "Password / Pin",//AppString.enterPasswordText,
+                hintText: AppString.passwordPin,//AppString.enterPasswordText,
                 controller: controller.passwordTextEditingController,
                 isSuffix: true,
               ),
-              SizedBox(height: 100),
+              SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () { Get.toNamed(RoutesName.chooseForgetScreen); },
+                  child: Text(AppString.forgetPasswordPin,style: styleForText.copyWith(fontSize: 14, color: AppColors.white)),),
+              ),
+              SizedBox(height: 50),
               Obx(() => InkWell(
                 onTap: () => controller.logIn(),
                 child: CustomButton(

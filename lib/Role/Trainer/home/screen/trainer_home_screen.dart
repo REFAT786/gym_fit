@@ -44,7 +44,7 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.only(left: 10, right: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

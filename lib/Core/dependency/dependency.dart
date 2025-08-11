@@ -19,6 +19,7 @@ import '../../Role/Trainer/profile/profile/controller/profile_controller.dart';
 import '../../Role/Trainer/profile/profile/controller/trainer_profile_details_controller.dart';
 import '../../Role/Trainer/profile/terms_of_service/controller/terms_of_service_controller.dart';
 import '../../Role/Trainer/workout/controller/workout_details_controller.dart';
+import '../../Role/common/controller/forget_controller.dart';
 import '../../Services/api_service.dart';
 
 class DependencyInjection extends Bindings {
@@ -50,6 +51,7 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => SpecificWorkoutPlanController(), fenix: true);
     Get.lazyPut(() => WorkoutPlanDetailController(), fenix: true);
     Get.lazyPut(() => WorkoutProgressController(), fenix: true);
+    Get.lazyPut(() => ForgetController(), fenix: true);
     //>>>>>>>>>>>>>>>>>
     Get.lazyPut(() => TraineeHomeController(), fenix: true);
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

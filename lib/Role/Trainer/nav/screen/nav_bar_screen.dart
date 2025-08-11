@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -59,57 +60,60 @@ class NavBarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     log(">>>>>>>>>>>>>>>>>>>>>>>>> my role ${PrefsHelper.myRole}");
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: CustomTrainerGradientBackgroundColor(
-        child: Column(
-          children: [
-            Expanded(
-              child: Obx(() {
-                return AnimatedSwitcher(
-                  duration:
-                      const Duration(milliseconds: 300), // Animation duration
-                  transitionBuilder:
-                      (Widget child, Animation<double> animation) {
-                    return FadeTransition(
-                        opacity: animation,
-                        child: child); // Smooth fade transition
-                  },
-                  child: _getActiveScreen(), // Function to return active screen
-                );
-              }),
-            ),
-            KeyboardVisibilityBuilder(builder: (p0, isKeyboardVisible) {
-              return isKeyboardVisible
-                  ? const SizedBox()
-                  : Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, bottom: 10),
-                      child: Obx(() {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: AppColors.bottomNavColor,
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildNavItem('home', Icons.home,
-                                  navController.isHomeActive.value),
-                              _buildNavItem('gym', AppIcons.gymBarIcon,
-                                  navController.isGymActive.value),
-                              _buildNavItem('profile', Icons.person,
-                                  navController.isProfileActive.value),
-                            ],
-                          ),
-                        );
-                      }),
-                    );
-            })
-          ],
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: CustomTrainerGradientBackgroundColor(
+          child: Column(
+            children: [
+              Expanded(
+                child: Obx(() {
+                  return AnimatedSwitcher(
+                    duration:
+                        const Duration(milliseconds: 300), // Animation duration
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                      return FadeTransition(
+                          opacity: animation,
+                          child: child); // Smooth fade transition
+                    },
+                    child: _getActiveScreen(), // Function to return active screen
+                  );
+                }),
+              ),
+              KeyboardVisibilityBuilder(builder: (p0, isKeyboardVisible) {
+                return isKeyboardVisible
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 10),
+                        child: Obx(() {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.bottomNavColor,
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                _buildNavItem('home', Icons.home,
+                                    navController.isHomeActive.value),
+                                _buildNavItem('gym', AppIcons.gymBarIcon,
+                                    navController.isGymActive.value),
+                                _buildNavItem('profile', Icons.person,
+                                    navController.isProfileActive.value),
+                              ],
+                            ),
+                          );
+                        }),
+                      );
+              })
+            ],
+          ),
         ),
       ),
     );

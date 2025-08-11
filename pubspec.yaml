@@ -58,6 +58,7 @@ dependencies:
   path: ^1.9.1
   mime: ^1.0.5
   video_player: ^2.9.5
+  flutter_otp_text_field: ^1.5.1+1
 
 
 dev_dependencies:

@@ -21,6 +21,7 @@ class RoutesName {
   static const trainingPageOne = '/training-page-one';
   static const restScreen = '/rest-screen';
   static const historyScreen = '/history-screen';
+  static const chooseForgetScreen = '/choose-forget-screen';
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // static const gender = '/gender';
   // static const age = '/age';
@@ -34,6 +35,9 @@ class RoutesName {
   static const specificWorkoutPlan = '/specific-workout-plan';
   static const workoutPlanDetail = '/workout-plan-detail';
   static const historyDetail = '/history-detail';
+  static const forgetEmailScreen = '/forget-email-screen';
+  static const otpScreen = '/otp-screen';
+  static const newPasswordScreen = '/new_password_screen';
 
 
   static String getSignInScreen() => login;
@@ -58,6 +62,8 @@ class RoutesName {
   static String getRestScreen() => restScreen;
   static String getHistoryScreen() => historyScreen;
   static String getHistoryDetail() => historyDetail;
+  static String getOtpScreen() => otpScreen;
+  static String getNewPasswordScreen() => newPasswordScreen;
 
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -72,5 +78,7 @@ class RoutesName {
   static String getWorkoutPlanScreen() => workoutPlan;
   static String getSpecificWorkoutPlanScreen() => specificWorkoutPlan;
   static String getWorkoutPlanDetailScreen() => workoutPlanDetail;
+  static String getChooseForgetScreen() => chooseForgetScreen;
+  static String getForgetEmailScreen() => forgetEmailScreen;
 
 }

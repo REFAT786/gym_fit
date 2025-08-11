@@ -120,6 +120,14 @@ class AppString {
   static String get workoutTimesPerWeek => "workout_times_per_week".tr;
   static String get workouts => "workouts".tr;
   static String get time => "time".tr;
+  static String get forgetPasswordPin => "forget_password_pin".tr;
+  static String get emailUsername => "email_username".tr;
+  static String get passwordPin => "password_pin".tr;
+  static String get forgetPassword => "forget_password".tr;
+  static String get forgetPin => "forget_pin".tr;
+  static String get verifyOtp => "verify_otp".tr;
+  static String get resendOtp => "resend_otp".tr;
+  static String get continueText => "continue_text".tr;
 
 
   static String get enableTraineeChoice => "enable_trainee_choice".tr;
