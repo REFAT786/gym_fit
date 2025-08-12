@@ -55,7 +55,7 @@ class CustomHistoryWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomCommonImage(
-                imageSrc: "${history.exerciseImage}",
+                imageSrc: "${AppUrl.baseUrl}${history.exerciseImage}",
                 imageType: ImageType.network,
                 height: 170,
                 width: 125,

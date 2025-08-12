@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:gym_fit/Common/widgets/custom_common_image.dart';
 import 'package:gym_fit/Model/history_model.dart';
 import 'package:gym_fit/Utils/app_string.dart';
+import 'package:gym_fit/Utils/app_url.dart';
 
 import '../../../../Common/widgets/custom_back_button.dart';
 import '../../../../Helpers/prefs_helper.dart';
@@ -39,7 +40,7 @@ class HistoryDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomCommonImage(
-            imageSrc: data.exerciseImage ?? '',
+            imageSrc: "${AppUrl.baseUrl}${data.exerciseImage}" ?? '',
             height: 330,
             imageType: ImageType.network,
             width: double.infinity,
