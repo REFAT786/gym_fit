@@ -46,13 +46,27 @@ class AuthRepository {
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> reset pass >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<ApiResponse> resetPassword({body}) async {
-    final response = await ApiService.to.postApi(AppUrl.resetPass, body);
+    Map<String, String> header = {
+      "Content-Type": "application/json",
+      "Forget-password": "Forget-password ${PrefsHelper.token}",
+    };
+    final response = await ApiService.to.postApi(AppUrl.resetPass, body,extraHeaders: header);
     return response;
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> reset pin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Future<ApiResponse> resetPin({body}) async {
-    final response = await ApiService.to.postApi(AppUrl.resetPin, body);
+    Map<String, String> header = {
+      "Content-Type": "application/json",
+      "Forget-password": "Forget-password ${PrefsHelper.token}",
+    };
+    final response = await ApiService.to.postApi(AppUrl.resetPin, body,extraHeaders: header);
+    return response;
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> resend otp >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  Future<ApiResponse> resendOtp({body}) async {
+    final response = await ApiService.to.postApi(AppUrl.resendOtp, body);
     return response;
   }
 

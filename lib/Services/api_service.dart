@@ -192,8 +192,8 @@ class ApiService extends GetxService {
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Header >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   Map<String, String> _buildHeaders(extraHeaders) {
-    return {
-      "Content-Type": extraHeaders ?? "application/json",
+    return extraHeaders?? {
+      "Content-Type": "application/json",
       "Authorization": "Bearer ${PrefsHelper.token}",
     };
   }

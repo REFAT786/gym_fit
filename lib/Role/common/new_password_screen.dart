@@ -73,6 +73,7 @@ class NewPasswordScreen extends StatelessWidget {
                       onTap: () {
                         if (formKey.currentState!.validate()) {
                           // controller.status == "password"?controller.
+                          controller.resetPassPin();
                         }
                       },
                       isLoading: controller.isLoading.value,
