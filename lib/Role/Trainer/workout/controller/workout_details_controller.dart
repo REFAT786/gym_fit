@@ -337,13 +337,15 @@ class WorkoutDetailsController extends GetxController {
                 : workoutDetail.value.userName,
         "exerciseName": workoutDetail.value.exerciseName,
         "exerciseImage":
-            "${AppUrl.baseUrl}${workoutDetail.value.exerciseImage}",
-        "stations": stationsData,
+            workoutDetail.value.exerciseImage,
+        "stations": stationsData.toList(),
         "muscleGroups": muscleGroups,
         "workoutTypes": workoutTypes,
-        "sets": sets,
+        "sets": sets.toList(),
       };
 
+      log("Sets ==============  : $sets");
+      log("Sets 2 ==============  : ${sets.toList()}");
       log("Complete Workout Request Body: $body");
 
       final response = await userRepository.completeWorkout(

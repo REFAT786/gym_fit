@@ -359,8 +359,6 @@ class _RestScreenState extends State<RestScreen> {
 
                                   if (controller.index.value > controller.totalSets.value) {
                                     Get.toNamed(RoutesName.completeSuccessful);
-                                    controller.index.value = 1;
-                                    controller.sets.clear();
                                   } else {
                                     Get.back();
                                   }

@@ -37,6 +37,8 @@ class TraineeCompleteSuccessfullyScreen extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     controller.completeWorkout();
+                    controller.index.value = 1;
+                    controller.sets.clear();
                   },
                   child: CustomButton(
                     backgroundColor: PrefsHelper.myRole=="trainee"?ColorController.instance.getButtonColor():AppColors.secondary,
