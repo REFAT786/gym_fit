@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gym_fit/Utils/app_string.dart';
 import '../../../../Model/history_model.dart';
@@ -20,6 +22,7 @@ class CustomHistoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("==>${AppUrl.baseUrl}${history.exerciseImage}");
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.symmetric(vertical: 8),

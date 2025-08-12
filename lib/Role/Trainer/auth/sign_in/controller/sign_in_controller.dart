@@ -12,9 +12,9 @@ class SignInController extends GetxController {
   static SignInController get instance => Get.find<SignInController>();
   RxBool enabled = false.obs;
   RxBool enabledqq = false.obs;
-  TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'hilizyjip@mailinator.com' : '');
+  TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'trainee@gmail.com' : '');
   // TextEditingController emailTextEditingController = TextEditingController(text: kDebugMode ? 'rifatrahman@gmail.com' : '');
-  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? '123456' : "");
+  TextEditingController passwordTextEditingController = TextEditingController(text: kDebugMode ? 'hello123' : "");
   var isLoading = false.obs;
   String role = "";
   RxBool isCompleted = false.obs;
